@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
-"""Unified PyTorch Heavy-Compute Engine for Colab RTX PRO 6000 (96GB) & CUDA Nodes.
+"""V2 Unified PyTorch Heavy-Compute Engine for Colab RTX PRO 6000 (96GB) & CUDA Nodes.
 
-Master copy lives locally in `scripts/rtx6000_gpu_engine.py` and is synced on demand.
-Provides 3 heavy GPU tasks in pure PyTorch:
-1. `llm_generate`    — Qwen/Qwen2.5-14B-Instruct (bfloat16) for @unicorn-roar script generation
-2. `synthesize_voice`— PyTorch F5-TTS (F5TTS_v1_Base) zero-shot owner voice cloning + LUFS mastering + phrase timing
-3. `generate_images` — PyTorch SDXL-Lightning 4-step (float16) high-speed 16:9 & 1:1 AI visual generation
+V2 Station Upgrades:
+1. `llm_generate`    — Upgraded to `unsloth/Qwen2.5-32B-Instruct-bnb-4bit` (32B NF4 on CUDA)
+                       with multi-pass 6-Act + Showrunner Critic support & continuation length gate.
+2. `synthesize_voice`— PyTorch F5-TTS owner voice cloning + Editor Breath-Cut Trimmer (`自動剪氣口`:
+                       removes internal dead air > 95ms down to 35ms with 6ms cosine crossfades) +
+                       `-13.2 LUFS` broadcast loudness normalization + 11-14 char crisp subtitle cues.
+3. `generate_images` — Upgraded from 4-step Lightning to 24-step `stabilityai/stable-diffusion-xl-base-1.0`
+                       (`EulerDiscreteScheduler`, `CFG=6.5`) for artifact-free photorealistic visuals.
 """
 from __future__ import annotations
 
@@ -14,26 +17,28 @@ import gc
 import json
 import re
 import subprocess
+import warnings
 from pathlib import Path
 
 import numpy as np
 import soundfile as sf
 import torch
 
+warnings.filterwarnings("ignore", category=UserWarning)
 
-def split_subtitle_phrases(text: str, max_chars: int = 17) -> list[str]:
-    """Split Traditional Chinese narration into crisp @unicorn-roar single-line subtitle phrases."""
-    raw_parts = re.split(r"[，。！？!?；;：:\n]+", text)
+
+def split_subtitle_phrases(text: str, max_chars: int = 14) -> list[str]:
+    """Split Traditional Chinese narration into @unicorn-roar 11-14 char rapid subtitle cues."""
+    raw_parts = re.split(r"[，。！？!?；;：:、\n]+", text)
     phrases: list[str] = []
     for part in raw_parts:
-        p = part.strip()
+        p = part.strip(" 「」『』")
         if not p:
             continue
         while len(p) > max_chars:
-            # Prefer splitting near natural conjunctions if present around middle
             cut = max_chars
-            for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻", "而且", "如果"):
-                idx = p.find(kw, 5, max_chars + 2)
+            for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻", "而且", "如果", "問題是", "也就是"):
+                idx = p.find(kw, 5, max_chars + 1)
                 if idx != -1:
                     cut = idx
                     break
@@ -41,7 +46,75 @@ def split_subtitle_phrases(text: str, max_chars: int = 17) -> list[str]:
             p = p[cut:].strip()
         if p:
             phrases.append(p)
-    return phrases or [text.strip()]
+    return phrases or [text.strip()[:max_chars]]
+
+
+def tight_cut_breaths(
+    wav: np.ndarray,
+    sr: int,
+    max_pause_sec: float = 0.095,
+    kept_pause_sec: float = 0.035,
+) -> np.ndarray:
+    """Editor-grade breath & dead-air trimmer (`自動剪氣口`) matching @unicorn-roar's 89% zero-gap pacing."""
+    if wav.ndim > 1:
+        wav = wav.mean(axis=1)
+    wav = wav.astype(np.float32)
+    win = int(0.012 * sr)
+    if len(wav) < win * 10:
+        return wav
+
+    n_wins = len(wav) // win
+    frames = wav[: n_wins * win].reshape(n_wins, win)
+    rms = np.sqrt(np.mean(frames**2, axis=1) + 1e-12)
+    active_rms = float(np.percentile(rms, 75))
+    silence_thresh = max(0.0045, active_rms * 0.065)
+    is_silent = rms < silence_thresh
+
+    # Trim leading/trailing silence down to 25ms
+    active_indices = np.where(~is_silent)[0]
+    if len(active_indices) == 0:
+        return wav
+    first_act = max(0, active_indices[0] - 2)
+    last_act = min(n_wins, active_indices[-1] + 3)
+
+    max_silent_wins = max(2, int(round(max_pause_sec / 0.012)))
+    keep_silent_wins = max(1, int(round(kept_pause_sec / 0.012)))
+    xfade = min(int(0.006 * sr), win // 2)
+
+    pieces: list[np.ndarray] = []
+    i = first_act
+    while i < last_act:
+        if not is_silent[i]:
+            j = i + 1
+            while j < last_act and not is_silent[j]:
+                j += 1
+            pieces.append(wav[i * win : j * win])
+            i = j
+        else:
+            j = i + 1
+            while j < last_act and is_silent[j]:
+                j += 1
+            run_len = j - i
+            if run_len <= max_silent_wins:
+                pieces.append(wav[i * win : j * win])
+            else:
+                pieces.append(wav[i * win : (i + keep_silent_wins) * win])
+            i = j
+
+    if not pieces:
+        return wav
+
+    # Smooth 6ms crossfade join to prevent any click artifacts
+    out = pieces[0]
+    for nxt in pieces[1:]:
+        if len(out) > xfade and len(nxt) > xfade and xfade > 4:
+            fade_out = np.linspace(1.0, 0.0, xfade, dtype=np.float32)
+            fade_in = np.linspace(0.0, 1.0, xfade, dtype=np.float32)
+            overlap = out[-xfade:] * fade_out + nxt[:xfade] * fade_in
+            out = np.concatenate([out[:-xfade], overlap, nxt[xfade:]])
+        else:
+            out = np.concatenate([out, nxt])
+    return out
 
 
 def align_phrases_to_audio(
@@ -49,15 +122,14 @@ def align_phrases_to_audio(
     sr: int,
     phrases: list[str],
 ) -> list[dict]:
-    """Compute energy-aware natural phrase timestamps bounded accurately to spoken waveform."""
+    """Snap subtitle transitions onto natural micro-valleys with zero gap between cues."""
     total_dur = len(wav) / float(sr)
     if not phrases:
         return []
     if len(phrases) == 1:
         return [{"start": 0.0, "end": round(total_dur, 3), "text": phrases[0]}]
 
-    # Find low-energy pause valleys to snap subtitle transitions onto natural breath pauses
-    hop = int(0.02 * sr)
+    hop = int(0.015 * sr)
     n_frames = max(1, len(wav) // hop)
     trimmed = wav[: n_frames * hop].reshape(n_frames, hop)
     rms = np.sqrt(np.mean(trimmed**2, axis=1) + 1e-12)
@@ -68,59 +140,42 @@ def align_phrases_to_audio(
     boundaries = [0.0]
     for r in cum_ratios[:-1]:
         ideal_frame = int(r * n_frames)
-        win_lo = max(1, ideal_frame - 12)  # +/- 240ms search window for speech valley
-        win_hi = min(n_frames - 1, ideal_frame + 12)
+        win_lo = max(1, ideal_frame - 10)
+        win_hi = min(n_frames - 1, ideal_frame + 10)
         if win_hi > win_lo:
             valley_offset = int(np.argmin(rms[win_lo:win_hi]))
-            snap_sec = (win_lo + valley_offset) * 0.02
+            snap_sec = (win_lo + valley_offset) * 0.015
         else:
             snap_sec = r * total_dur
-        snap_sec = max(boundaries[-1] + 0.35, min(total_dur - 0.30, snap_sec))
+        snap_sec = max(boundaries[-1] + 0.28, min(total_dur - 0.25, snap_sec))
         boundaries.append(snap_sec)
     boundaries.append(total_dur)
 
-    out = []
-    for i, p in enumerate(phrases):
-        out.append(
-            {
-                "start": round(boundaries[i], 3),
-                "end": round(boundaries[i + 1], 3),
-                "text": p,
-            }
-        )
-    return out
+    return [
+        {"start": round(boundaries[i], 3), "end": round(boundaries[i + 1], 3), "text": p}
+        for i, p in enumerate(phrases)
+    ]
 
 
-def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -16.0) -> np.ndarray:
-    """Broadcast-normalize cloned voice to -16 LUFS with -1.5 dBTP soft peak limiter."""
-    if wav.ndim > 1:
-        wav = wav.mean(axis=1)
-    wav = wav.astype(np.float32)
-    # Trim extreme leading/trailing near-silence (> -48 dBFS threshold) while preserving 80ms pad
-    thresh = 0.004
-    idx = np.where(np.abs(wav) > thresh)[0]
-    if len(idx) > 10:
-        pad = int(0.08 * sr)
-        s = max(0, int(idx[0]) - pad)
-        e = min(len(wav), int(idx[-1]) + int(0.16 * sr))
-        wav = wav[s:e]
-
+def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -13.2) -> np.ndarray:
+    """Tight-cut breaths & master cloned voice to @unicorn-roar's exact `-13.2 LUFS` punch."""
+    wav = tight_cut_breaths(wav, sr, max_pause_sec=0.095, kept_pause_sec=0.035)
     try:
         import pyloudnorm as pyln
 
         meter = pyln.Meter(sr)
         loudness = meter.integrated_loudness(wav)
         if np.isfinite(loudness):
-            wav = pyln.normalize.loudness(wav, loudness, target_lufs)
+            # Pre-scale gently then soft-limit to -1.0 dBTP (0.891) so zero harsh clipping
+            gain_db = target_lufs - loudness
+            wav = wav * float(10.0 ** (gain_db / 20.0))
     except Exception:
         rms = float(np.sqrt(np.mean(wav**2)) + 1e-9)
-        wav = wav * (0.14 / rms)
+        wav = wav * (0.21 / rms)
 
-    # Soft peak ceiling at 0.84 (-1.5 dBFS)
-    peak = float(np.max(np.abs(wav)) + 1e-9)
-    if peak > 0.84:
-        wav = np.tanh(wav / peak * 1.15) * 0.84
-    return wav
+    # Smooth broadcast limiter ceiling at 0.89 (-1.0 dBFS)
+    wav = np.tanh(wav * 1.08) * 0.89
+    return wav.astype(np.float32)
 
 
 def _extract_json_block(raw: str) -> dict:
@@ -136,7 +191,14 @@ def _extract_json_block(raw: str) -> dict:
     return json.loads(cleaned)
 
 
-def _chat_once(model, tokenizer, system: str, user: str, max_new_tokens: int = 3200, temperature: float = 0.55) -> str:
+def _chat_once(
+    model,
+    tokenizer,
+    system: str,
+    user: str,
+    max_new_tokens: int = 3400,
+    temperature: float = 0.52,
+) -> str:
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": user},
@@ -151,7 +213,7 @@ def _chat_once(model, tokenizer, system: str, user: str, max_new_tokens: int = 3
             max_new_tokens=max_new_tokens,
             temperature=temperature,
             top_p=0.9,
-            repetition_penalty=1.06,
+            repetition_penalty=1.08,
             do_sample=True,
         )
     out_ids = gen_ids[0][inputs.input_ids.shape[1] :]
@@ -162,33 +224,24 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
     req = json.loads(req_path.read_text(encoding="utf-8"))
-    model_id = req.get("model", "Qwen/Qwen2.5-14B-Instruct")
+    model_id = req.get("model", "unsloth/Qwen2.5-32B-Instruct-bnb-4bit")
     tokenizer = AutoTokenizer.from_pretrained(model_id)
-    try:
-        model = AutoModelForCausalLM.from_pretrained(
-            model_id,
-            dtype=torch.bfloat16,
-            device_map="cuda",
-        )
-    except TypeError:
-        model = AutoModelForCausalLM.from_pretrained(
-            model_id,
-            torch_dtype=torch.bfloat16,
-            device_map="cuda",
-        )
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id,
+        device_map="cuda",
+    )
 
-    # Multi-pass 6-Act Long + Short mode when `passes` list is provided
     if "passes" in req:
         pass_outputs = []
-        prior_titles_and_points: list[str] = []
+        prior_points: list[str] = []
         for idx, p in enumerate(req["passes"]):
             pid = p["id"]
             min_cjk = int(p.get("min_cjk_chars", 0))
             anti_repeat = ""
-            if prior_titles_and_points and p.get("inject_prior_summary", True):
+            if prior_points and p.get("inject_prior_summary", True):
                 anti_repeat = (
-                    "\n\n【前序章節已講過之論點（本幕嚴禁重複相同句子，必須推進全新細節與數據）】：\n"
-                    + "\n".join(f"- {pt}" for pt in prior_titles_and_points[-5:])
+                    "\n\n【前序幕次已講過之論點與案例（本幕嚴禁重複相同句子或同一數據，必須推進全新視角）】：\n"
+                    + "\n".join(f"- {pt}" for pt in prior_points[-5:])
                 )
             user_msg = p["user"] + anti_repeat
             raw = _chat_once(
@@ -196,40 +249,38 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
                 tokenizer,
                 p["system"],
                 user_msg,
-                max_new_tokens=int(p.get("max_new_tokens", 3400)),
-                temperature=float(p.get("temperature", 0.55)),
+                max_new_tokens=int(p.get("max_new_tokens", 3500)),
+                temperature=float(p.get("temperature", 0.52)),
             )
-            # Enforce minimum CJK character count via continuation scenes if needed
+
             if min_cjk > 0:
                 try:
                     parsed_obj = _extract_json_block(raw)
                 except Exception:
-                    # Retry once if malformed JSON
                     raw = _chat_once(
                         model,
                         tokenizer,
                         p["system"],
-                        user_msg + "\n請務必只輸出合法 JSON 物件，確保雙引號與括號完整閉合。",
-                        max_new_tokens=int(p.get("max_new_tokens", 3600)),
-                        temperature=0.45,
+                        user_msg + "\n請嚴格只輸出合法閉合的 JSON 物件。",
+                        max_new_tokens=3600,
+                        temperature=0.42,
                     )
                     parsed_obj = _extract_json_block(raw)
 
-                for cont_round in range(3):
+                for _ in range(3):
                     scenes = parsed_obj.get("scenes", [])
                     nar_text = "".join(sc.get("narration", "") for sc in scenes)
                     cjk_len = len(re.findall(r"[\u4e00-\u9fff]", nar_text))
                     if cjk_len >= min_cjk:
                         break
                     deficit = min_cjk - cjk_len
-                    extra_n = max(2, min(4, (deficit // 105) + 1))
+                    extra_n = max(2, min(4, (deficit // 110) + 1))
                     last_nar = scenes[-1].get("narration", "") if scenes else ""
                     cont_prompt = (
-                        f"目前本幕已撰寫 {cjk_len} 字，距離目標門檻 {min_cjk} 字還差 {deficit} 字。\n"
-                        f"上一句結尾為：「{last_nar}」\n"
-                        f"請緊接在上一句之後，針對本幕同一主題繼續深入展開（補充具體數字換算、條文細節、供應鏈實況或犀利生活類比，嚴禁重複前面講過的話），"
-                        f"再新增 **{extra_n} 個場景**，每個場景 `narration` 必須寫滿 110～140 個繁體中文字！\n"
-                        f"請只輸出 `{{\"scenes\": [ ...新增的 {extra_n} 個場景... ]}}` 合法 JSON。"
+                        f"目前本幕已寫 {cjk_len} 字，距離目標 {min_cjk} 字還差 {deficit} 字。\n"
+                        f"上一句結尾：「{last_nar}」\n"
+                        f"請緊接其後，引用爬蟲真實段落再深化拆解具體價差算術、條文細節或通路實況（嚴禁重複前文、嚴禁編造不存在的數據），"
+                        f"新增 **{extra_n} 個場景**（每段 `narration` 110～140 字），只輸出 `{{\"scenes\": [...]}}` JSON。"
                     )
                     cont_raw = _chat_once(
                         model,
@@ -237,26 +288,27 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
                         p["system"],
                         user_msg + "\n\n" + cont_prompt,
                         max_new_tokens=2600,
-                        temperature=0.58,
+                        temperature=0.54,
                     )
                     try:
                         cont_obj = _extract_json_block(cont_raw)
-                        new_scenes = cont_obj.get("scenes", [])
-                        if new_scenes:
-                            parsed_obj["scenes"] = scenes + new_scenes
+                        if cont_obj.get("scenes"):
+                            parsed_obj["scenes"] = scenes + cont_obj["scenes"]
                     except Exception:
                         continue
                 raw = json.dumps(parsed_obj, ensure_ascii=False)
+
             try:
                 obj = _extract_json_block(raw)
                 scs = obj.get("scenes", [])
                 if scs:
-                    summary_line = f"{pid}: " + " / ".join(sc.get("narration", "")[:28] for sc in scs[:3])
-                    prior_titles_and_points.append(summary_line)
+                    prior_points.append(
+                        f"{pid}: " + " / ".join(sc.get("narration", "")[:30] for sc in scs[:3])
+                    )
             except Exception:
                 pass
             pass_outputs.append({"id": pid, "content": raw})
-            print(f"[LLM PASS {idx+1}/{len(req['passes'])}] {pid} complete", flush=True)
+            print(f"[32B PASS {idx+1}/{len(req['passes'])}] {pid} complete", flush=True)
 
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(
@@ -269,8 +321,8 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
             tokenizer,
             req["system"],
             req["user"],
-            max_new_tokens=int(req.get("max_new_tokens", 5500)),
-            temperature=float(req.get("temperature", 0.55)),
+            max_new_tokens=int(req.get("max_new_tokens", 4000)),
+            temperature=float(req.get("temperature", 0.5)),
         )
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(
@@ -297,14 +349,15 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
 
     out_dir.mkdir(parents=True, exist_ok=True)
     results = []
-    for item in req["segments"]:
+    total = len(req["segments"])
+    for idx, item in enumerate(req["segments"], 1):
         seg_id = item["id"]
         text = re.sub(r"\s+", "，", item["text"].strip())
         if text and text[-1] not in "。！？!?":
             text += "。"
         role = item.get("voice_style", "narrative_explain")
-        speed = float(item.get("speed", 1.04))
-        max_chars = int(item.get("max_chars_per_line", 17))
+        speed = float(item.get("speed", 1.06))
+        max_chars = int(item.get("max_chars_per_line", 14))
         anchor = anchors_by_role.get(role, default_anchor)
 
         raw_wav_path = out_dir / f"{seg_id}_raw.wav"
@@ -319,8 +372,8 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
             remove_silence=False,
         )
         raw_wav_path.unlink(missing_ok=True)
-        mastered = master_narration_audio(np.asarray(wav), int(sr), target_lufs=-16.0)
-        # Write 44.1kHz stereo-ready clean PCM_16 WAV for frame-accurate FFmpeg muxing
+        mastered = master_narration_audio(np.asarray(wav), int(sr), target_lufs=-13.2)
+
         tmp_24k = out_dir / f"{seg_id}_24k.wav"
         sf.write(str(tmp_24k), mastered, int(sr), subtype="PCM_16")
         subprocess.run(
@@ -331,7 +384,7 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
         )
         tmp_24k.unlink(missing_ok=True)
 
-        phrases = split_subtitle_phrases(text, max_chars=max_chars)
+        phrases = split_subtitle_phrases(item["text"].strip(), max_chars=max_chars)
         subs = align_phrases_to_audio(mastered, int(sr), phrases)
         dur = round(len(mastered) / float(sr), 3)
         results.append(
@@ -343,6 +396,8 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
                 "subtitles": subs,
             }
         )
+        if idx % 10 == 0 or idx == total:
+            print(f"[TTS {idx}/{total}] {seg_id} dur={dur}s cues={len(subs)}", flush=True)
 
     (out_dir / "tts_results.json").write_text(
         json.dumps({"ok": True, "device": device, "segments": results}, ensure_ascii=False, indent=2),
@@ -355,33 +410,25 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
 
 
 def task_generate_images(req_path: Path, out_dir: Path) -> None:
-    from diffusers import EulerDiscreteScheduler, StableDiffusionXLPipeline, UNet2DConditionModel
-    from huggingface_hub import hf_hub_download
-    from safetensors.torch import load_file
+    """24-step High-Definition SDXL Base 1.0 (EulerDiscreteScheduler, CFG=6.5) — zero 4-step melting."""
+    from diffusers import EulerDiscreteScheduler, StableDiffusionXLPipeline
 
     req = json.loads(req_path.read_text(encoding="utf-8"))
     base_id = "stabilityai/stable-diffusion-xl-base-1.0"
-    lightning_repo = "ByteDance/SDXL-Lightning"
-    ckpt = "sdxl_lightning_4step_unet.safetensors"
-
-    unet_cfg = UNet2DConditionModel.load_config(base_id, subfolder="unet")
-    unet = UNet2DConditionModel.from_config(unet_cfg).to("cuda", torch.float16)
-    unet.load_state_dict(load_file(hf_hub_download(lightning_repo, ckpt), device="cuda"))
     pipe = StableDiffusionXLPipeline.from_pretrained(
-        base_id, unet=unet, torch_dtype=torch.float16, variant="fp16"
+        base_id, torch_dtype=torch.float16, variant="fp16"
     ).to("cuda")
-    pipe.scheduler = EulerDiscreteScheduler.from_config(
-        pipe.scheduler.config, timestep_spacing="trailing"
-    )
+    pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
 
     out_dir.mkdir(parents=True, exist_ok=True)
     generated = []
-    for item in req["images"]:
+    total = len(req["images"])
+    for idx, item in enumerate(req["images"], 1):
         img_id = item["id"]
         prompt = item["prompt"]
         neg_prompt = item.get(
             "negative_prompt",
-            "text, watermark, blurry, deformed, ugly, low quality, distorted hands, gibberish letters",
+            "text, letters, typography, watermark, logo, gibberish writing, blurry, melted, deformed hands, lowres, cartoon",
         )
         w = int(item.get("width", 1344))
         h = int(item.get("height", 768))
@@ -392,19 +439,21 @@ def task_generate_images(req_path: Path, out_dir: Path) -> None:
             negative_prompt=neg_prompt,
             width=w,
             height=h,
-            num_inference_steps=4,
-            guidance_scale=0.0,
+            num_inference_steps=24,
+            guidance_scale=6.5,
             generator=gen,
         ).images[0]
         out_file = out_dir / f"{img_id}.png"
         img.save(out_file)
         generated.append({"id": img_id, "file": out_file.name, "width": w, "height": h})
+        if idx % 5 == 0 or idx == total:
+            print(f"[SDXL-24STEP {idx}/{total}] {img_id} ({w}x{h}) saved", flush=True)
 
     (out_dir / "image_results.json").write_text(
         json.dumps({"ok": True, "images": generated}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    del pipe, unet
+    del pipe
     gc.collect()
     torch.cuda.empty_cache()
 
