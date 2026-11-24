@@ -303,6 +303,9 @@ def crawl_google_news_tw_rss(query: str, max_items: int = 5) -> list[dict]:
     return items
 
 
+crawl_google_news_tw = crawl_google_news_tw_rss
+
+
 def crawl_wikipedia_full_zhtw(keyword: str) -> list[dict]:
     """Fetch full multi-section Traditional Chinese Wikipedia text (not truncated to intro)."""
     api_url = "https://zh.wikipedia.org/w/api.php"
