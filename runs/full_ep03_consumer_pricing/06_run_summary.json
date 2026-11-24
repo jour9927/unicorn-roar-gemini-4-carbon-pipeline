@@ -1,0 +1,58 @@
+{
+  "ok": true,
+  "run_id": "full_ep03_consumer_pricing",
+  "run_dir": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/full_ep03_consumer_pricing",
+  "selected_topic": {
+    "rank": 1,
+    "pillar": "consumer_pricing",
+    "proposed_title": "價格沒漲但偷少20克？台灣超市「縮水式通膨」為何完全合法？各國早就強制貼縮水警告了！",
+    "short_hook_question": "沒漲價卻越吃越少？把消費者當盤子的縮水式通膨 回答我！",
+    "core_contradiction": "南韓、法國已立法要求減量不減價必須強制揭露，台灣業者卻能悄悄改包裝換新上市規避漲價罵名",
+    "search_queries": [
+      "縮水式通膨 台灣 變相漲價 消基會",
+      "減量不減價 韓國 法國 強制標示",
+      "台灣 物價 外食費 主計總處 漲幅"
+    ],
+    "seed_headlines": [],
+    "score": 46.25
+  },
+  "citations_count": 7,
+  "long_cjk_chars": 4737,
+  "short_cjk_chars": 860,
+  "long_scene_count": 64,
+  "short_scene_count": 18,
+  "long_title": "超市裡的價格遊戲：商品變小了，價格卻不漲！",
+  "short_title": "價格沒漲但偷少20克？#縮水式通膨 #回答我",
+  "outputs": {
+    "long_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/full_ep03_consumer_pricing/output/long_episode_1080p.mp4",
+    "long_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/full_ep03_consumer_pricing/output/long_episode.zh-TW.srt",
+    "long_duration_sec": 1151.34,
+    "short_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/full_ep03_consumer_pricing/output/short_promo_1080x1920.mp4",
+    "short_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/full_ep03_consumer_pricing/output/short_promo.zh-TW.srt",
+    "short_duration_sec": 173.2
+  },
+  "verification": {
+    "long_probe": {
+      "width": 1920,
+      "height": 1080,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 1151.34,
+      "duration_min": 19.19,
+      "size_mb": 466.33
+    },
+    "short_probe": {
+      "width": 1080,
+      "height": 1920,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 173.2,
+      "duration_min": 2.89,
+      "size_mb": 61.45
+    }
+  }
+}

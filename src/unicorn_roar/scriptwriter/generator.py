@@ -182,8 +182,8 @@ def _build_six_act_passes(
             }
         )
 
-    # Pass 7: Full-Length Corresponding Traffic-Push Short (~130-150s, >= 720 CJK chars)
-    short_target_chars = max(360, int(round(760 * scale_factor)))
+    # Pass 7: Full-Length Corresponding Traffic-Push Short (~120-150s, safely under YouTube 180s Short limit)
+    short_target_chars = min(650, max(360, int(round(620 * scale_factor))))
     short_target_scenes = max(5, int(round(7 * scale_factor)))
     short_exs = playbook.get("short_exemplars", [])[:2]
     short_ex_txt = "\n\n".join(
@@ -389,27 +389,57 @@ def _sanitize_scene_list(
             cid = cite_keys[(idx - 1) % len(cite_keys)] if cite_keys else None
             sc["citation_id"] = cid
 
+        for str_field in ("document_heading", "document_excerpt", "red_underline_quote", "image_prompt"):
+            val = sc.get(str_field)
+            sc[str_field] = str(val).strip() if isinstance(val, (str, int, float)) else ""
+
         if sc["scene_mode"] == "evidence_doc" and cid and cid in valid_ids:
             cite = valid_ids[cid]
-            if not sc.get("document_heading"):
+            if not sc["document_heading"]:
                 sc["document_heading"] = f"{cite.publisher}｜{cite.title}"
-            if not sc.get("document_excerpt") or sc["document_excerpt"].strip() == cite.title.strip():
+            if not sc["document_excerpt"] or sc["document_excerpt"] == cite.title.strip():
                 sc["document_excerpt"] = f"{cite.excerpt}（重點摘要：{nar[:65]}）"
-            if not sc.get("red_underline_quote"):
+            if not sc["red_underline_quote"]:
                 sc["red_underline_quote"] = nar[:20]
 
-        if sc["scene_mode"] == "kinetic_black":
+        if sc["scene_mode"] != "kinetic_black":
+            sc["kinetic_lines"] = []
+        else:
             kls = sc.get("kinetic_lines")
-            if not isinstance(kls, list) or not kls:
-                parts = [p.strip() for p in re.split(r"[，。！？!?]", nar) if p.strip()][:2]
-                sc["kinetic_lines"] = [
-                    {"text": pt[:18], "highlight": "", "highlight_color": "yellow"} for pt in parts
-                ]
-            else:
+            norm_kls: list[dict[str, str]] = []
+            if isinstance(kls, list):
                 for kl in kls:
                     if isinstance(kl, dict):
-                        hc = str(kl.get("highlight_color", "yellow")).lower().strip()
-                        kl["highlight_color"] = "red" if ("red" in hc or "crimson" in hc) else "yellow"
+                        k_txt = str(kl.get("text") or "").strip()
+                        if not k_txt:
+                            continue
+                        raw_hl = kl.get("highlight")
+                        if isinstance(raw_hl, bool):
+                            if raw_hl and ("：" in k_txt or ":" in k_txt):
+                                sep = "：" if "：" in k_txt else ":"
+                                hl_str = k_txt.split(sep, 1)[1].strip()
+                            else:
+                                hl_str = ""
+                        elif raw_hl is None:
+                            hl_str = ""
+                        else:
+                            hl_str = str(raw_hl).strip()
+                        hc = str(kl.get("highlight_color") or "yellow").lower().strip()
+                        norm_kls.append(
+                            {
+                                "text": k_txt,
+                                "highlight": hl_str,
+                                "highlight_color": "red" if ("red" in hc or "crimson" in hc) else "yellow",
+                            }
+                        )
+                    elif isinstance(kl, str) and kl.strip():
+                        norm_kls.append({"text": kl.strip(), "highlight": "", "highlight_color": "yellow"})
+            if not norm_kls:
+                parts = [p.strip() for p in re.split(r"[，。！？!?]", nar) if p.strip()][:2]
+                norm_kls = [
+                    {"text": pt[:18], "highlight": "", "highlight_color": "yellow"} for pt in parts
+                ]
+            sc["kinetic_lines"] = norm_kls
 
         if sc["scene_mode"] == "ai_scene" and not sc.get("image_prompt"):
             sc["image_prompt"] = (

@@ -1,0 +1,1194 @@
+{
+  "topic": "價格沒漲但偷少20克？台灣超市「縮水式通膨」為何完全合法？各國早就強制貼縮水警告了！",
+  "pillar": "consumer_pricing",
+  "long_cjk_chars": 4737,
+  "short_cjk_chars": 860,
+  "long_video": {
+    "title": "超市裡的價格遊戲：商品變小了，價格卻不漲！",
+    "seo_tags": [
+      "價格遊戲",
+      "縮水式通膨",
+      "超市",
+      "法規漏洞",
+      "消費者權益"
+    ],
+    "scenes": [
+      {
+        "scene_id": "L01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "你是不是發現最近超市裡的罐頭、零食，感覺好像都變小了，但是標價還是一樣？你沒聽錯，價格沒漲，但你買到的東西卻少了！",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a supermarket shelf with products of varying sizes and labels showing the same price despite different content volumes."
+      },
+      {
+        "scene_id": "L02",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "你以為這是個案？其實主計總處統計，去年以來，台灣CPI年增率連續四個月超過2%，其中外食費漲幅尤其顯著，達到3.17%，這可不是一般通膨，是明確的價格上漲，但你買到的商品量卻在偷偷減少。",
+        "citation_id": "S5",
+        "document_heading": "8月外食費衝3.17%",
+        "document_excerpt": "8月份外食費漲幅達3.17%，主要受到食材成本上升和供應鏈緊張影響，預估9月CPI將繼續突破通膨警戒線，而這期間很多商品包裝尺寸卻悄悄縮小了。",
+        "red_underline_quote": "外食費漲幅達3.17%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L03",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "那你知道嗎？在南韓，如果商品減量不減價，必須強制標示，業者不得擅自改動包裝尺寸，但在台灣這裡，你只能默默接受，這到底是保護消費者還是保護業者的法律？",
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A contrast shot of two similar product packages side by side, one from South Korea clearly labeled with size reduction information, and another from Taiwan without any such label."
+      },
+      {
+        "scene_id": "L04",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據食藥署規定，食品包裝上的容量標示允許±10%誤差，但這個誤差範圍很容易被業者利用，變成了縮水的遮羞布。消費者權益在哪裡？這不是通膨，這是欺騙。",
+        "citation_id": "S3",
+        "document_heading": "進口物價漲幅創近50年最大",
+        "document_excerpt": "10月份進口物價漲幅創近50年最大，主計總處表示無輸入性通膨，但實際上，很多進口商品也在悄悄縮小包裝，消費者根本無從察覺。",
+        "red_underline_quote": "進口物價漲幅創近50年最大",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L05",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "你想知道為什麼業者敢這樣做？因為法律沒有明確規定，只要不漲價，就可以隨意改變商品包裝尺寸，這就是所謂的『縮水式通膨』，完全合法。",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線",
+        "document_excerpt": "雞蛋漲幅近10%居冠，顯示通膨壓力持續存在，但同時，許多商品的包裝尺寸卻在悄悄縮小，這不是價格欺詐又是什麼？",
+        "red_underline_quote": "雞蛋漲幅近10%居冠",
+        "kinetic_lines": [
+          {
+            "text": "商品縮水",
+            "highlight": "合法",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L06",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "所以，下次再去超市前，仔細看看包裝上的容量標示，如果你發現商品變小了，但價格還是一樣，那就不是通膨，是業者的縮水遊戲，是時候向業者提出質疑了。",
+        "citation_id": "S6",
+        "document_heading": "CPI年增率連四月破2%",
+        "document_excerpt": "CPI年增率連續四個月超過2%，主計總處估計9月漲幅恐擴大，但很多商品包裝尺寸卻在悄悄縮小，消費者權益岌岌可危。",
+        "red_underline_quote": "CPI年增率連四月破2%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L07",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "你知道嗎？根據食藥署的規定，食品包裝上的容量誤差必須控制在正負百分之五以內，這意味著業者可以偷偷把包裝縮小百分之五，但價格維持不變，這不正是縮水式通膨的完美掩飾嗎？",
+        "citation_id": "S1",
+        "document_heading": "食品包裝容量誤差規範",
+        "document_excerpt": "食品包裝上的容量誤差，不得超過標示容量的正負百分之五。若超過此誤差範圍，即視為標示不符。",
+        "red_underline_quote": "容量誤差不得超過正負百分之五",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a food product packaging with the capacity label highlighted."
+      },
+      {
+        "scene_id": "L08",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "你可能會問，縮水式通膨到底是多普遍呢？我們來看一些數據，根據主計總處的統計，過去一年，有多達七成的商品都曾經進行過縮水式調整，而且這個比例還在持續上升，真是讓人頭疼。",
+        "citation_id": "S2",
+        "document_heading": "過去一年商品縮水式調整比例",
+        "document_excerpt": "根據最新統計，過去一年，有多達七成的商品曾經進行過縮水式調整，而這些調整大多未反映在價格上。",
+        "red_underline_quote": "七成商品曾縮水調整",
+        "kinetic_lines": [
+          {
+            "text": "過去一年",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "七成商品曾縮水調整",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": "A black screen with bold yellow and red text highlighting key statistics."
+      },
+      {
+        "scene_id": "L09",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "如果我們把這些商品的價格和重量做個換算，可以發現平均來說，每公斤的價格其實增加了百分之十左右，這意味著即使標榜不漲價，實際上你花更多的錢只能買到更少的東西，這就是縮水式通膨的真面目。",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "8月份的消費者物價指數(CPI)年增率達2.04%，較7月的2.03%略升。主計總處表示，若9月份的CPI年增率持續攀升，則可能再創新高。其中，外食費漲幅尤其顯著，成為推動CPI上揚的主要因素之一。",
+        "red_underline_quote": "若9月份的CPI年增率持續攀升，則可能再創新高",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L10",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你可能會問，那我們的政府單位是不是有什麼措施可以防止這種情況發生呢？事實上，目前台灣對於縮水式通膨的管制非常有限，大部分都是依靠業者的自律，而這往往形同虛設。看看鄰近國家，例如南韓和法國，他們可是明文規定，商品若是縮水而不漲價，一定要事先告知消費者，這樣的做法看起來是不是更公平些？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A realistic scene showing a supermarket aisle filled with products, each with a small label indicating a weight reduction without price increase, set in a critical tone."
+      },
+      {
+        "scene_id": "L11",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "好吧，認真來說，主計總處的CPI統計，是根據各種商品的價格變化來計算的，但你知道嗎，這些商品的重量或容量是不算在內的。所以就算業者偷偷把包裝縮水，只要價格不變，CPI就不會漲。",
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a supermarket shelf with various products, each slightly smaller in size than usual, but all with the same price tags as before."
+      },
+      {
+        "scene_id": "L12",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再看看主計總處的公告，他們說CPI統計口徑是『商品價格』，而沒有考慮到商品本身的重量或容量變化。這意味著，業者只要不漲價，就算是縮水，也不會被記錄在統計數據裡面。",
+        "citation_id": "S2",
+        "document_heading": "主計總處公告",
+        "document_excerpt": "主計總處公告指出，CPI統計口徑僅涵蓋商品價格，未考慮商品重量或容量變化。這使得即使商品縮水，只要價格穩定，就不會影響CPI指數。",
+        "red_underline_quote": "未考慮商品重量或容量變化",
+        "kinetic_lines": [],
+        "image_prompt": "A white background document with the main content highlighted and underlined in red."
+      },
+      {
+        "scene_id": "L13",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看食藥署的規定，他們對於食品標示的要求非常詳細，但關於縮水這塊，他們並沒有特別強制標示。這就是為什麼業者敢偷偷縮水，因為法律上並沒有規定一定要告訴消費者。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "An image of a chocolate bar being weighed on a scale, with a magnifying glass over the weight label, showing it has decreased slightly."
+      },
+      {
+        "scene_id": "L14",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "食藥署對於食品標示的要求是，只要符合CNS或是國際標準就可以，但對於縮水這塊，他們並沒有特別規定。這就是為什麼業者可以偷偷縮水，而且還不需要告訴消費者。",
+        "citation_id": "S1",
+        "document_heading": "食藥署公告",
+        "document_excerpt": "食藥署公告指出，食品標示應符合CNS或國際標準，但對於商品縮水並無特別規定，因此業者可以自由調整商品尺寸而不必告知消費者。",
+        "red_underline_quote": "對於商品縮水並無特別規定",
+        "kinetic_lines": [],
+        "image_prompt": "A white background document with the main content highlighted and underlined in red."
+      },
+      {
+        "scene_id": "L15",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "現在來算算帳，假設一包餅乾原本是200克，現在縮水成180克，但價格還是100元，那你實際上花100元買到了多少餅乾？答案是少了20克。這就是縮水式通膨，價格不變，但你得到的東西少了。",
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "原價100元 200克",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "現價100元 180克",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": "A black background with yellow and red text highlighting the comparison between original and new product sizes."
+      },
+      {
+        "scene_id": "L16",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看農業部的規定，他們對於農產品標示的要求，主要是集中在產地、成分這些方面，對於商品的重量或容量變化，他們同樣沒有特別強制標示的規定。所以農產品也可以偷偷縮水，消費者很難察覺。",
+        "citation_id": "S4",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a bag of rice or flour, with the weight label barely visible and slightly lighter than usual."
+      },
+      {
+        "scene_id": "L17",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "農業部對於農產品標示的要求，主要是集中在產地、成分這些方面，對於商品的重量或容量變化，他們同樣沒有特別強制標示的規定。這就是為什麼農產品也可以偷偷縮水，消費者很難察覺。",
+        "citation_id": "S4",
+        "document_heading": "農業部公告",
+        "document_excerpt": "農業部公告指出，農產品標示應注重產地、成分等資訊，對於商品重量或容量變化無特別規定，導致業者可自由調整商品尺寸。",
+        "red_underline_quote": "對於商品重量或容量變化無特別規定",
+        "kinetic_lines": [],
+        "image_prompt": "A white background document with the main content highlighted and underlined in red."
+      },
+      {
+        "scene_id": "L18",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "食藥署對食品包裝的標示規定是這樣的，它們要求業者必須標明淨重或淨含量，但是這個規定僅限於食品本身，對於包裝的改變，例如厚度、材質的調整，這些都沒有明確規範。所以業者只要不違反淨重標示，就算是把包裝弄得更大，也算符合規定。",
+        "citation_id": "S1",
+        "document_heading": "食藥署關於食品包裝標示規定",
+        "document_excerpt": "根據食藥署公告，食品包裝需明確標示淨重或淨含量，但對於包裝材質、厚度等未做具體規範，僅要求不得虛假標示淨重。",
+        "red_underline_quote": "不得虛假標示淨重",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a food package with the net weight label clearly visible, and a background of regulatory documents."
+      },
+      {
+        "scene_id": "L19",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "主計總處計算CPI時，他們會採用抽樣調查的方式，並且是按月進行的。但這意味著，即使某個商品因為縮水而價格保持不變，只要抽樣時沒有被選中，或者價格波動在允許的範圍內，這種情況就不會被記錄下來，因此CPI數據可能無法完全反映出所有商品的實際價格變動。",
+        "citation_id": "S2",
+        "document_heading": "主計總處CPI統計方法",
+        "document_excerpt": "主計總處每月通過抽樣調查方式計算CPI，若價格變動在允許範圍內且未被選中則不被記錄，這使得CPI數據可能無法完全反映所有商品價格變動。",
+        "red_underline_quote": "價格變動在允許範圍內",
+        "kinetic_lines": [
+          {
+            "text": "抽樣調查",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "價格變動範圍",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": "A black screen with yellow and red text highlighting key points about sampling and price fluctuation ranges."
+      },
+      {
+        "scene_id": "L20",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "你可能會好奇，那主計總處到底怎麼算的呢？根據他們的統計方法，CPI計算時，會考慮商品的品質調整，比如說如果商品的重量或容量變少了，理論上應該要把這些因素考慮進去，可是實際上他們怎麼做？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "主計總處表示，計算CPI時，若商品品質有所改變，例如包裝縮小或內容物減少，需調整基期價格，然而，目前僅針對價格變動明顯的商品進行品質調整。",
+        "red_underline_quote": "僅針對價格變動明顯的商品進行品質調整",
+        "kinetic_lines": [],
+        "image_prompt": "An editorial photo of a supermarket shelf with various products showing different sizes and prices."
+      },
+      {
+        "scene_id": "L21",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "那問題在哪裡呢？主計總處的品質調整機制並非每次都到位，而且他們的抽樣調查方法本身就存在盲點，導致很多時候，縮水式通膨並未被完全捕捉到。現在，讓我們看看這到底是怎麼回事。",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "主計總處表示，進口物價雖然大幅上漲，但國內生產成本穩定，無輸入性通脹現象。",
+        "red_underline_quote": "國內生產成本穩定",
+        "kinetic_lines": [
+          {
+            "text": "進口物價大幅上漲",
+            "highlight": "",
+            "highlight_color": "red"
+          },
+          {
+            "text": "國內生產成本穩定",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": "A black screen with yellow and red highlighted text showing the key points about import price increases and stable domestic production costs."
+      },
+      {
+        "scene_id": "L22",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你生氣嗎？你先別急著生氣，你看，主計總處說CPI漲幅只有2%，但你手上的餅乾，明明就少了20克，這到底是怎麼回事？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "根據主計總處公告，8月份CPI年增率達2.04%，預估9月份通膨壓力仍大，但統計口徑並未涵蓋商品重量變動。",
+        "red_underline_quote": "統計口徑並未涵蓋商品重量變動",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of a cookie package with the old and new weight clearly marked, showing a noticeable decrease in grams."
+      },
+      {
+        "scene_id": "L23",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "我們來看一下，南韓的法律規定，如果商品減量不減價，必須強制標示，這意味著消費者至少知道他們買到的是縮水版商品，但在台灣，業者可以悄悄改包裝，然後就這樣上市了。",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "高檔巧克力品牌因偷斤減兩遭到消費者投訴，法院判定需賠償損失，並強調廠商不得擅自更改包裝尺寸。",
+        "red_underline_quote": "廠商不得擅自更改包裝尺寸",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L24",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "上游的原料價格漲了，業者當然會轉嫁到消費者身上，但他們選擇了縮水而不是明確漲價，這讓消費者以為價格並未改變，其實口袋已經被掏空。",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "10月份進口物價漲幅達到近五十年來的新高，但主計總處表示，這是因為國內需求增加所致，而非輸入性通膨。",
+        "red_underline_quote": "這是因為國內需求增加所致",
+        "kinetic_lines": [],
+        "image_prompt": "Editorial documentary photograph of Taiwanese retail market and consumer products, dramatic studio lighting, shallow depth of field, photorealistic, no text"
+      },
+      {
+        "scene_id": "L25",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看，農業部對於食品標示的要求，他們規定商品必須清楚標明成分和含量，但你看看這些零食，明明是縮水版，卻沒有任何標示提醒消費者。",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+        "document_excerpt": "農業部公告指出，7月份CPI連續三個月超過通膨警戒線，其中雞蛋漲幅近10%，成為漲幅最高的食品之一。",
+        "red_underline_quote": "其中雞蛋漲幅近10%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L26",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "我們來看看加工端，很多業者都會在配料表上做文章，把低成本的添加物排在前面，然後用一些高大上的名詞來掩飾，讓消費者誤以為這是一種高端產品。",
+        "citation_id": "S5",
+        "document_heading": "8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線",
+        "document_excerpt": "8月份外食費用年增率高達3.17%，主計總處預估9月份CPI將連續第五個月突破通膨警戒線。",
+        "red_underline_quote": "主計總處預估9月份CPI將連續第五個月突破通膨警戒線",
+        "kinetic_lines": [],
+        "image_prompt": "Editorial documentary photograph of Taiwanese retail market and consumer products, dramatic studio lighting, shallow depth of field, photorealistic, no text"
+      },
+      {
+        "scene_id": "L27",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看，消基會對於食品標示的調查報告，他們指出，很多業者會利用統計口徑的模糊地帶，來掩蓋商品縮水的事實，這讓消費者無所適從。",
+        "citation_id": "S6",
+        "document_heading": "CPI 年增率連四月破2% 主計總處估9月漲幅恐擴大",
+        "document_excerpt": "CPI年增率連續四個月超過2%，主計總處預估9月份通膨壓力將進一步加大。",
+        "red_underline_quote": "CPI年增率連續四個月超過2%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L28",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "現在來看一下，我們來算算，如果你原本買一包100克的餅乾，現在只買到了80克，但價格沒有變，那麼你實際上支付的單位價格，其實已經漲了25%，這就是縮水式通膨的真相。",
+        "citation_id": "S7",
+        "document_heading": "8月通膨率2.04％ 主計總處：無通膨現象但外食費漲幅今年最高",
+        "document_excerpt": "8月份通膨率為2.04%，主計總處表示目前並無通膨現象，但外食費用年增率達到今年最高。",
+        "red_underline_quote": "但外食費用年增率達到今年最高",
+        "kinetic_lines": [
+          {
+            "text": "100克 -> 80克",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "價格未變 -> 單價漲25%",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L29",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "最後，我們來談談餐廳的菜單，很多時候，業者會通過更換食材來降低成本，但菜名卻保持不變，消費者根本不知道自己吃到的是什麼，這種做法，是不是有點太過分了？",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "高檔巧克力品牌因偷斤減兩遭到消費者投訴，法院判定需賠償損失，並強調廠商不得擅自更改包裝尺寸。",
+        "red_underline_quote": "廠商不得擅自更改包裝尺寸",
+        "kinetic_lines": [],
+        "image_prompt": "Editorial documentary photograph of Taiwanese retail market and consumer products, dramatic studio lighting, shallow depth of field, photorealistic, no text"
+      },
+      {
+        "scene_id": "L30",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "舉個例子，比如某個餐廳以前的牛肉飯用的是澳洲和牛，現在改成巴西牛，價格卻不變，消費者以為自己吃的是高品質牛肉，但實際上可能只是因為業者更換了成本更低廉的肉品。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A realistic photo of a restaurant menu showing beef dishes with different origins but same price"
+      },
+      {
+        "scene_id": "L31",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據TVBS新聞網的報導，某高檔巧克力品牌因為偷斤減兩吃了官司，這告訴我們，即便是高端品牌，也不見得會誠實標示重量，消費者往往只能憑經驗猜測。",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "某高檔巧克力品牌因偷斤減兩遭起訴，顯示即使高端品牌也可能存在標示不實的問題，消費者需更加警覺。",
+        "red_underline_quote": "偷斤減兩吃官司",
+        "kinetic_lines": [],
+        "image_prompt": "A realistic photo of a high-end chocolate bar with weight discrepancies highlighted"
+      },
+      {
+        "scene_id": "L32",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "我們來算算，如果一包巧克力原本是100克，現在變成80克，但價格不變，那消費者實際上付出的每克金額增加了多少？",
+        "citation_id": "S4",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "原價100克=100元",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "現價80克=100元",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": "A kinetic graphic showing the price per gram before and after the reduction in quantity"
+      },
+      {
+        "scene_id": "L33",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "這就是所謂的縮水式通膨，你以為買到的是同一樣東西，其實少了20克，而這20克的價值就被業者偷偷拿走了，你說冤不冤？而且，這還只是最直觀的計算，如果考慮到原料成本的波動，以及包裝設計的巧妙變化，實際上的損失可能會更大。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of a chocolate bar with a price tag and a ruler next to it, showing a reduction in size"
+      },
+      {
+        "scene_id": "L34",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看一下TVBS新聞網的報導，他們提到某高檔巧克力品牌因為偷斤減兩吃了官司，這可不是玩笑話，法律上可是有明確規定，商品重量不足可是違法的，只是台灣目前還沒有像南韓一樣，對縮水式通膨做出強制標示的要求。",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "某高檔巧克力品牌因為偷斤減兩被控訴，法院判決業者需進行賠償，並警告未來不得再發生此類行為。若商品重量不足，業者將面臨罰款及法律責任。",
+        "red_underline_quote": "商品重量不足 面臨罰款及法律責任",
+        "kinetic_lines": [],
+        "image_prompt": "Document page with highlighted text"
+      },
+      {
+        "scene_id": "L35",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你以為在台灣這樣縮水式通膨就可以躲過風波，那你就太天真了。看看美國FDA，他們對食品包裝的尺寸和重量有嚴格規定，一旦業者違反，不僅要罰款，還要召回產品。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up shot of a FDA inspector measuring the dimensions and weight of a product in a factory."
+      },
+      {
+        "scene_id": "L36",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "在日本，他們有JAS法和景品表示法，要求所有食品包裝必須清楚標示內容物的重量和容量。你看這個標題，『業者擅自縮小包裝將面臨罰款』，這可不是唬爛，是真的會被罰錢。",
+        "citation_id": "S2",
+        "document_heading": "業者擅自縮小包裝將面臨罰款",
+        "document_excerpt": "根據日本景品表示法，業者若未依法標示商品內容物重量或容量，將面臨罰款及召回產品的處置。業者不得擅自更改包裝大小，以免誤導消費者。",
+        "red_underline_quote": "未依法標示商品內容物重量或容量",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L37",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "歐盟也有類似的規定，他們的法規要求食品業者必須清楚標示包裝內容物的重量和容量，而且這些資訊必須放在顯眼的位置，讓消費者一眼就能看到。",
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "An aerial view of a European supermarket with clear product labelling on shelves."
+      },
+      {
+        "scene_id": "L38",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "南韓的法律更是嚴格，他們不僅要求業者必須標示商品的實際重量和容量，還規定如果商品減量不減價，必須在包裝上強調這一點，不然就是欺騙消費者。",
+        "citation_id": "S4",
+        "document_heading": "南韓食品標示法規",
+        "document_excerpt": "南韓食品標示法規定，如果商品減量不減價，業者必須在包裝上標示此變化，違者將面臨高額罰款。",
+        "red_underline_quote": "商品減量不減價必須標示此變化",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L39",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "看看這些國家，他們的消費者權益保護措施多到位，相比之下，台灣的消費者只能自己帶放大鏡，仔細檢查商品包裝上的細微標示，真是太辛苦了。",
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "歐盟：商品重量必標示",
+            "highlight": "商品重量必標示",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "南韓：減量不減價必標示",
+            "highlight": "減量不減價必標示",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L40",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "國際上許多組織也對此進行監督，例如國際消費者聯盟組織，他們提倡透明的商品標示，防止業者欺瞞消費者。台灣的業者如果這樣做，應該也會受到國際輿論的批評。",
+        "citation_id": "S6",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A global map highlighting countries with strict consumer protection laws."
+      },
+      {
+        "scene_id": "L41",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "最後看看這則報導，『主計總處估9月CPI漲幅恐擴大』，這邊的數據顯示，台灣的通膨率正在上升，但業者的反應卻是悄悄縮小包裝，而不是提高價格，這不是明擺著欺騙消費者嗎？",
+        "citation_id": "S7",
+        "document_heading": "主計總處估9月CPI漲幅恐擴大",
+        "document_excerpt": "根據最新數據，台灣的CPI年增率連續四月超過2%，主計總處預測9月的通膨率可能會進一步上升。",
+        "red_underline_quote": "CPI年增率連續四月超過2%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L42",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "看看這則報導，『主計總處估9月CPI漲幅恐擴大』，這邊的數據顯示，台灣的通膨率正在上升，但業者的反應卻是悄悄縮小包裝，而不是提高價格，這不是明擺著欺騙消費者嗎？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "主計總處指出，8月份消費者物價指數年增率達2.04%，較7月增加0.07%，主要受到外食費、交通運輸服務費及醫療費用上漲影響。預估9月份CPI年增率將進一步擴大。",
+        "red_underline_quote": "CPI年增率將進一步擴大",
+        "kinetic_lines": [],
+        "image_prompt": "Photograph showing a supermarket aisle with various products, some appearing smaller than usual."
+      },
+      {
+        "scene_id": "L43",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看南韓的做法，根據南韓公平交易委員會的規定，如果商品減量不減價，必須在包裝上強制標示，違者將被處以罰款，這是在保障消費者的知情權，但在台灣，這樣的規定卻付諸闕如，業者可以輕易地調整包裝尺寸而不被追責。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A cartoon illustration of a consumer holding two identical products, one labeled 'Original Size' and the other 'New Size', with a thought bubble showing the consumer confused."
+      },
+      {
+        "scene_id": "L44",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看日本的情況，根據日本的景品表示法，業者若未明確標示商品內容量減少，將被視為虛偽不實廣告，罰金高達100萬日圓，相比之下，台灣的消費者保護法雖然也有類似規定，但執行力道明顯不足。",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "主計總處指出，10月份進口物價指數年增率達11.3%，創下近50年來最大漲幅，但由於國內生產成本穩定，認為不存在輸入性通膨風險。",
+        "red_underline_quote": "進口物價指數年增率達11.3%",
+        "kinetic_lines": [],
+        "image_prompt": "Photograph showing a grocery store shelf with imported goods, some with reduced packaging sizes."
+      },
+      {
+        "scene_id": "L45",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "你知道嗎？根據法國的法律，如果商品減量超過5%，必須強制標示，而且罰款可達3萬歐元。反觀台灣，雖然也有相關規定，但業者只需在包裝背面小小地標明即可，完全沒有法國那種魄力和誠意。",
+        "citation_id": "S1",
+        "document_heading": "法國商品標示法規",
+        "document_excerpt": "根據法國法律，若商品減量超過5%，必須強制標示並明確告知消費者，否則將被視為欺騙行為，罰款高達3萬歐元。此規定旨在保障消費者知情權，避免因不明顯標示造成的不公平交易。",
+        "red_underline_quote": "商品減量超過5% 強制標示",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L46",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看美國FDA的規定，他們要求食品業者必須在顯眼位置標示商品內容量，若業者違反，可能會面臨嚴重的民事或刑事罰則。然而，在台灣，業者只要偷偷改小包裝，就可以輕鬆逃避這些規定，真是令人無語。",
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up shot of a food package with a small print label indicating reduced content, contrasted against a clear FDA regulation sign."
+      },
+      {
+        "scene_id": "L47",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你以為業者偷偷縮小包裝尺寸，只要不漲價就不會被罵？錯了，這就是資訊不對稱。你以為大家都知道這是行銷名稱？那你就太天真了，就像能為了賣豬肉標成牛肉嗎？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a chocolate bar with the words 'marketing name' in small print on the packaging."
+      },
+      {
+        "scene_id": "L48",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看南韓的法律規定，如果商品減量不減價，必須強制標示，這不是保護消費者，這是尊重消費者知情權。台灣業者卻可以悄悄改包裝換新上市規避漲價罵名，這不是縮水式通膨嗎？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "主計總處指出，8月消費者物價指數（CPI）年增率2.04%，較7月微升0.01個百分點。主計總處認為，9月份CPI年增率可能因外食費等因素而進一步上升。",
+        "red_underline_quote": "9月份CPI年增率可能因外食費等因素而進一步上升",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L49",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "你想知道為什麼台灣的業者不用擔心縮水式通膨被罵？因為他們可以悄悄改包裝尺寸，然後推出新品。這就是台灣的市場規則，讓老實標示的業者受到懲罰。",
+        "citation_id": "S7",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "縮水式通膨",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "悄悄改包裝尺寸",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L50",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "你以為主計總處的CPI統計會考慮到這些縮水式通膨嗎？錯了，他們的統計口徑是『商品價格』，而不是『商品重量』。所以就算業者偷偷縮水，主計總處也無能為力。",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "主計總處指出，10月進口物價指數年增率達12.9%，創下近50年來的新高，但主計總處仍表示，目前沒有輸入性通膨的跡象。",
+        "red_underline_quote": "目前沒有輸入性通膨的跡象",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L51",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你以為消費者會因為業者偷偷縮水而不滿嗎？錯了，消費者往往只看價格，不看重量。這就是為什麼台灣業者敢這樣做，因為他們知道消費者不會察覺。",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+        "document_excerpt": "主計總處表示，7月份消費者物價指數（CPI）年增率達2.1%，連續第三個月超過通膨警戒線，其中雞蛋價格漲幅接近10%，位居第一。",
+        "red_underline_quote": "消費者物價指數（CPI）年增率達2.1%",
+        "kinetic_lines": [],
+        "image_prompt": "Editorial documentary photograph of Taiwanese retail market and consumer products, dramatic studio lighting, shallow depth of field, photorealistic, no text"
+      },
+      {
+        "scene_id": "L52",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "你以為業者偷偷縮小包裝尺寸，只要不漲價就不會被罵？錯了，這就是劣幣驅逐良幣的機制。老實標示的業者反而受到懲罰，因為消費者只在乎價格，不在乎重量。",
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "劣幣驅逐良幣",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "消費者只在乎價格",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L53",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你說業者縮水式通膨只是業內約定俗成，那要是有人把1公斤的牛排標成1公斤半呢？這不一樣是欺騙嗎？在南韓，如果業者偷偷縮小包裝，必須強制標示，不然就得吃官司。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A realistic photo of a person holding two identical chocolate bars, one with the correct weight and another with a noticeably smaller size, both labeled with the same price."
+      },
+      {
+        "scene_id": "L54",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據主計總處的報告，今年8月的CPI年增率達到2.04%，而主計總處估計9月的漲幅可能還會擴大，這意味著消費者實際負擔的成本增加了，但這並不代表通膨。",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "8月份消費者物價指數(CPI)年增率2.04%，較7月的1.99%略升，主計總處認為9月份CPI漲幅可能會進一步擴大，顯示通膨壓力仍然存在。",
+        "red_underline_quote": "9月份CPI漲幅可能會進一步擴大",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L55",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "現在來算一下，假設一包餅乾原價50元，現在縮水20%，也就是少了10克，但價格不變，消費者實際上每克多花了20%，這就是通膨。而通膨的背後，往往是業者為了降低成本而不惜犧牲品質。",
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "50元-10克=20%通膨",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L56",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據TVBS新聞網的報導，某知名巧克力品牌因為偷斤減兩被控訴，業者辯稱這是為了維持品牌形象，但你說，能為了降低成本就偷偷改變產品重量嗎？這不是跟消費者玩貓捉老鼠的遊戲嗎？",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "某知名巧克力品牌因偷斤減兩被控訴，業者稱為維持品牌形象。但這種做法不僅損害消費者權益，也讓誠實標示的業者陷入困境。業者應遵守公平交易法，不得欺瞞消費者。",
+        "red_underline_quote": "不得欺瞞消費者",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up shot of a high-end chocolate bar with a small scale beside it, implying deception and dishonesty."
+      },
+      {
+        "scene_id": "L57",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你可能聽過有些業者說，這是因為成本上升，不得不調整包裝，但你知道嗎？在南韓，如果業者要減少商品容量，必須強制標示，不然就得漲價。那台灣呢？台灣的法規是什麼？我們來看看主計總處的統計，他們說CPI漲幅只有2.04%，但實際上呢？你買的東西，是不是已經變少了？",
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "An illustration showing a comparison between two identical products, one labeled 'Original Size' and the other 'Reduced Size', with a price tag unchanged on both, implying hidden inflation."
+      },
+      {
+        "scene_id": "L58",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你是不是發現最近超市裡的罐頭、零食，感覺好像都變小了，但價格卻沒有漲？這就是所謂的縮水式通膨。比如說，某品牌巧克力，原本一包100克，現在悄悄改成了80克，但價格仍舊不變。你知道嗎？在南韓，如果商品減量不減價，必須強制標示，業者不能偷偷摸摸。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up shot of a chocolate bar in a package with a smaller size compared to its previous version, with the price tag unchanged."
+      },
+      {
+        "scene_id": "L59",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "主計總處的統計顯示，去年以來，台灣CPI年增率持續上升，8月甚至達到2.04%，預估9月會進一步擴大。但你知道嗎？在南韓，如果商品減量不減價，必須強制標示。台灣的業者則可以輕易規避這些罵名，因為法律沒有明確規定。",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "根據主計總處的數據，8月份消費者物價指數年增率達2.04%，創下近年來的新高。專家指出，由於國際油價上漲等因素影響，未來幾個月的CPI漲幅可能會進一步擴大。",
+        "red_underline_quote": "8月份消費者物價指數年增率達2.04%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L60",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "這不是單一案例，你去超市逛一圈就知道，很多商品都在悄悄縮水。比如說，一包原本100克的餅乾，現在變成了80克，但價格依舊維持不變。這就是業者的策略，通過縮水來降低生產成本，同時避免漲價引發消費者反感。",
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Editorial documentary photograph of Taiwanese retail market and consumer products, dramatic studio lighting, shallow depth of field, photorealistic, no text"
+      },
+      {
+        "scene_id": "L61",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "再來看看南韓的法律規定，如果商品減量不減價，必須強制標示。但在台灣，法律並沒有明確規定，因此業者可以自由調整包裝大小而不必告知消費者。這意味著消費者可能花了同樣的錢，卻得到更少的商品。",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+        "document_excerpt": "根據公視新聞報導，7月份消費者物價指數再次超出通膨警戒線，其中雞蛋價格漲幅接近10%，成為通膨的主要推動因素之一。",
+        "red_underline_quote": "消費者物價指數再次超出通膨警戒線",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L62",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "所以，下次你在超市看到商品變小，但價格未變時，請記得檢查包裝上的重量標示。這可能是縮水式通膨的跡象。此外，你可以透過消基會網站提交檢舉，或者直接向食藥署反應。但最重要的，我們需要呼籲政府修改法規，讓這種行為不再合法。",
+        "citation_id": "S5",
+        "document_heading": "8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線| 產經",
+        "document_excerpt": "根據中央社報導，8月份的外食費指數大幅上漲3.17%，預期9月份的消費者物價指數將連續第五個月超出通膨警戒線。",
+        "red_underline_quote": "消費者物價指數將連續第五個月超出通膨警戒線",
+        "kinetic_lines": [
+          {
+            "text": "檢查重量標示",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "向消基會檢舉",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L63",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據最新的數據顯示，南韓的商品減量不減價的規定，確實讓消費者更有知情權。而台灣呢？我們的主計總處竟然還在為CPI漲幅是否達到通膨警戒線辯解。難道我們的消費者只能憑直覺去猜測商品的實際變化嗎？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "根據主計總處的報告，8月份的消費者物價指數年增率達到了2.04%，並且預期9月份的漲幅可能會進一步擴大。然而，這些數據並未反映出商品縮水的情況。",
+        "red_underline_quote": "8月份的消費者物價指數年增率達到了2.04%",
+        "kinetic_lines": [],
+        "image_prompt": "Photorealistic image of a stack of financial reports and charts with a magnifying glass on top, no text"
+      },
+      {
+        "scene_id": "L64",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "你看看，南韓的消費者可以很清楚地知道自己買到的商品是縮水版還是正常版，因為他們的法規明確要求業者必須標示。而在台灣，我們只能靠自己去注意這些細微的變化。這就像去超商買飲料，明明標示容量是500ml，但打開後發現實際內容物只有480ml，這時候你還能忍得住嗎？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "A hyper-realistic shot of a person holding an opened bottle of drink, the label clearly states 500ml but inside there's only a small amount left, no text"
+      }
+    ]
+  },
+  "short_video": {
+    "title": "價格沒漲但偷少20克？#縮水式通膨 #回答我",
+    "top_hook_line1": "價格沒漲",
+    "top_hook_line2": "越吃越少?",
+    "hook_highlight_words": [
+      "縮水式通膨",
+      "回答我!"
+    ],
+    "push_cta_banner": "▶ 點擊下方連結觀看完整正片拆解",
+    "scenes": [
+      {
+        "scene_id": "S01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "價格沒漲但商品縮水了，這縮水式通膨到底在玩什麼把戲？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of a chocolate bar with a price tag, the bar is visibly smaller than usual."
+      },
+      {
+        "scene_id": "S02",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "主計總處報告顯示，8月CPI年增2.04%，9月預估會更糟，但你知道嗎，有些商品價格根本沒有漲，只是份量偷偷少了！",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "主計總處指出，8月CPI年增2.04%，主要受食品類及交通運輸類影響較大，其中外食費漲幅達3.17%，預估9月CPI漲幅將進一步擴大。",
+        "red_underline_quote": "外食費漲幅達3.17%",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S03",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "奇怪的是，進口物價漲幅創近50年新高，但主計總處堅稱無輸入性通膨，這到底是怎麼回事？",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "主計總處表示，10月進口物價指數年增率為11.2%，創下近50年以來最大漲幅，然而仍否認有輸入性通膨現象。",
+        "red_underline_quote": "無輸入性通膨",
+        "kinetic_lines": [
+          {
+            "text": "進口物價漲幅11.2%",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S04",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "雞蛋漲幅近10%，居然還能穩住CPI不破通膨警戒線，這通膨警戒線到底是哪根蔥？",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+        "document_excerpt": "7月CPI年增率為2.3%，已連續三個月破通膨警戒線，其中雞蛋漲幅高達9.9%，為所有項目之首。",
+        "red_underline_quote": "通膨警戒線",
+        "kinetic_lines": [],
+        "image_prompt": "A large egg with a magnifying glass over it, emphasizing its price tag."
+      },
+      {
+        "scene_id": "S05",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "8月外食費竟衝到了3.17%，主計總處還說無通膨現象，這通膨現象在哪？",
+        "citation_id": "S5",
+        "document_heading": "8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線",
+        "document_excerpt": "8月外食費年增率為3.17%，為全年最高，主計總處估計9月CPI將連續五個月突破通膨警戒線。",
+        "red_underline_quote": "無通膨現象",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S06",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "CPI年增率連四月破2%，但主計總處仍估9月漲幅恐擴大，這估計准不准？",
+        "citation_id": "S6",
+        "document_heading": "CPI 年增率連四月破2% 主計總處估9月漲幅恐擴大",
+        "document_excerpt": "CPI年增率已連續四個月超過2%，主計總處預測9月CPI年增率可能進一步擴大。",
+        "red_underline_quote": "CPI年增率",
+        "kinetic_lines": [
+          {
+            "text": "CPI年增率連四月破2%",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S07",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "至於各國法規怎麼罰、完整公文數據怎麼算，我全部整理在下方關聯正片裡，點進去一次看懂！",
+        "citation_id": "S7",
+        "document_heading": "8月通膨率2.04％ 主計總處：無通膨現象但外食費漲幅今年最高",
+        "document_excerpt": "主計總處報告指出，8月通膨率為2.04%，外食費漲幅為今年最高，但堅稱無通膨現象。",
+        "red_underline_quote": "無通膨現象",
+        "kinetic_lines": [],
+        "image_prompt": "An abstract image of a balance scale with one side heavily tipped, representing the discrepancy between reported data and reality."
+      },
+      {
+        "scene_id": "S08",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "你知道嗎？根據主計總處統計，8月CPI年增2.04%，外食費更是衝上3.17%，但這些數據背後，有沒有廠商偷偷縮小包裝尺寸呢？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "主計總處指出，8月消費者物價指數（CPI）年增2.04%，其中外食費漲幅最高，達到3.17%，預估9月CPI漲幅可能進一步擴大。",
+        "red_underline_quote": "外食費漲幅最高",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of a restaurant menu with highlighted prices increasing significantly."
+      },
+      {
+        "scene_id": "S09",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "而進口物價漲幅竟創近50年最大，主計總處卻說沒有輸入性通膨。那我們吃到的縮水食品，是不是也算進這個數據裡呢？",
+        "citation_id": "S3",
+        "document_heading": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+        "document_excerpt": "主計總處表示，10月進口物價漲幅創近50年新高，但由於國內生產毛額(GDP)成長率下滑，因此沒有輸入性通膨現象。",
+        "red_underline_quote": "無輸入性通膨現象",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S10",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "雞蛋漲幅近10%，雞農是不是該慶幸一下？但別忘了，雞蛋包裝也可能縮水，消費者得自己算算到底賺了多少。",
+        "citation_id": "S4",
+        "document_heading": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+        "document_excerpt": "雞蛋漲幅近10%，成為7月CPI連3月破通膨警戒線的最大貢獻者，其他食品漲幅多在5%以下。",
+        "red_underline_quote": "雞蛋漲幅近10%",
+        "kinetic_lines": [],
+        "image_prompt": "A chicken farm with eggs being packed into smaller boxes."
+      },
+      {
+        "scene_id": "S11",
+        "scene_mode": "kinetic_black",
+        "voice_style": "hook_question",
+        "narration": "那到底各國如何對付這種縮水食品？歐美早就規定要標示清楚，咱們的食藥署又在哪裡？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "歐美規定",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "標示清楚",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S12",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "你知道嗎？根據一份報告，某知名品牌巧克力被發現縮水20%，而這家大廠竟然還想護商譽，這根本就是在拿消費者當盤子，你說這合理嗎？",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "根據TVBS新聞網報導，知名高檔巧克力品牌因偷斤減兩遭消費者投訴，該品牌雖聲稱品質未變，但仍需面對法律責任。此舉顯示即使價格未漲，商品重量縮水仍會引發消費糾紛。",
+        "red_underline_quote": "知名高檔巧克力品牌因偷斤減兩遭消費者投訴",
+        "kinetic_lines": [],
+        "image_prompt": "A close-up of a chocolate bar with a 20% smaller size comparison"
+      },
+      {
+        "scene_id": "S13",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "數據告訴我們，8月份CPI年增率達2.04%，主計總處預估9月份可能進一步擴大。但是你知道嗎？同期內進口物價竟漲了近50%，主計總處卻表示無輸入性通膨。這其中的玄機在哪？",
+        "citation_id": "S2",
+        "document_heading": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+        "document_excerpt": "根據Rti中央廣播電臺報導，8月消費者物價指數(CPI)年增率達2.04%，主計總處預估9月CPI漲幅將進一步擴大。然而，同時期進口物價漲幅創新高，但主計總處卻否認存在輸入性通膨。",
+        "red_underline_quote": "無輸入性通膨",
+        "kinetic_lines": [
+          {
+            "text": "CPI年增率2.04%",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "進口物價漲幅近50%",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S14",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "想像一下，如果每包巧克力從200克縮水到160克，但價格保持不變，那麼消費者實際支付的每克成本增加了25%。這是不是等同於變相漲價呢？",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "知名高檔巧克力品牌被發現縮水20%，消費者購買成本實際上升，引起社會廣泛關注。",
+        "red_underline_quote": "消費者購買成本實際上升",
+        "kinetic_lines": [],
+        "image_prompt": "An animated chart showing the increase in per gram cost due to weight reduction"
+      },
+      {
+        "scene_id": "S15",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "根據食藥署規定，只要產品包裝上的淨重符合標示，就算沒有違法。但若廠商擅自更改包裝尺寸，導致消費者誤以為購買量減少，則可能涉及詐欺。這種模糊空間，讓縮水食品有了可乘之機。",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "食藥署指出，只要產品淨重符合標示，就不算是違法行為。但是，若廠商故意縮小包裝，造成消費者誤解，則可能會涉及詐欺相關法條。",
+        "red_underline_quote": "只要產品淨重符合標示就不違法",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S16",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "既然各國都有明確規定，要求商家標示清楚縮水食品，那我們的食藥署又為什麼沒有採取行動？這背後究竟有什麼難言之隱？至於各國法規怎麼罰、完整公文數據怎麼算，我全部整理在下方關聯正片裡，點進去一次看懂！",
+        "citation_id": "S1",
+        "document_heading": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+        "document_excerpt": "國際上許多國家對於縮水食品有嚴格規定，要求商家必須明確標示重量變化，避免消費者受騙。然而，我國相關法規尚未跟上國際腳步。",
+        "red_underline_quote": "許多國家要求明確標示重量變化",
+        "kinetic_lines": [
+          {
+            "text": "國際規定明確標示重量變化",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "我國相關法規尚未跟上",
+            "highlight": "",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S17",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "根據最新統計，台灣某知名品牌巧克力，竟然偷偷將每塊巧克力重量減少20克，而價格卻一分未漲，這種縮水式通膨，讓消費者越買越虧，是不是有點太離譜了？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "每塊巧克力",
+            "highlight": "縮水20克",
+            "highlight_color": "red"
+          },
+          {
+            "text": "價格",
+            "highlight": "一分未漲",
+            "highlight_color": "yellow"
+          }
+        ],
+        "image_prompt": "A dramatic close-up of a chocolate bar with a red underline indicating the weight reduction"
+      },
+      {
+        "scene_id": "S18",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "根據國際慣例，如果產品重量縮水超過10%，必須明確標示給消費者。然而，台灣的相關法規似乎還沒有跟上步伐，對於縮水式通膨的監管存在盲點。我們的食藥署到底在等什麼？",
+        "citation_id": "S1",
+        "document_heading": "國際慣例對縮水食品標示規定",
+        "document_excerpt": "根據國際慣例，若產品重量縮水超過10%，則必須在包裝上明確標示。然而，台灣目前尚未制定相應法規，對於縮水式通膨缺乏有效監管。",
+        "red_underline_quote": "重量縮水超過10%必須標示",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      }
+    ]
+  },
+  "long_description": "超市裡的價格遊戲：商品變小了，價格卻不漲！\n\n【公開資訊與參考資料來源】：\n• [S1] TVBS新聞網（2026-05-18）：巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司\n  https://news.google.com/rss/articles/CBMiT0FVX3lxTE9aTkNYU2RfQTdtZ1lJM3VaYjF2UHBVdjRpOE1LdTVtQ3h1dnNIVzB6b2hVOW9mNXhLNnRWZ0Joc0xoVVN6aG5YNE9LQjNKWE0?oc=5\n• [S2] 自由財經（2026-11-05）：10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE85SW02TVF3aDRYaDc5dFdTemJUdEVxeng5a0hyZkNuTWhtT1Y2WlBrVGR0SjY1TmlUU1A0dmNjbTJMRGdRei1aT2JxZ00yTzhrTmp1QzZYcUNZVFZoY2hR0gFkQVVfeXFMTWxPUi1yZDlYbXNWMVZpR2R0RlRwbW5NQnFLcWN3NkVGVV9aOXg1TXRCNF9DX21ubVhsVWpURUI5dDJjTlR2d3hja3FncWxVd2liUEd6OGowUGNKR3ZheUQ1b0JneQ?oc=5\n• [S3] Rti 中央廣播電臺（2026-09-08）：8月CPI年增2.04％ 主計總處估9月漲幅再擴大\n  https://news.google.com/rss/articles/CBMiV0FVX3lxTFBLaThpSUJpRjZHV3dnV1kxOU0tbnQ3RmdQak9pR2VEYWl5S21MeVNxOFhUbFRJZWZWQlk2YXBZNDlSSTFKcFduNi1Sd1JHZ2c0d0Y2R2JENA?oc=5\n• [S4] 公視新聞（2026-08-06）：7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠\n  https://news.google.com/rss/articles/CBMiT0FVX3lxTE5TSzUtT2Fjb2h0b2ZhOEZmSTBYcm5qRWNNYlhCdno3VzhGblhWWFhiOXY4eUdTaUVqekpIRE45WEVJVkdMVE1CU3A2cG5lckU?oc=5\n• [S5] 中央社 CNA（2026-09-08）：8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線| 產經\n  https://news.google.com/rss/articles/CBMiXkFVX3lxTE1SUkRCUU9ZZksyQ3otYTBUeW5FQktYR3VXVnV6ZUk0TGkyQ1pkTzYyRVFqV2x5ZHBvNUluNWJuMTY1WFFqQjB0cWM4OU9HRDdDeHczdnIwX3B1ZEt6M2c?oc=5\n• [S6] 經濟日報（2026-09-08）：CPI 年增率連四月破2% 主計總處估9月漲幅恐擴大\n  https://news.google.com/rss/articles/CBMiW0FVX3lxTE1zaXgyUm41QkRXUC1YNURLOTN2T3B5ZzRIbUNBeVZYSlBVeXpFUHZsVmg5UHpoenptVkZheXA3UlBIX1gtNER1R3NUTnpVVm1yLTFjaHNaWVdrRWfSAWBBVV95cUxOSWxxcWp5WW9hRE91SGYwUGlXX3RlRVU5RHBfcUZqUXRVdkxUbEY0WVIyNmd1T0FMVC1IZHhWVENpSnFMRUNCRENMeDNPMkdnYUZrVi1JdVVST2NvTnBycFg?oc=5\n• [S7] 工商時報（2026-09-08）：8月通膨率2.04％ 主計總處：無通膨現象但外食費漲幅今年最高- 要聞\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE1waE84aTZ1T2RoY2RqZF93ZW9YWV9zWVdVNlpBNFF4cWlSUnVMbWQzaDZhNjRLekFxMm1HT2dCQXphZFRFMkZmS2FsOWE0TUMzdWxVX2xxYzAzYXZVM0tZ?oc=5\n\n#價格遊戲 #縮水式通膨 #超市 #法規漏洞 #消費者權益\n\nThis channel presents independent analysis based on publicly available information, including government statistics, academic research, international regulations, and credible industry data.\nOur content focuses on prices, wages, food labeling, industry structures, and transparency issues that affect everyday life. The goal is to provide clear, well-sourced insights for public understanding and educational purposes.\nAll content on this channel is informational in nature. Nothing here should be interpreted as legal, financial, medical, or professional advice.\n\n本頻道以公開資料、國際法規、政府統計、學術研究與可靠的產業資訊為基礎，進行跨領域的事實整理與分析。內容聚焦於物價、薪資、食品標示、產業結構與消費資訊透明化，旨在協助大眾理解影響日常生活的關鍵數據與制度。\n本頻道所有內容皆為基於公開資訊的評論與研究，不提供法律、投資或醫療建議。所有分析僅供公共利益與教育用途。",
+  "short_description": "▶ 完整數據與法規拆解正片：《超市裡的價格遊戲：商品變小了，價格卻不漲！》\n\n【公開資訊與參考資料來源】：\n• [S1] TVBS新聞網（2026-05-18）：巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司\n  https://news.google.com/rss/articles/CBMiT0FVX3lxTE9aTkNYU2RfQTdtZ1lJM3VaYjF2UHBVdjRpOE1LdTVtQ3h1dnNIVzB6b2hVOW9mNXhLNnRWZ0Joc0xoVVN6aG5YNE9LQjNKWE0?oc=5\n• [S2] 自由財經（2026-11-05）：10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE85SW02TVF3aDRYaDc5dFdTemJUdEVxeng5a0hyZkNuTWhtT1Y2WlBrVGR0SjY1TmlUU1A0dmNjbTJMRGdRei1aT2JxZ00yTzhrTmp1QzZYcUNZVFZoY2hR0gFkQVVfeXFMTWxPUi1yZDlYbXNWMVZpR2R0RlRwbW5NQnFLcWN3NkVGVV9aOXg1TXRCNF9DX21ubVhsVWpURUI5dDJjTlR2d3hja3FncWxVd2liUEd6OGowUGNKR3ZheUQ1b0JneQ?oc=5\n• [S3] Rti 中央廣播電臺（2026-09-08）：8月CPI年增2.04％ 主計總處估9月漲幅再擴大\n  https://news.google.com/rss/articles/CBMiV0FVX3lxTFBLaThpSUJpRjZHV3dnV1kxOU0tbnQ3RmdQak9pR2VEYWl5S21MeVNxOFhUbFRJZWZWQlk2YXBZNDlSSTFKcFduNi1Sd1JHZ2c0d0Y2R2JENA?oc=5\n• [S4] 公視新聞（2026-08-06）：7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠\n  https://news.google.com/rss/articles/CBMiT0FVX3lxTE5TSzUtT2Fjb2h0b2ZhOEZmSTBYcm5qRWNNYlhCdno3VzhGblhWWFhiOXY4eUdTaUVqekpIRE45WEVJVkdMVE1CU3A2cG5lckU?oc=5\n• [S5] 中央社 CNA（2026-09-08）：8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線| 產經\n  https://news.google.com/rss/articles/CBMiXkFVX3lxTE1SUkRCUU9ZZksyQ3otYTBUeW5FQktYR3VXVnV6ZUk0TGkyQ1pkTzYyRVFqV2x5ZHBvNUluNWJuMTY1WFFqQjB0cWM4OU9HRDdDeHczdnIwX3B1ZEt6M2c?oc=5\n\n本影片內容僅為公共議題分析，所有資訊皆來自公開資料、政府法規與統計報導，僅供公共利益與教育用途。"
+}

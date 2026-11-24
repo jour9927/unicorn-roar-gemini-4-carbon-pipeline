@@ -30,8 +30,8 @@ def main() -> None:
     run_p.add_argument(
         "--scale",
         type=float,
-        default=1.0,
-        help="篇幅倍率（1.0 = 標準對標原片 4,000+ 字 / 12-15 分鐘正片）",
+        default=0.85,
+        help="篇幅倍率（預設 0.85 ≈ 3,900-4,200 字 / 13-15 分鐘正片；1.0 ≈ 4,700 字 / 18-19 分鐘深度長片）",
     )
     run_p.add_argument("--run-id", type=str, default=None, help="指定輸出批次 ID")
 

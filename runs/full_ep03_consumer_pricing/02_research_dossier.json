@@ -1,0 +1,85 @@
+{
+  "topic": "價格沒漲但偷少20克？台灣超市「縮水式通膨」為何完全合法？各國早就強制貼縮水警告了！",
+  "category": "consumer_pricing",
+  "crawled_at": "2026-11-25T01:13:25",
+  "search_queries": [
+    "價格沒漲但偷少20克？台灣超市「縮水式通膨」為何完全合法？各國早就強制貼縮水警告了！",
+    "縮水式通膨 台灣 變相漲價 消基會",
+    "減量不減價 韓國 法國 強制標示",
+    "台灣 物價 外食費 主計總處 漲幅",
+    "價格沒漲但偷少2 日本 美國 歐盟 韓國 法規 標準 標示"
+  ],
+  "citations": [
+    {
+      "source_id": "S1",
+      "publisher": "TVBS新聞網",
+      "title": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE9aTkNYU2RfQTdtZ1lJM3VaYjF2UHBVdjRpOE1LdTVtQ3h1dnNIVzB6b2hVOW9mNXhLNnRWZ0Joc0xoVVN6aG5YNE9LQjNKWE0?oc=5",
+      "published_date": "2026-05-18",
+      "accessed_date": "20261125",
+      "excerpt": "巧克力保衛戰！高檔品牌護商譽 大廠偷斤減兩吃官司 TVBS新聞網",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S2",
+      "publisher": "自由財經",
+      "title": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE85SW02TVF3aDRYaDc5dFdTemJUdEVxeng5a0hyZkNuTWhtT1Y2WlBrVGR0SjY1TmlUU1A0dmNjbTJMRGdRei1aT2JxZ00yTzhrTmp1QzZYcUNZVFZoY2hR0gFkQVVfeXFMTWxPUi1yZDlYbXNWMVZpR2R0RlRwbW5NQnFLcWN3NkVGVV9aOXg1TXRCNF9DX21ubVhsVWpURUI5dDJjTlR2d3hja3FncWxVd2liUEd6OGowUGNKR3ZheUQ1b0JneQ?oc=5",
+      "published_date": "2026-11-05",
+      "accessed_date": "20261125",
+      "excerpt": "10月進口物價漲幅創近50年最大 主計總處：無輸入性通膨 自由財經",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S3",
+      "publisher": "Rti 中央廣播電臺",
+      "title": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大",
+      "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTFBLaThpSUJpRjZHV3dnV1kxOU0tbnQ3RmdQak9pR2VEYWl5S21MeVNxOFhUbFRJZWZWQlk2YXBZNDlSSTFKcFduNi1Sd1JHZ2c0d0Y2R2JENA?oc=5",
+      "published_date": "2026-09-08",
+      "accessed_date": "20261125",
+      "excerpt": "8月CPI年增2.04％ 主計總處估9月漲幅再擴大 Rti 中央廣播電臺",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S4",
+      "publisher": "公視新聞",
+      "title": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTE5TSzUtT2Fjb2h0b2ZhOEZmSTBYcm5qRWNNYlhCdno3VzhGblhWWFhiOXY4eUdTaUVqekpIRE45WEVJVkdMVE1CU3A2cG5lckU?oc=5",
+      "published_date": "2026-08-06",
+      "accessed_date": "20261125",
+      "excerpt": "7月CPI連3月破通膨警戒線 雞蛋漲幅近10%居冠 公視新聞",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S5",
+      "publisher": "中央社 CNA",
+      "title": "8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線| 產經",
+      "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTE1SUkRCUU9ZZksyQ3otYTBUeW5FQktYR3VXVnV6ZUk0TGkyQ1pkTzYyRVFqV2x5ZHBvNUluNWJuMTY1WFFqQjB0cWM4OU9HRDdDeHczdnIwX3B1ZEt6M2c?oc=5",
+      "published_date": "2026-09-08",
+      "accessed_date": "20261125",
+      "excerpt": "8月外食費衝3.17% 9月CPI估連5月突破通膨警戒線| 產經 中央社 CNA",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S6",
+      "publisher": "經濟日報",
+      "title": "CPI 年增率連四月破2% 主計總處估9月漲幅恐擴大",
+      "url": "https://news.google.com/rss/articles/CBMiW0FVX3lxTE1zaXgyUm41QkRXUC1YNURLOTN2T3B5ZzRIbUNBeVZYSlBVeXpFUHZsVmg5UHpoenptVkZheXA3UlBIX1gtNER1R3NUTnpVVm1yLTFjaHNaWVdrRWfSAWBBVV95cUxOSWxxcWp5WW9hRE91SGYwUGlXX3RlRVU5RHBfcUZqUXRVdkxUbEY0WVIyNmd1T0FMVC1IZHhWVENpSnFMRUNCRENMeDNPMkdnYUZrVi1JdVVST2NvTnBycFg?oc=5",
+      "published_date": "2026-09-08",
+      "accessed_date": "20261125",
+      "excerpt": "CPI 年增率連四月破2% 主計總處估9月漲幅恐擴大 經濟日報",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S7",
+      "publisher": "工商時報",
+      "title": "8月通膨率2.04％ 主計總處：無通膨現象但外食費漲幅今年最高- 要聞",
+      "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1waE84aTZ1T2RoY2RqZF93ZW9YWV9zWVdVNlpBNFF4cWlSUnVMbWQzaDZhNjRLekFxMm1HT2dCQXphZFRFMkZmS2FsOWE0TUMzdWxVX2xxYzAzYXZVM0tZ?oc=5",
+      "published_date": "2026-09-08",
+      "accessed_date": "20261125",
+      "excerpt": "8月通膨率2.04％ 主計總處：無通膨現象但外食費漲幅今年最高- 要聞 工商時報",
+      "category": "public_news"
+    }
+  ],
+  "background_notes": []
+}

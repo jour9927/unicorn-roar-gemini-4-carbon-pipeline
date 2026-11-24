@@ -1,0 +1,30 @@
+[
+  {
+    "rank": 1,
+    "pillar": "consumer_pricing",
+    "proposed_title": "價格沒漲但偷少20克？台灣超市「縮水式通膨」為何完全合法？各國早就強制貼縮水警告了！",
+    "short_hook_question": "沒漲價卻越吃越少？把消費者當盤子的縮水式通膨 回答我！",
+    "core_contradiction": "南韓、法國已立法要求減量不減價必須強制揭露，台灣業者卻能悄悄改包裝換新上市規避漲價罵名",
+    "search_queries": [
+      "縮水式通膨 台灣 變相漲價 消基會",
+      "減量不減價 韓國 法國 強制標示",
+      "台灣 物價 外食費 主計總處 漲幅"
+    ],
+    "seed_headlines": [],
+    "score": 46.25
+  },
+  {
+    "rank": 2,
+    "pillar": "consumer_pricing",
+    "proposed_title": "掃QR Code點餐、自己倒水收餐盤，結帳還要收10%服務費？台灣「服務費」到底服務了誰？",
+    "short_hook_question": "掃碼點餐還要收10%服務費？這筆錢到底進了誰口袋 回答我！",
+    "core_contradiction": "數位無人化點餐省下人力成本，結帳卻照收一成服務費且未分給第一線員工，實為變相定價拆分話術",
+    "search_queries": [
+      "台灣 餐廳 10%服務費 掃碼點餐 消保官",
+      "服務費 變相漲價 餐飲業 台灣",
+      "餐飲業 服務費 勞工 薪資 規定"
+    ],
+    "seed_headlines": [],
+    "score": 44.0
+  }
+]
