@@ -1,0 +1,2 @@
+[console_scripts]
+unicorn-roar = unicorn_roar.cli:main

@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "unicorn-roar-pipeline"
+version = "1.0.0"
+description = "獨角獸那麼叫 (@unicorn-roar) Gemini 4 Carbon 無人值守長短片雙軌復刻產線（爬蟲附來源 + AI產稿 + PyTorch聲音克隆 + AI產圖）"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "httpx>=0.27.0",
+    "pydantic>=2.7.0",
+    "pyyaml>=6.0.1",
+    "beautifulsoup4>=4.12.3",
+    "lxml>=5.2.0",
+    "Pillow>=10.3.0",
+    "numpy>=1.26.0",
+    "soundfile>=0.12.1",
+    "rich>=13.7.0",
+]
+
+[project.scripts]
+unicorn-roar = "unicorn_roar.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

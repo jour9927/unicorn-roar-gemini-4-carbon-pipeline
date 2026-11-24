@@ -1,0 +1,88 @@
+channel:
+  name: "獨角獸那麼叫"
+  handle: "@unicorn-roar"
+  url: "https://www.youtube.com/@unicorn-roar"
+  language: "zh-TW"
+
+persona:
+  archetype: "犀利數據派消費與制度拆解評論員"
+  tone:
+    - "開場前10秒直接拋出荒謬數據反差或商業標示矛盾（例如：90%白麵粉也能叫全麥？126萬低薪換個算法變0人？）"
+    - "口語自然、節奏明快、帶冷幽默吐槽（如『你沒聽錯！』『好樣的』『你先別急著生氣啊』『這標題是寫給誰看的啊』）"
+    - "吐槽後立刻拉回硬核公開法規、CNS國家標準、主計總處/食藥署函釋或國際OECD標準逐條拆解"
+    - "絕不空喊口號，每一段論點都綁定具體數字換算、法規條文或公開報導來源"
+  short_style:
+    - "開頭第一句直接點名矛盾核心或發起靈魂拷問（如『說……的人，回答我！』『為什麼……還是不降價？』）"
+    - "中段快速拆解1至2個最反直覺的事實與官方數據反差"
+    - "結尾留一個更深層的制度盲點懸念，直接引導觀眾點擊下方關聯長片觀看完整拆解"
+
+visual_specs:
+  long_video:
+    width: 1920
+    height: 1080
+    fps: 30
+    target_duration_sec: [210, 420]
+    scene_modes:
+      - "evidence_doc"   # 白底公文/法規/新聞截圖卡 + 紅線重點畫記 + 左上角白字黑邊 accessed:YYYYMMDD 來源標記
+      - "kinetic_black"  # 純黑底高對比大字公式/排名/價格換算圖卡（白字 + #FFE600 亮黃 + #FF2222 警示紅）
+      - "ai_scene"       # 16:9 寫實情境或諷刺視覺隱喻 AI 產圖 + 緩慢動態縮放平移 (Ken Burns)
+    subtitle:
+      font_size: 50
+      text_color: "#FFFFFF"
+      box_bg_rgba: [34, 34, 34, 212]
+      bottom_margin: 68
+      max_chars_per_line: 19
+    citation_watermark:
+      position: "top-left"
+      font_size: 24
+      format: "{publisher} {title_short} accessed:{accessed_yyyymmdd}"
+
+  short_video:
+    width: 1080
+    height: 1920
+    fps: 30
+    target_duration_sec: [55, 115]
+    header_band_height: 360
+    stage_band_height: 1120
+    footer_band_height: 440
+    hook_title_color: "#FFE800"
+    hook_secondary_color: "#FFFFFF"
+    subtitle:
+      font_size: 54
+      text_color: "#FFFFFF"
+      box_bg_rgba: [28, 28, 28, 216]
+    footer_disclaimer_en:
+      - "This video discusses public information,"
+      - "regulatory terminology, and consumer awareness."
+      - "It does not target any individual, group, or institution."
+      - "The content focuses solely on transparency and public-interest education."
+
+disclaimers:
+  zh_tw: |
+    本頻道以公開資料、國際法規、政府統計、學術研究與可靠的產業資訊為基礎，進行跨領域的事實整理與分析。內容聚焦於物價、薪資、食品標示、產業結構與消費資訊透明化，旨在協助大眾理解影響日常生活的關鍵數據與制度。
+    本頻道所有內容皆為基於公開資訊的評論與研究，不提供法律、投資或醫療建議。所有分析僅供公共利益與教育用途。
+  en: |
+    This channel presents independent analysis based on publicly available information, including government statistics, academic research, international regulations, and credible industry data.
+    Our content focuses on prices, wages, food labeling, industry structures, and transparency issues that affect everyday life. The goal is to provide clear, well-sourced insights for public understanding and educational purposes.
+    All content on this channel is informational in nature. Nothing here should be interpreted as legal, financial, medical, or professional advice.
+
+compute_cluster:
+  primary_gpu: "colab_rtx_pro_6000"
+  tailscale_nodes:
+    b850:
+      host: "100.100.230.119"
+      ssh_alias: "b850"
+      gpu: "NVIDIA GeForce RTX 5070 Ti"
+      repo_dir: "~/unicorn-roar-gemini4carbon"
+    alan_fw:
+      host: "100.78.161.123"
+      ssh_alias: "alan-fw"
+      cpu_apu: "AMD Ryzen AI Max+ 395 128GB"
+    alan_hub:
+      host: "100.119.215.91"
+      ssh_alias: "alan-hub"
+      accelerator: "Apple M3 Pro 36GB MPS"
+    alan_mba:
+      host: "100.102.171.50"
+      ssh_alias: "alan-mba"
+      accelerator: "Apple M4 Air 24GB MPS"
