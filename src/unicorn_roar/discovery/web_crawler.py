@@ -103,9 +103,26 @@ def _extract_article_paragraphs(html_text: str) -> list[str]:
     return paras
 
 
+_DOMAIN_PUBLISHER_MAP = {
+    "tw.news.yahoo.com": "Yahoo奇摩新聞",
+    "cna.com.tw": "中央社 CNA",
+    "udn.com": "聯合新聞網",
+    "health.udn.com": "元氣網／聯合報",
+    "ltn.com.tw": "自由時報",
+    "health.ltn.com.tw": "自由健康網",
+    "pts.org.tw": "公視新聞",
+    "news.pts.org.tw": "公視新聞",
+    "fda.gov.tw": "衛生福利部食藥署",
+    "mohw.gov.tw": "衛生福利部",
+    "moa.gov.tw": "農業部",
+    "law.moj.gov.tw": "全國法規資料庫",
+    "foodnext.net": "食力 foodNEXT",
+}
+
+
 def crawl_yahoo_tw_news_fulltext(query: str, max_items: int = 5) -> list[dict]:
-    """Search Yahoo奇摩新聞 (Taiwan) and fetch full multi-paragraph Taiwanese news articles."""
-    search_url = f"https://tw.news.yahoo.com/search?p={urllib.parse.quote(query)}"
+    """Search Bing News Taiwan RSS (`format=rss&mkt=zh-TW`) to resolve unencrypted URLs & full article text."""
+    rss_url = f"https://www.bing.com/news/search?q={urllib.parse.quote(query)}&format=rss&mkt=zh-TW"
     results: list[dict] = []
     try:
         with httpx.Client(
@@ -113,61 +130,60 @@ def crawl_yahoo_tw_news_fulltext(query: str, max_items: int = 5) -> list[dict]:
             follow_redirects=True,
             headers={"User-Agent": USER_AGENT, "Accept-Language": "zh-TW,zh;q=0.9"},
         ) as client:
-            resp = client.get(search_url)
+            resp = client.get(rss_url)
             if resp.status_code != 200:
                 return results
-            soup = BeautifulSoup(resp.text, "lxml")
-            links: list[str] = []
-            for a in soup.find_all("a", href=True):
-                href = a["href"]
-                if href.startswith("/"):
-                    href = "https://tw.news.yahoo.com" + href
-                if "tw.news.yahoo.com/" in href and href.endswith(".html") and "/search" not in href:
-                    if href not in links:
-                        links.append(href)
-                if len(links) >= max_items + 3:
-                    break
-
-            for article_url in links:
+            root = ET.fromstring(resp.content)
+            for item in root.findall(".//item")[: max_items + 4]:
                 if len(results) >= max_items:
                     break
+                title = _CC.convert((item.findtext("title") or "").strip())
+                desc = _CC.convert( BeautifulSoup(html.unescape(item.findtext("description") or ""), "lxml").get_text(" ", strip=True) )
+                raw_link = item.findtext("link") or ""
+                qs = urllib.parse.parse_qs(urllib.parse.urlparse(raw_link).query)
+                real_url = (qs.get("url") or [raw_link])[0]
+                pub_raw = item.findtext("pubDate") or ""
+                pub_date = dt.datetime.now().strftime("%Y-%m-%d")
+                if pub_raw:
+                    try:
+                        pub_date = email.utils.parsedate_to_datetime(pub_raw).strftime("%Y-%m-%d")
+                    except Exception:
+                        pass
+                dom = _domain_of(real_url)
+                raw_src = next(
+                    (ch.text.strip() for ch in item if ch.tag.lower().endswith("source") and ch.text),
+                    "",
+                )
+                publisher = (
+                    _CC.convert(raw_src)
+                    if raw_src and "." not in raw_src
+                    else _DOMAIN_PUBLISHER_MAP.get(dom, _CC.convert(raw_src) or dom or "台灣新聞媒體")
+                )
+
+                paras = [desc] if len(desc) >= 24 else [title]
                 try:
-                    ar = client.get(article_url, timeout=10.0)
-                    if ar.status_code != 200:
-                        continue
-                    asoup = BeautifulSoup(ar.text, "lxml")
-                    h1 = asoup.find("h1")
-                    title = _CC.convert(h1.get_text(strip=True)) if h1 else ""
-                    if not title or len(title) < 8:
-                        continue
-                    pub_el = (
-                        asoup.select_one("span.caas-attr-provider")
-                        or asoup.select_one("[data-ylk*='slk:provider']")
-                        or asoup.select_one(".caas-attr-meta-title")
-                    )
-                    publisher = _CC.convert(pub_el.get_text(strip=True)) if pub_el else "Yahoo奇摩新聞"
-                    time_el = asoup.find("time")
-                    pub_date = dt.datetime.now().strftime("%Y-%m-%d")
-                    if time_el and time_el.get("datetime"):
-                        pub_date = time_el["datetime"][:10]
-                    paras = _extract_article_paragraphs(ar.text)
-                    if len(paras) < 2:
-                        continue
-                    excerpt = " ".join(paras[:3])[:320]
-                    results.append(
-                        {
-                            "publisher": publisher,
-                            "title": title,
-                            "url": urllib.parse.unquote(article_url),
-                            "clean_domain": "tw.news.yahoo.com",
-                            "published_date": pub_date,
-                            "excerpt": excerpt,
-                            "paragraphs": paras[:6],
-                            "category": "public_news",
-                        }
-                    )
+                    ar = client.get(real_url, timeout=8.0)
+                    if ar.status_code == 200 and "text/html" in ar.headers.get("content-type", ""):
+                        extracted = _extract_article_paragraphs(ar.text)
+                        if len(extracted) >= 2:
+                            paras = extracted[:6]
                 except Exception:
-                    continue
+                    pass
+
+                results.append(
+                    {
+                        "publisher": publisher,
+                        "title": title,
+                        "url": real_url,
+                        "clean_domain": dom,
+                        "published_date": pub_date,
+                        "excerpt": " ".join(paras[:2])[:320],
+                        "paragraphs": paras,
+                        "category": "gov_regulator"
+                        if any(k in (publisher + title) for k in ("食藥署", "主計", "農業部", "消基會", "公平會", "法規"))
+                        else "public_news",
+                    }
+                )
     except Exception:
         return results
     return results
@@ -376,16 +392,25 @@ def build_research_dossier(
 ) -> ResearchDossier:
     """Build a rich, full-text verified ResearchDossier with real multi-paragraph sources."""
     accessed = _today_yyyymmdd()
-    queries = [topic]
+    queries: list[str] = []
     if extra_queries:
         for q in extra_queries:
             if q and q not in queries:
                 queries.append(q)
+    if topic not in queries:
+        queries.append(topic)
 
-    core_terms = re.findall(r"[\u4e00-\u9fffA-Za-z0-9]{2,8}", topic)[:3]
+    seed_text = " ".join(extra_queries[:2]) if extra_queries else topic
+    core_terms: list[str] = []
+    for tok in re.findall(r"[\u4e00-\u9fffA-Za-z0-9]{2,6}", seed_text):
+        if tok not in core_terms and tok not in ("台灣", "規範", "標示", "標準", "問題", "真相"):
+            core_terms.append(tok)
+    if not core_terms:
+        core_terms = re.findall(r"[\u4e00-\u9fffA-Za-z0-9]{2,6}", topic)[:3]
+
     if core_terms:
-        gov_q = f"{core_terms[0]} site:gov.tw OR 食藥署 OR 農業部 OR 主計總處 OR 消基會"
-        intl_q = f"{core_terms[0]} 日本 美國 歐盟 南韓 強制標示 法規"
+        gov_q = f"{core_terms[0]} 食藥署 農業部 主計總處 消基會 法規 標示"
+        intl_q = f"{core_terms[0]} 歐盟 日本 美國 國際標準 分級 標示"
         for q in (gov_q, intl_q):
             if q not in queries:
                 queries.append(q)
@@ -393,10 +418,20 @@ def build_research_dossier(
     seen_norms: set[str] = set()
     citations: list[SourceCitation] = []
 
+    generic_bigrams = {
+        "台灣", "規範", "標示", "標準", "問題", "真相", "食藥", "藥署", "衛生",
+        "福利", "農業", "業部", "消基", "基會", "主計", "總處", "法規", "公開",
+        "資訊", "翻過", "過來", "卻是", "寫義", "瓶身", "差多", "多少", "到位",
+    }
+    relevance_tokens = set(re.findall(r"[\u4e00-\u9fff]{2}", topic + " " + seed_text)) - generic_bigrams
+
     def _add_raw(raw_list: list[dict]) -> None:
         for raw in raw_list:
             if len(citations) >= max_citations:
                 return
+            combined_txt = raw.get("title", "") + " " + raw.get("excerpt", "")
+            if relevance_tokens and not any(tok in combined_txt for tok in relevance_tokens):
+                continue
             norm = re.sub(r"\W+", "", raw["title"])[:22]
             if not norm or norm in seen_norms:
                 continue
@@ -416,21 +451,21 @@ def build_research_dossier(
                 )
             )
 
-    # 1. Full-text Yahoo TW News articles (richest multi-paragraph Taiwanese news prose!)
-    for q in queries[:3]:
+    # 1. Full-text Taiwanese News via Bing News TW RSS + HTML paragraph extraction
+    for q in queries[:5]:
         _add_raw(crawl_yahoo_tw_news_fulltext(q, max_items=4))
 
     # 2. Taiwanese .gov.tw portals & major media via DuckDuckGo HTML
-    for q in queries[:3]:
+    for q in queries[:4]:
         _add_raw(crawl_duckduckgo_gov_and_news(q, max_items=3))
 
     # 3. Google News RSS coverage breadth
-    for q in queries[:2]:
+    for q in queries[:4]:
         _add_raw(crawl_google_news_tw_rss(q, max_items=4))
 
     # 4. Full-section Wikipedia zh-TW background
     background_notes: list[str] = []
-    for kw in core_terms[:2]:
+    for kw in core_terms[:3]:
         wiki_items = crawl_wikipedia_full_zhtw(kw)
         for w in wiki_items:
             background_notes.append(f"【{w['title']}】" + " ".join(w["paragraphs"][:3]))

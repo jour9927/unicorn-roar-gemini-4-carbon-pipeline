@@ -24,7 +24,20 @@ from pathlib import Path
 from typing import Any, Literal
 
 import httpx
+from opencc import OpenCC
 from pydantic import BaseModel, Field
+
+_CC_ZHTW = OpenCC("s2twp")
+
+
+def _ensure_zhtw(val: Any) -> Any:
+    if isinstance(val, str):
+        return _CC_ZHTW.convert(val)
+    if isinstance(val, list):
+        return [_ensure_zhtw(x) for x in val]
+    if isinstance(val, dict):
+        return {k: _ensure_zhtw(v) for k, v in val.items()}
+    return val
 
 from unicorn_roar.config import REPO_ROOT, get_runtime_endpoint_path, load_channel_profile
 from unicorn_roar.discovery.topic_radar import TopicCandidate
@@ -385,12 +398,13 @@ def _execute_passes_local_or_api(passes: list[dict[str, Any]], run_dir: Path) ->
                     json={
                         "model": "qwen3:8b",
                         "stream": False,
+                        "think": False,
                         "format": "json",
                         "messages": [
-                            {"role": "system", "content": p["system"] + "\n/no_think"},
+                            {"role": "system", "content": p["system"]},
                             {"role": "user", "content": p["user"]},
                         ],
-                        "options": {"temperature": 0.5, "num_ctx": 12288, "num_predict": 3600},
+                        "options": {"temperature": 0.5, "num_ctx": 8192, "num_predict": 2800},
                     },
                 )
                 r.raise_for_status()
@@ -403,7 +417,7 @@ def _execute_passes_local_or_api(passes: list[dict[str, Any]], run_dir: Path) ->
 
 
 def _strip_ai_cliches(text: str) -> str:
-    out = text
+    out = _CC_ZHTW.convert(text)
     for bad, rep in AI_CLICHE_REPLACEMENTS:
         out = out.replace(bad, rep)
     return re.sub(r"\s+", " ", out).strip()
@@ -429,10 +443,21 @@ def _sanitize_scene_list(
     cite_keys = list(valid_ids.keys())
 
     cleaned: list[dict[str, Any]] = []
-    for idx, sc in enumerate(raw_scenes, 1):
+    seen_ngrams_list: list[set[str]] = []
+    for raw_sc in raw_scenes:
+        sc = dict(raw_sc)
         nar = _strip_ai_cliches(str(sc.get("narration") or ""))
         if len(nar) < 14:
             continue
+        cjk_only = "".join(re.findall(r"[\u4e00-\u9fff0-9]", nar))
+        ngrams = {cjk_only[k : k + 5] for k in range(max(1, len(cjk_only) - 4))}
+        if any(
+            len(ngrams & prev) / max(1, min(len(ngrams), len(prev))) > 0.50
+            for prev in seen_ngrams_list
+        ):
+            continue
+        seen_ngrams_list.append(ngrams)
+        idx = len(cleaned) + 1
         sc["scene_id"] = f"{prefix}{idx:02d}"
         sc["narration"] = nar
 
@@ -455,9 +480,16 @@ def _sanitize_scene_list(
             else:
                 raw_mode = "ai_scene"
 
-        # Prevent repeating the exact same visual template back-to-back
+        # Prevent repeating the exact same visual template back-to-back (and cap consecutive `ai_scene` at 2)
         if cleaned and raw_mode == cleaned[-1]["scene_mode"] and raw_mode != "ai_scene":
             raw_mode = "ai_scene" if idx % 2 == 1 else "product_comparison"
+        elif (
+            raw_mode == "ai_scene"
+            and len(cleaned) >= (1 if is_short else 2)
+            and all(prev_sc["scene_mode"] == "ai_scene" for prev_sc in cleaned[-(1 if is_short else 2) :])
+        ):
+            cycle_modes = ["news_portal", "product_comparison", "netizen_comments", "kinetic_black", "official_gov_doc"]
+            raw_mode = cycle_modes[(idx - 1) % len(cycle_modes)]
         sc["scene_mode"] = raw_mode
 
         raw_vs = str(sc.get("voice_style") or "").lower().strip()
@@ -648,7 +680,7 @@ def generate_episode_blueprint(
     for pr in pass_results:
         pid = pr["id"]
         try:
-            obj = _extract_json_dict(pr["content"])
+            obj = _ensure_zhtw(_extract_json_dict(pr["content"]))
         except Exception:
             continue
         if pid == "short_promo_pass":

@@ -26,26 +26,45 @@ import soundfile as sf
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
+def _to_zhtw(text: str) -> str:
+    try:
+        from opencc import OpenCC
+        return OpenCC("s2twp").convert(text)
+    except Exception:
+        return text
+
+
 def split_subtitle_phrases(text: str, max_chars: int = 14) -> list[str]:
-    """Split Traditional Chinese narration into @unicorn-roar 11-14 char rapid subtitle cues."""
+    """Split Traditional Chinese narration into balanced @unicorn-roar 9-15 char subtitle cues (zero 1-3 char orphans)."""
+    text = _to_zhtw(text)
     raw_parts = re.split(r"[，。！？!?；;：:、\n]+", text)
     phrases: list[str] = []
+    soft_max = max_chars + 2  # Allow up to 16 chars intact rather than leaving a 1-2 char orphan!
     for part in raw_parts:
         p = part.strip(" 「」『』")
         if not p:
             continue
-        while len(p) > max_chars:
-            cut = max_chars
+        while len(p) > soft_max:
+            cut: int | None = None
             for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻", "而且", "如果", "問題是", "也就是"):
                 idx = p.find(kw, 5, max_chars + 1)
-                if idx != -1:
+                if idx != -1 and (len(p) - idx) >= 5:
                     cut = idx
                     break
+            if cut is None:
+                mid = (len(p) + 1) // 2
+                for ch_kw in ("的", "在", "把", "被", "讓", "跟", "和", "與", "或"):
+                    idx = p.find(ch_kw, max(5, mid - 3), min(max_chars, mid + 4))
+                    if idx != -1 and (len(p) - (idx + 1)) >= 5:
+                        cut = idx + 1
+                        break
+            if cut is None:
+                cut = min(max_chars, max(6, (len(p) + 1) // 2))
             phrases.append(p[:cut].strip())
             p = p[cut:].strip()
         if p:
             phrases.append(p)
-    return phrases or [text.strip()[:max_chars]]
+    return phrases or [text.strip()[:soft_max]]
 
 
 def tight_cut_breaths(
@@ -156,8 +175,8 @@ def align_phrases_to_audio(
     ]
 
 
-def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -13.2) -> np.ndarray:
-    """Tight-cut breaths & master cloned voice to @unicorn-roar's exact `-13.2 LUFS` punch."""
+def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -12.9) -> np.ndarray:
+    """Tight-cut breaths & master cloned voice to @unicorn-roar's exact `-13.0 LUFS` punch."""
     wav = tight_cut_breaths(wav, sr, max_pause_sec=0.095, kept_pause_sec=0.035)
     try:
         import pyloudnorm as pyln
@@ -165,15 +184,18 @@ def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -13.2)
         meter = pyln.Meter(sr)
         loudness = meter.integrated_loudness(wav)
         if np.isfinite(loudness):
-            # Pre-scale gently then soft-limit to -1.0 dBTP (0.891) so zero harsh clipping
             gain_db = target_lufs - loudness
             wav = wav * float(10.0 ** (gain_db / 20.0))
     except Exception:
         rms = float(np.sqrt(np.mean(wav**2)) + 1e-9)
-        wav = wav * (0.21 / rms)
+        wav = wav * (0.22 / rms)
 
-    # Smooth broadcast limiter ceiling at 0.89 (-1.0 dBFS)
-    wav = np.tanh(wav * 1.08) * 0.89
+    # Transparent soft-knee peak limiter above 0.78 -> ceiling 0.93 (-0.6 dBTP) without dulling body loudness
+    abs_w = np.abs(wav)
+    knee = 0.78
+    over = np.maximum(0.0, abs_w - knee)
+    compressed = np.where(abs_w > knee, knee + 0.15 * np.tanh(over / 0.15), abs_w)
+    wav = np.sign(wav) * compressed
     return wav.astype(np.float32)
 
 
@@ -190,20 +212,15 @@ def _extract_json_block(raw: str) -> dict:
     return json.loads(cleaned)
 
 
-def _chat_once(
+def _chat_messages(
     model,
     tokenizer,
-    system: str,
-    user: str,
+    messages: list[dict[str, str]],
     max_new_tokens: int = 3400,
     temperature: float = 0.52,
 ) -> str:
     import torch
 
-    messages = [
-        {"role": "system", "content": system},
-        {"role": "user", "content": user},
-    ]
     prompt_text = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
@@ -214,15 +231,58 @@ def _chat_once(
             max_new_tokens=max_new_tokens,
             temperature=temperature,
             top_p=0.9,
-            repetition_penalty=1.08,
+            repetition_penalty=1.10,
             do_sample=True,
         )
     out_ids = gen_ids[0][inputs.input_ids.shape[1] :]
     return tokenizer.decode(out_ids, skip_special_tokens=True)
 
 
+def _chat_once(
+    model,
+    tokenizer,
+    system: str,
+    user: str,
+    max_new_tokens: int = 3400,
+    temperature: float = 0.52,
+) -> str:
+    return _chat_messages(
+        model,
+        tokenizer,
+        [{"role": "system", "content": system}, {"role": "user", "content": user}],
+        max_new_tokens=max_new_tokens,
+        temperature=temperature,
+    )
+
+
+def _dedup_scenes_by_ngrams(
+    scenes: list[dict],
+    global_ngrams: list[set[str]],
+    threshold: float = 0.55,
+) -> list[dict]:
+    kept: list[dict] = []
+    local_seen = list(global_ngrams)
+    for sc in scenes:
+        if not isinstance(sc, dict):
+            continue
+        nar = str(sc.get("narration") or "").strip()
+        cjk = "".join(re.findall(r"[\u4e00-\u9fff0-9]", nar))
+        if len(cjk) < 16:
+            continue
+        ng = {cjk[k : k + 5] for k in range(max(1, len(cjk) - 4))}
+        if any(
+            len(ng & prev) / max(1, min(len(ng), len(prev))) > threshold
+            for prev in local_seen
+        ):
+            continue
+        local_seen.append(ng)
+        kept.append(sc)
+    return kept
+
+
 def task_llm_generate(req_path: Path, out_path: Path) -> None:
     import os
+    import time
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -230,37 +290,42 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
     req = json.loads(req_path.read_text(encoding="utf-8"))
     free_bytes, _ = torch.cuda.mem_get_info(0)
     free_gib = free_bytes / (1024**3)
-    # Dynamically select 32B-4bit if >= 24 GiB VRAM is free, else 14B-4bit (~9.5 GiB) + CPU offload safety!
-    default_model = (
-        "unsloth/Qwen2.5-32B-Instruct-bnb-4bit"
-        if free_gib >= 24.0
-        else "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
-    )
-    model_id = req.get("model") or default_model
-    if "32B" in model_id and free_gib < 23.0:
-        print(f"[VRAM GUARD] Only {free_gib:.1f} GiB free due to sibling session; switching to 14B-bnb-4bit", flush=True)
-        model_id = "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+    for _ in range(9):
+        if free_gib >= 11.5:
+            break
+        print(f"[VRAM GUARD] {free_gib:.1f} GiB free; waiting 10s for sibling burst to clear...", flush=True)
+        time.sleep(10.0)
+        free_gib = torch.cuda.mem_get_info(0)[0] / (1024**3)
 
-    gpu_budget = f"{max(4, int(free_gib - 1.8))}GiB"
+    if free_gib >= 23.5:
+        model_id = req.get("model") or "unsloth/Qwen2.5-32B-Instruct-bnb-4bit"
+    elif free_gib >= 11.5:
+        print(f"[VRAM GUARD] {free_gib:.1f} GiB free; using cached 14B-bnb-4bit on GPU", flush=True)
+        model_id = "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+    else:
+        print(f"[VRAM GUARD] {free_gib:.1f} GiB free; using compact 7B-bnb-4bit on GPU", flush=True)
+        model_id = "unsloth/Qwen2.5-7B-Instruct-bnb-4bit"
+
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        device_map="auto",
-        max_memory={0: gpu_budget, "cpu": "96GiB"},
+        device_map={"": 0},
         low_cpu_mem_usage=True,
     )
 
     if "passes" in req:
         pass_outputs = []
         prior_points: list[str] = []
+        global_ngrams: list[set[str]] = []
         for idx, p in enumerate(req["passes"]):
             pid = p["id"]
             min_cjk = int(p.get("min_cjk_chars", 0))
+            is_short_pass = pid == "short_promo_pass"
             anti_repeat = ""
             if prior_points and p.get("inject_prior_summary", True):
                 anti_repeat = (
                     "\n\n【前序幕次已講過之論點與案例（本幕嚴禁重複相同句子或同一數據，必須推進全新視角）】：\n"
-                    + "\n".join(f"- {pt}" for pt in prior_points[-5:])
+                    + "\n".join(f"- {pt}" for pt in prior_points[-6:])
                 )
             user_msg = p["user"] + anti_repeat
             raw = _chat_once(
@@ -286,7 +351,12 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
                     )
                     parsed_obj = _extract_json_block(raw)
 
-                for _ in range(3):
+                ref_ngrams = [] if is_short_pass else global_ngrams
+                parsed_obj["scenes"] = _dedup_scenes_by_ngrams(
+                    parsed_obj.get("scenes", []), ref_ngrams
+                )
+
+                for attempt_idx in range(4):
                     scenes = parsed_obj.get("scenes", [])
                     nar_text = "".join(sc.get("narration", "") for sc in scenes)
                     cjk_len = len(re.findall(r"[\u4e00-\u9fff]", nar_text))
@@ -294,27 +364,39 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
                         break
                     deficit = min_cjk - cjk_len
                     extra_n = max(2, min(4, (deficit // 110) + 1))
-                    last_nar = scenes[-1].get("narration", "") if scenes else ""
+                    assistant_so_far = json.dumps({"scenes": scenes}, ensure_ascii=False)
                     cont_prompt = (
-                        f"目前本幕已寫 {cjk_len} 字，距離目標 {min_cjk} 字還差 {deficit} 字。\n"
-                        f"上一句結尾：「{last_nar}」\n"
-                        f"請緊接其後，引用爬蟲真實段落再深化拆解具體價差算術、條文細節或通路實況（嚴禁重複前文、嚴禁編造不存在的數據），"
-                        f"新增 **{extra_n} 個場景**（每段 `narration` 110～140 字），只輸出 `{{\"scenes\": [...]}}` JSON。"
+                        f"目前本幕不重複有效字數為 {cjk_len} 字，距離目標 {min_cjk} 字還差 {deficit} 字。\n"
+                        f"請緊接上述最後一段往深處推進（例如：拆解不同來源編號 S2..S14 的具體法條門檻、抽驗違規案例金額、跨國分級差異或消費者實測算術），"
+                        f"嚴禁重寫或改寫上面已經出現過的任何句子！\n"
+                        f"請只輸出**新增的 {extra_n} 個全新場景**（每段 `narration` 寫滿 115～140 字，視覺模式交替使用 `news_portal`, `official_gov_doc`, `product_comparison`, `netizen_comments`, `kinetic_black`, `ai_scene`），"
+                        f"格式：`{{\"scenes\": [...]}}`。"
                     )
-                    cont_raw = _chat_once(
+                    cont_raw = _chat_messages(
                         model,
                         tokenizer,
-                        p["system"],
-                        user_msg + "\n\n" + cont_prompt,
+                        [
+                            {"role": "system", "content": p["system"]},
+                            {"role": "user", "content": user_msg},
+                            {"role": "assistant", "content": assistant_so_far},
+                            {"role": "user", "content": cont_prompt},
+                        ],
                         max_new_tokens=2600,
-                        temperature=0.54,
+                        temperature=0.56 + 0.04 * attempt_idx,
                     )
                     try:
                         cont_obj = _extract_json_block(cont_raw)
                         if cont_obj.get("scenes"):
-                            parsed_obj["scenes"] = scenes + cont_obj["scenes"]
+                            merged = scenes + cont_obj["scenes"]
+                            parsed_obj["scenes"] = _dedup_scenes_by_ngrams(merged, ref_ngrams)
                     except Exception:
                         continue
+
+                if not is_short_pass:
+                    for sc in parsed_obj.get("scenes", []):
+                        cjk_s = "".join(re.findall(r"[\u4e00-\u9fff0-9]", str(sc.get("narration") or "")))
+                        if len(cjk_s) >= 16:
+                            global_ngrams.append({cjk_s[k : k + 5] for k in range(max(1, len(cjk_s) - 4))})
                 raw = json.dumps(parsed_obj, ensure_ascii=False)
 
             try:
@@ -436,12 +518,19 @@ def task_generate_images(req_path: Path, out_dir: Path) -> None:
 
     req = json.loads(req_path.read_text(encoding="utf-8"))
     base_id = "stabilityai/stable-diffusion-xl-base-1.0"
+    free_gib = torch.cuda.mem_get_info(0)[0] / (1024**3)
     pipe = StableDiffusionXLPipeline.from_pretrained(
         base_id, torch_dtype=torch.float16, variant="fp16"
-    ).to("cuda")
+    )
+    if free_gib >= 9.0:
+        pipe = pipe.to("cuda")
+    else:
+        pipe.enable_model_cpu_offload()
     pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
-    pipe.enable_vae_slicing()
-    pipe.enable_vae_tiling()
+    if hasattr(pipe, "vae") and hasattr(pipe.vae, "enable_slicing"):
+        pipe.vae.enable_slicing()
+    if hasattr(pipe, "vae") and hasattr(pipe.vae, "enable_tiling"):
+        pipe.vae.enable_tiling()
 
     out_dir.mkdir(parents=True, exist_ok=True)
     generated = []
@@ -456,7 +545,7 @@ def task_generate_images(req_path: Path, out_dir: Path) -> None:
         w = int(item.get("width", 1344))
         h = int(item.get("height", 768))
         seed = int(item.get("seed", 42))
-        gen = torch.Generator(device="cuda").manual_seed(seed)
+        gen = torch.Generator(device="cpu").manual_seed(seed)
         img = pipe(
             prompt=prompt,
             negative_prompt=neg_prompt,

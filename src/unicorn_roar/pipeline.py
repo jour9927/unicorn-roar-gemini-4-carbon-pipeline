@@ -113,7 +113,7 @@ def run_unattended_episode(
     # Phase 4: PyTorch Owner Voice Cloning TTS
     console.print("[cyan][4/6] 執行 PyTorch 頻道主本人聲音克隆配音與逐句時間軸對齊...")
     tts_map = synthesize_episode_narration(blueprint, run_dir)
-    console.print(f"  ✓ 完成 [bold green]{len(tts_map)}[/] 段本人聲線克隆配音（-16 LUFS 廣播級響度標準化）")
+    console.print(f"  ✓ 完成 [bold green]{len(tts_map)}[/] 段本人聲線克隆配音（自動剪氣口 + -13.0 LUFS 廣播級響度標準化）")
 
     # Phase 5: AI Visuals Generation
     console.print("[cyan][5/6] 執行 PyTorch AI 情境產圖與公文紅線證據卡準備...")

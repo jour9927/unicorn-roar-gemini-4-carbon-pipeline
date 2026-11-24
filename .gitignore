@@ -27,5 +27,6 @@ runs/*/frames/
 runs/*/audio/
 runs/*/visuals/
 runs/*/qa_frames/
+runs/*/qa_v2_final/
 runs/*/output/*.mp4
 logs/

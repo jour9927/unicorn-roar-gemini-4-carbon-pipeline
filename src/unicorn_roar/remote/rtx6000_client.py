@@ -84,9 +84,12 @@ class RTX6000WorkerClient:
         deadline = time.time() + timeout
         last_info: dict[str, Any] = {}
         while time.time() < deadline:
-            last_info = self.get_job(job_id)
-            if last_info.get("status") in ("done", "failed"):
-                return last_info
+            try:
+                last_info = self.get_job(job_id)
+                if last_info.get("status") in ("done", "failed"):
+                    return last_info
+            except httpx.HTTPError:
+                pass
             time.sleep(poll_interval)
         raise TimeoutError(f"Remote GPU job {job_id} timed out after {timeout}s: {last_info}")
 
