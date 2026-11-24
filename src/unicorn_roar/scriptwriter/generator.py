@@ -116,18 +116,18 @@ def _build_user_prompt(
                     "scene_id": "L01",
                     "scene_mode": "ai_scene",
                     "voice_style": "hook_question",
-                    "narration": "約55-85字的繁體中文口語旁白，直接拋出反差痛點...",
+                    "narration": "請撰寫約85到120字的完整3到4句口語旁白，開場直接拋出反差數據與消費者痛點，語氣犀利自然。",
                     "citation_id": "S1",
                     "document_heading": "",
                     "document_excerpt": "",
                     "red_underline_quote": "",
                     "kinetic_lines": [],
-                    "image_prompt": "Detailed English photorealistic scene description without text...",
+                    "image_prompt": "Write a specific English photorealistic editorial scene matching THIS topic (do not copy generic examples), dramatic lighting, shallow depth of field, no text",
                 }
             ],
         },
         "short_video": {
-            "title": "Short 標題含 #標籤1 #標籤2 #回答我",
+            "title": "一句犀利繁中問句標題 #標籤1 #標籤2 #回答我",
             "top_hook_line1": "第一行醒目大字(8-12字)",
             "top_hook_line2": "第二行靈魂拷問(8-12字)!",
             "hook_highlight_words": ["關鍵詞1", "回答我!"],
@@ -137,13 +137,13 @@ def _build_user_prompt(
                     "scene_id": "S01",
                     "scene_mode": "ai_scene",
                     "voice_style": "hook_question",
-                    "narration": "約30-45字快節奏開場...",
+                    "narration": "請撰寫約45到65字的2到3句快節奏開場旁白...",
                     "citation_id": "S1",
                     "document_heading": "",
                     "document_excerpt": "",
                     "red_underline_quote": "",
                     "kinetic_lines": [],
-                    "image_prompt": "Detailed English vertical/square visual scene...",
+                    "image_prompt": "Write a specific English close-up photorealistic scene matching THIS topic, no text",
                 }
             ],
         },
@@ -162,13 +162,13 @@ def _build_user_prompt(
 {bg_block}
 
 【結構與場景數量要求】：
-1. `long_video.scenes` 請精準產出 **{target_long_scenes} 個場景**（編號 `L01` 到 `L{target_long_scenes:02d}`），每段 `narration` 約 60~95 個繁體中文字（總字數約 700~950 字，語速自然飽滿）。
-   - 至少包含 3 個 `"evidence_doc"` 場景（綁定真實 `citation_id` 並填寫 `document_heading`, `document_excerpt`, `red_underline_quote`）。
+1. `long_video.scenes` 請精準產出 **{target_long_scenes} 個場景**（編號 `L01` 到 `L{target_long_scenes:02d}`），每段 `narration` 必須包含 **3~4 句完整口語論述（每段約 85~125 字，總字數至少 1000 字以上）**，深入拆解數字換算、法規條文細節與商業話術，絕不可只寫短短一句話！
+   - 至少包含 3 個 `"evidence_doc"` 場景：綁定真實 `citation_id`，`document_heading` 寫公文或報導核心標題，`document_excerpt` 必須撰寫 **70~110 字具體法規門檻、官方說法與爭議重點摘要（絕對不可重複照抄標題文字！）**，並從 `document_excerpt` 中挑出最關鍵的一句（12~24字）填入 `red_underline_quote`。
    - 至少包含 3 個 `"kinetic_black"` 場景（填寫 2~3 行 `kinetic_lines` 呈現數字換算或標準對比）。
-   - 至少包含 4 個 `"ai_scene"` 場景（填寫高品質英文 `image_prompt`）。
-   - 開場 `L01` 用 `voice_style: "hook_question"`，吐槽金句段用 `"satire_punch"`，分析段用 `"narrative_explain"`。
-2. `short_video.scenes` 請精準產出 **{target_short_scenes} 個場景**（編號 `S01` 到 `S{target_short_scenes:02d}`），每段 `narration` 約 32~50 個繁體中文字（總長約 55~75 秒）。
-   - 包含至少 1 個 `"evidence_doc"`、1 個 `"kinetic_black"`、以及 2~3 個 `"ai_scene"`。
+   - 至少包含 4 個 `"ai_scene"` 場景（每個場景的 `image_prompt` 必須緊扣該段旁白描述台灣的具體消費/商品/工廠/生活情境，英文描述，不含文字）。
+2. `short_video.scenes` 請精準產出 **{target_short_scenes} 個場景**（編號 `S01` 到 `S{target_short_scenes:02d}`），每段 `narration` 必須包含 **2~3 句緊湊旁白（每段約 45~65 字）**。
+   - `short_video.title` 必須先寫一句完整吸睛繁中問句，後面再加上 `#標籤`。
+   - 包含至少 1 個 `"evidence_doc"`、1 個 `"kinetic_black"`、以及 2~4 個 `"ai_scene"`。
    - 最後一段 `S{target_short_scenes:02d}` 必須明確推流引導點擊下方關聯長片！
 
 【輸出 JSON 格式範例】：
@@ -284,10 +284,17 @@ def generate_episode_blueprint(
     raw_text: str | None = None
     last_err: Exception | None = None
 
+    cached_llm_out = run_dir / "temp" / "llm_out.json"
+    if cached_llm_out.exists():
+        try:
+            raw_text = json.loads(cached_llm_out.read_text(encoding="utf-8")).get("content")
+        except Exception:
+            raw_text = None
+
     # 1. Try OpenAI-compatible env API if user configured OPENAI_API_KEY
     api_key = os.environ.get("OPENAI_API_KEY")
     api_base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-    if api_key:
+    if raw_text is None and api_key:
         try:
             with httpx.Client(timeout=120.0) as client:
                 r = client.post(
@@ -325,10 +332,39 @@ def generate_episode_blueprint(
     valid_ids = {c.source_id: c for c in dossier.citations}
     default_cid = dossier.citations[0].source_id if dossier.citations else None
 
-    # Sanitize & guarantee citation bindings on evidence_doc scenes
+    # Sanitize & guarantee enum values and citation bindings for 100% unattended resilience
+    valid_modes = {"evidence_doc", "kinetic_black", "ai_scene"}
+    valid_voices = {"hook_question", "narrative_explain", "satire_punch", "short_energetic"}
+
     for track_key in ("long_video", "short_video"):
         scenes = parsed.get(track_key, {}).get("scenes", [])
-        for sc in scenes:
+        for idx_s, sc in enumerate(scenes):
+            raw_mode = str(sc.get("scene_mode", "ai_scene")).lower().strip()
+            if raw_mode not in valid_modes:
+                if "doc" in raw_mode or "evidence" in raw_mode or "news" in raw_mode:
+                    sc["scene_mode"] = "evidence_doc"
+                elif "kinetic" in raw_mode or "black" in raw_mode or "stat" in raw_mode or "math" in raw_mode:
+                    sc["scene_mode"] = "kinetic_black"
+                else:
+                    sc["scene_mode"] = "ai_scene"
+
+            raw_vs = str(sc.get("voice_style", "")).lower().strip()
+            if raw_vs not in valid_voices:
+                if idx_s == 0 or "hook" in raw_vs or "question" in raw_vs:
+                    sc["voice_style"] = "hook_question"
+                elif "satire" in raw_vs or "punch" in raw_vs or "irony" in raw_vs or "roar" in raw_vs:
+                    sc["voice_style"] = "satire_punch"
+                elif track_key == "short_video" or "short" in raw_vs or "fast" in raw_vs or "energetic" in raw_vs:
+                    sc["voice_style"] = "short_energetic"
+                else:
+                    sc["voice_style"] = "narrative_explain"
+
+            if isinstance(sc.get("kinetic_lines"), list):
+                for kl in sc["kinetic_lines"]:
+                    if isinstance(kl, dict):
+                        hc = str(kl.get("highlight_color", "yellow")).lower().strip()
+                        kl["highlight_color"] = "red" if ("red" in hc or "crimson" in hc) else "yellow"
+
             cid = sc.get("citation_id")
             if cid not in valid_ids:
                 sc["citation_id"] = default_cid
@@ -357,5 +393,9 @@ def generate_episode_blueprint(
         long_video=LongVideoSpec.model_validate(parsed["long_video"]),
         short_video=ShortVideoSpec.model_validate(parsed["short_video"]),
     )
+    if bp.short_video.title.strip().startswith("#"):
+        bp.short_video.title = (
+            f"{bp.short_video.top_hook_line1}，{bp.short_video.top_hook_line2} {bp.short_video.title.strip()}"
+        )
     bp.long_description, bp.short_description = format_youtube_descriptions(bp, dossier)
     return bp

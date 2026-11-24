@@ -16,9 +16,16 @@ config/runtime_endpoints.json
 
 # Large downloaded raw reference media & heavy checkpoints (keep manifests/metadata tracked)
 reference_channel/downloads/
+reference_channel/forensics/
+reference_channel/*_meta.json
 assets/voice_clone/raw_segments/
 assets/voice_clone/checkpoints/*.pt
 assets/voice_clone/checkpoints/*.safetensors
 assets/voice_clone/checkpoints/*.ckpt
 runs/*/temp/
 runs/*/frames/
+runs/*/audio/
+runs/*/visuals/
+runs/*/qa_frames/
+runs/*/output/*.mp4
+logs/

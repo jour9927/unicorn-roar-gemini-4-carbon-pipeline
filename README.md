@@ -1,18 +1,67 @@
 # 獨角獸那麼叫 Gemini 4 Carbon 無人值守雙軌產線 (`@unicorn-roar`)
 
-完整逆向復刻 YouTube 頻道 **獨角獸那麼叫 (`https://www.youtube.com/@unicorn-roar`)** 之無人值守 AI 影音生成產線，同時支援 **16:9 深度解析長片** 與 **9:16 對應導流 Short** 一鍵全自動產出。
+完整逆向復刻 YouTube 頻道 **獨角獸那麼叫 (`https://www.youtube.com/@unicorn-roar`)** 之無人值守 AI 影音生成產線，同時支援 **16:9 深度解析長片 (`1920x1080@30fps`)** 與 **9:16 對應導流 Short (`1080x1920@30fps`)** 一鍵全自動產出。
 
-## 核心架構亮點
+---
 
-1. **全自動無人值守主題探勘 + 多源公開資料爬蟲（附可驗證來源引用）**
-   - 自動巡檢台灣消費爭議、食安法規、標示規範、薪資物價統計、政府公報與公開新聞數據。
-   - 每個論點與數據皆綁定原始來源標題、機構、日期與 URL，自動渲染於長片畫面右上/左下資訊來源卡與影片說明欄。
-2. **頻道靈魂級 AI 產稿引擎 (`@unicorn-roar` 語氣與敘事結構復刻)**
-   - 復刻頻道標誌性的「犀利反問開場 Hook → 法規/商業話術拆解 → 跨國/數據對比 → 業界默契揭露 → 結尾反思」節奏，並同步產出強懸念「回答我 / 導流正片」Short 腳本。
-3. **PyTorch 本人聲音克隆配音引擎 (Owner Voice Cloning TTS)**
-   - 從頻道正片母帶自動分離人聲、VAD 切分、ASR 校對與信噪比篩選，透過 PyTorch Zero-Shot / Reference Pack 聲音克隆直接合成頻道主本人聲線與語氣停頓，並以 Forced Alignment 精準對齊逐句字幕時間軸。
-4. **AI 產圖與動態視覺排版合成引擎 (Long 1920x1080 + Short 1080x1920)**
-   - 自動生成符合頻道視覺調性的諷刺插畫／情境圖卡／數據對比圖表，結合動態縮放 (Ken Burns)、醒目描邊繁中字幕、來源浮水印卡片、章節進度與 BGM 自動閃避混音 (Sidechain Ducking)。
-5. **本機主控 + 跨節點異質算力調度 (Local-First Master + Remote GPU Offload)**
-   - **所有主腳本、設定檔與產物優先保存於本機**，斷線零資料遺失風險。
-   - 支援將配音克隆、Whisper 對齊與 AI 產圖重活優先派發至 **Colab RTX PRO 6000 (96GB)** 高速節點，並支援透過 Tailscale SSH 自動切換至 `b850` (RTX 5070 Ti)、`alan-fw` (AI Max 395 128GB) 或本機 Apple Silicon MPS。
+## 系統架構與產線流程
+
+```
+[1. 無人值守議題雷達 Topic Radar]
+   │  自動巡檢台灣食安標示、消費定價、薪資統計、產業政策爭議，比對頻道既有 198 部正片去重計分
+   ▼
+[2. 多源公開資訊爬蟲 Web Crawler + Source Citation]
+   │  抓取 Google News 台灣公開報導、法規/統計公報與維基百科繁中背景，建立帶 URL 與 accessed:YYYYMMDD 之來源庫
+   ▼
+[3. 雙軌 AI 靈魂產稿 Scriptwriter] (RTX PRO 6000 Qwen2.5-14B-Instruct / API / 本機 Ollama 自動切換)
+   │  同步產出 16:9 犀利反問數據拆解正片腳本 + 9:16「回答我！」導流正片 Short 腳本，嚴格綁定來源編號 S1..Sn
+   ▼
+[4. PyTorch 本人聲音克隆 Voice Cloner] (Demucs 純淨人聲母帶 + PyTorch F5-TTS + -16 LUFS 廣播混音)
+   │  依段落情緒自動切換頻道主 4 組高信噪比聲線錨點（開場反問 / 理性拆解 / 吐槽金句 / Short 快節奏），並對齊字幕時間軸
+   ▼
+[5. AI 產圖與證據圖卡引擎 Visuals] (RTX PRO 6000 PyTorch SDXL-Lightning + Pillow 精準排版)
+   │  交替渲染三種頻道招牌視覺：
+   │   • ai_scene      : 寫實/諷刺情境 AI 產圖 + 30fps Ken Burns 動態縮放
+   │   • evidence_doc  : 白底公文/報導證據卡 + 紅線重點畫記 (#CC0000) + 左上角白字黑邊 accessed:YYYYMMDD 來源標記
+   │   • kinetic_black : 純黑底黃紅高對比公式/排名圖卡 + 比例尺視覺
+   ▼
+[6. 雙軌廣播級合成 Composer]
+   ├── output/long_episode_1080p.mp4        (1920x1080 16:9 長片 + 繁中 SRT + 附完整來源網址與雙語免責聲明說明欄)
+   └── output/short_promo_1080x1920.mp4     (1080x1920 9:16 導流 Short：上方斜體黃白大字 Hook + 下方正片導流按鈕 + 英文免責聲明)
+```
+
+---
+
+## 快速上手（本機優先，斷線零遺失）
+
+### 1. 無人值守全自動產出（自動選題 → 爬蟲附來源 → 產稿 → 本人克隆配音 → 產圖 → 長短片雙成片）
+```bash
+./.venv/bin/unicorn-roar run
+```
+
+### 2. 指定不同類型主題或自訂題目（重複使用產線生成各類影片）
+```bash
+# 指定四大核心領域之一（food_labeling | consumer_pricing | wage_labor_stats | industry_policy）
+./.venv/bin/unicorn-roar run --pillar consumer_pricing
+
+# 直接指定任意自訂題目（自動針對該題目爬蟲找公開證據並產出長片 + 導流 Short）
+./.venv/bin/unicorn-roar run --topic "掃QR Code點餐還要收10%服務費？台灣餐廳服務費到底服務了誰？"
+```
+
+### 3. 下載／同步頻道完整歷史影片庫（含正片與 Shorts）
+```bash
+python3 scripts/sync_full_channel.py --dest reference_channel/downloads
+```
+
+### 4. Tailscale SSH 連線至 `b850` 節點與跨機調度
+```bash
+# 透過專案內建 Tailscale Mesh 設定直連 b850 (100.100.230.119 / RTX 5070 Ti)
+./scripts/b850_ssh.sh "nvidia-smi && ls -la ~/unicorn-roar-gemini4carbon"
+```
+
+### 5. 臨時高速節點 Colab RTX PRO 6000 啟動方式
+於 Colab 終端機執行單行指令即可啟動隔離式重活 Worker（自動寫入 `endpoint.json` 並與其他任務完全隔離）：
+```bash
+curl -fsSL https://raw.githubusercontent.com/jour9927/unicorn-roar-gemini-4-carbon-pipeline/main/scripts/colab_rtx6000_worker.py | python3 -
+```
+將輸出的 JSON 存入本機 `config/runtime_endpoints.json`，主產線即自動將 LLM 產稿、PyTorch `F5-TTS` 聲音克隆與 `SDXL-Lightning` 產圖優先派發至 RTX PRO 6000，並即時將所有產物拉回本機保存；若臨時節點離線，系統自動無縫降級至本機／Tailscale 節點執行。

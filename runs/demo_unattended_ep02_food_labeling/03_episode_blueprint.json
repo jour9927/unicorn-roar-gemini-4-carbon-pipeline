@@ -1,0 +1,258 @@
+{
+  "topic": "瓶身寫義大利橄欖油，翻過來卻是調合油？食藥署品名標示規範與食用油等級真相",
+  "pillar": "food_labeling",
+  "long_video": {
+    "title": "義大利橄欖油還是調合油？食藥署標示規範大解密",
+    "seo_tags": [
+      "食藥署",
+      "橄欖油",
+      "調合油",
+      "標示規範",
+      "食品安全"
+    ],
+    "scenes": [
+      {
+        "scene_id": "L01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "包裝上明明寫著義大利橄欖油，但翻過來一看，居然是調合油？這到底是怎麼一回事？",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Cinematic close-up of a bottle of olive oil with Italian labels, dramatic moody lighting, photorealistic, 8k"
+      },
+      {
+        "scene_id": "L02",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據食力foodNEXT的報導，市面上有些橄欖油產品被發現添加了非純橄欖油成分，甚至有些產品僅含有少量純橄欖油。這些產品的標示是否符合規定呢？",
+        "citation_id": "S8",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_excerpt": "「蒙特樂」假冒義大利100%純橄欖油，實際上僅含有20公升的純橄欖油，其他都是芥花油。這種行為不僅欺騙消費者，也違反了相關法律規定。",
+        "red_underline_quote": "實際上僅含有20公升的純橄欖油",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L03",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "按照現行規定，如果產品中含有純橄欖油的比例低於10%，就不能稱為純橄欖油，而應該標示為調和油。",
+        "citation_id": "S3",
+        "document_heading": "橄欖油「分6類」標示新制明年7月實施　攙偽假冒可關7年",
+        "document_excerpt": "新的標示規定要求橄欖油必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "red_underline_quote": "純橄欖油比例低於10%",
+        "kinetic_lines": [
+          {
+            "text": "純橄欖油門檻: 10%",
+            "highlight": "10%",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L04",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "消費者購買橄欖油時，一定要注意標示上的純度比例，才能避免被調和油蒙騙。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      },
+      {
+        "scene_id": "L05",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據食力foodNEXT的報導，有些業者為了降低成本，會將調和油標示為純橄欖油，這樣的行為已經觸犯了法律。",
+        "citation_id": "S9",
+        "document_heading": "標榜純橄欖油卻混充低價油 業者不法獲利逾3千萬遭起訴",
+        "document_excerpt": "業者將調和油標示為純橄欖油，這種行為已經違反了相關法律規定，業者將面臨刑事責任。",
+        "red_underline_quote": "業者將調和油標示為純橄欖油",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L06",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "根據衛生福利部食品藥物管理署的規定，如果產品中含有純橄欖油的比例低於10%，就不能稱為純橄欖油，而應該標示為調和油。",
+        "citation_id": "S2",
+        "document_heading": "藥物食品安全週報",
+        "document_excerpt": "衛生福利部食品藥物管理署規定，產品中含有純橄欖油的比例低於10%，就不能稱為純橄欖油。",
+        "red_underline_quote": "純橄欖油比例低於10%",
+        "kinetic_lines": [
+          {
+            "text": "純橄欖油門檻: 10%",
+            "highlight": "10%",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L07",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "消費者購買橄欖油時，一定要注意標示上的純度比例，才能避免被調和油蒙騙。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      },
+      {
+        "scene_id": "L08",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據ETtoday健康雲的報導，新的橄欖油標示規定將在明年7月實施，業者必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "citation_id": "S3",
+        "document_heading": "橄欖油「分6類」標示新制明年7月實施　攙偽假冒可關7年",
+        "document_excerpt": "新的標示規定要求橄欖油必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "red_underline_quote": "攙偽假冒可關7年",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L09",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "根據新的標示規定，如果產品中含有純橄欖油的比例低於10%，就不能稱為純橄欖油，而應該標示為調和油。",
+        "citation_id": "S3",
+        "document_heading": "橄欖油「分6類」標示新制明年7月實施　攙偽假冒可關7年",
+        "document_excerpt": "新的標示規定要求橄欖油必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "red_underline_quote": "純橄欖油比例低於10%",
+        "kinetic_lines": [
+          {
+            "text": "純橄欖油門檻: 10%",
+            "highlight": "10%",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L10",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "消費者購買橄欖油時，一定要注意標示上的純度比例，才能避免被調和油蒙騙。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      },
+      {
+        "scene_id": "L11",
+        "scene_mode": "evidence_doc",
+        "voice_style": "narrative_explain",
+        "narration": "根據自由健康網的報導，新的橄欖油標示規定將在明年7月實施，業者必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "citation_id": "S6",
+        "document_heading": "6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路",
+        "document_excerpt": "新的標示規定要求橄欖油必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "red_underline_quote": "2027年7月仍上路",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "L12",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "消費者購買橄欖油時，一定要注意標示上的純度比例，才能避免被調和油蒙騙。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      }
+    ]
+  },
+  "short_video": {
+    "title": "加一點橄欖油就能叫橄欖調合油？超市買油到底怎麼看！ #食藥署 #標示規範",
+    "top_hook_line1": "包裝畫滿整顆水果",
+    "top_hook_line2": "結果原汁只有10%？",
+    "hook_highlight_words": [
+      "10%",
+      "回答我!"
+    ],
+    "push_cta_banner": "▶ 點擊下方連結觀看完整正片拆解",
+    "scenes": [
+      {
+        "scene_id": "S01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "包裝上寫著義大利橄欖油，但實際上可能只是調和油。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with Italian labels and a dramatic moody background, photorealistic, 8k"
+      },
+      {
+        "scene_id": "S02",
+        "scene_mode": "evidence_doc",
+        "voice_style": "short_energetic",
+        "narration": "根據食力foodNEXT的報導，有些業者為了降低成本，會將調和油標示為純橄欖油。",
+        "citation_id": "S8",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_excerpt": "「蒙特樂」假冒義大利100%純橄欖油，實際上僅含有20公升的純橄欖油，其他都是芥花油。",
+        "red_underline_quote": "僅含有20公升的純橄欖油",
+        "kinetic_lines": [],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S03",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "如果產品中含有純橄欖油的比例低於10%，就不能稱為純橄欖油，而應該標示為調和油。",
+        "citation_id": "S3",
+        "document_heading": "橄欖油「分6類」標示新制明年7月實施　攙偽假冒可關7年",
+        "document_excerpt": "新的標示規定要求橄欖油必須明確標示其純度，違法者將面臨最高7年的刑責。",
+        "red_underline_quote": "純橄欖油比例低於10%",
+        "kinetic_lines": [
+          {
+            "text": "純橄欖油門檻: 10%",
+            "highlight": "10%",
+            "highlight_color": "red"
+          }
+        ],
+        "image_prompt": ""
+      },
+      {
+        "scene_id": "S04",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "消費者購買橄欖油時，一定要注意標示上的純度比例，才能避免被調和油蒙騙。",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      },
+      {
+        "scene_id": "S05",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "想知道背後完整的法規漏洞跟各國標準對比，直接點下方關聯正片，我們一次拆給你聽！",
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_excerpt": "",
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "image_prompt": "Close-up of an olive oil bottle with a label that says '10% pure olive oil', photorealistic, 8k"
+      }
+    ]
+  },
+  "long_description": "義大利橄欖油還是調合油？食藥署標示規範大解密\n\n【公開資訊與參考資料來源】：\n• [S1] 衛生福利部食品藥物管理署（2026-05-08）：藥物食品安全週報\n  https://news.google.com/rss/articles/CBMifkFVX3lxTE5FUllCa0NyV3RoS0ZuTWpIZ0p1d3lkY05aMS1aUmR5cnk0Ym5zcTMxQ1k5aEI1N2Q3UE9fMl9WekVkcFkza0lZdGVyOGtDZWxMbjVLbk1QaExYa19oMGdfNjgwUnhJU0xzS2dnOHZCSkN1ZXo0SHlfYU9vSWpYQQ?oc=5\n• [S2] 自由健康網（2026-08-14）：6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路\n  https://news.google.com/rss/articles/CBMiZEFVX3lxTFBLSWx0YWxLSF9laWVVVWFJOXYtSjZObjIwdTN6clZOMzBsSnRDWnZfRjNxLTdEcmVVOEdVQ1EyTWU5NXZjMXNGMFNCb3RHOFMxVU5IWnUxbXdsTzdGT3dSZFRVNTA?oc=5\n• [S3] 中央社 CNA（2026-06-18）：橄欖油新制等遭疑放水食藥署預算凍結逾2千萬| 生活\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE0wOXNaQzdfNGcybjBDR3k5cmxuUUItNkN2NzFGdE1BQjRBQzZaTU14LW9leTFSNm9PaHRaeVVfRXJpRXNaWFN6MWxTVWtlREFOTUM1cE1FbnVQMkYxWjcw?oc=5\n• [S4] UDN（2026-08-14）：橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路\n  https://news.google.com/rss/articles/CBMiUEFVX3lxTE83TkVDN0RKeEtFMldTUlRob0d4Y0pMNDJTY1NMUjQtMWdvMkZtckRiVGJQOXJwMEdNMGRlVHR5RUdFcGo4cWhTN2tOY3BoSHdJ0gFWQVVfeXFMTzEweUF0UVQ2TUlGS25sck1yTFpIMVN0bXY4bU16Tk5MendFV213M0NPeWdPazhzV1MyZDVuNEl0cEFxVzd3S2Uwa0xRNFA5eEdCUmZQM0E?oc=5\n• [S5] 食力 foodNEXT（2026-07-02）：原料驗出苯駢芘超標！泰山、福壽、福懋沙拉油問題產品啟動預防性下架與退貨處理\n  https://news.google.com/rss/articles/CBMiZkFVX3lxTE1mT0dNTmQ2MU1oYVlVQmN2ZVRtclBDanFudk5jYWVEYzNHdWR0dGN6cWVmNFBwaXZHc2t2Zms0cTFMSzRVWEcyazMxa0R6T0x4cThYUngtS2tnOGg4dFNaWVZ0QWpCdw?oc=5\n• [S6] 年代電視（2026-06-19）：官方標示草案接軌國際 實際進口價格揭示橄欖粕油並非劣質油\n  https://news.google.com/rss/articles/CBMiekFVX3lxTE1TTTRqZy1LdjhzV1NNUEFtNzVvYUhtNzl3UHBZLTFWRWdXSVZiZDJiUEpaZk9zUXh5MG1FRzNlVVIxV0lneDdRUEllNUtDMGxob1cyelVEb0J5djJsV3RyQnZOMkJJR2lwN1RjUURVYW5NbEo4R2VGYXdn?oc=5\n• [S7] 公視新聞（2017-10-07）：橄欖油比照聯合國分5級擬後年上路- 2016年12月05日 ｜ 公視新聞PNN\n  https://news.google.com/rss/articles/CBMiT0FVX3lxTE1iTW9ydy1PcmZYQ0pIZXJKRDdsd1dOZGpudjB5YXRUaUt2MTlFNk9QUElXczhoX3l1WW1VdHJhNTA0MmE0QVZYMFIxeXBGLVk?oc=5\n• [S8] 台視新聞網（2026-05-11）：橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看\n  https://news.google.com/rss/articles/CBMiZEFVX3lxTFA4Y0UxRXFjVFlic0piazV4Ym1nd2ZmWUFKWjdhZWp1dHAtbWYyTWx1LVREdC1RbU5OWS11eXprWWtYLXJZT1Y2TnJpNml6YzZwbzRUZDhqWjRsaUxKdUVUYWpYUmY?oc=5\n• [S9] 大紀元（2026-07-14）：用調和油冒充橄欖油獲利三千餘萬 檢起訴四人\n  https://news.google.com/rss/articles/CBMiYEFVX3lxTE1FZDJhVDBBTmNRRXFtZHdpbVFDTFBFek5RWThSbzJ2QVhDa3FyN1FYekZTbUkzblQxZ3lTUzJMcEg2Ti1wQ0RxbjdQTmQ1NEl1cTY1NnNwTks1RWNYR2dHctIBZkFVX3lxTFBoWEZzWk9GQjNfdkdnRjRZeVA4Z3o2X1cxRkpQWkNyYVNRTzRIZ0pkbWY1MUlXMGN1TkpYX0tpeXpBby1oS3BpTXZBY2Zib3I1ZXF5X3hOS0tmaGVMMUVvM0picl82dw?oc=5\n• [S10] 中央社 CNA（2026-07-14）：芥花油混充橄欖油詐逾3千萬元4人起訴主嫌遭求重刑| 社會\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE5GUUJMSWdieHAtOVlueVREejVGWk95MDZRNEwxckh0Q3JGWlk2QVNJSW5ZTUs5SU1UOEdBelFnQ3pmd1hKRFcxNFJMYUROQmNHTEpwa2MyNFNqMHpSNGs4?oc=5\n\n#食藥署 #橄欖油 #調合油 #標示規範 #食品安全\n\nThis channel presents independent analysis based on publicly available information, including government statistics, academic research, international regulations, and credible industry data.\nOur content focuses on prices, wages, food labeling, industry structures, and transparency issues that affect everyday life. The goal is to provide clear, well-sourced insights for public understanding and educational purposes.\nAll content on this channel is informational in nature. Nothing here should be interpreted as legal, financial, medical, or professional advice.\n\n本頻道以公開資料、國際法規、政府統計、學術研究與可靠的產業資訊為基礎，進行跨領域的事實整理與分析。內容聚焦於物價、薪資、食品標示、產業結構與消費資訊透明化，旨在協助大眾理解影響日常生活的關鍵數據與制度。\n本頻道所有內容皆為基於公開資訊的評論與研究，不提供法律、投資或醫療建議。所有分析僅供公共利益與教育用途。",
+  "short_description": "▶ 完整數據與法規拆解正片：《義大利橄欖油還是調合油？食藥署標示規範大解密》\n\n【公開資訊與參考資料來源】：\n• [S1] 衛生福利部食品藥物管理署（2026-05-08）：藥物食品安全週報\n  https://news.google.com/rss/articles/CBMifkFVX3lxTE5FUllCa0NyV3RoS0ZuTWpIZ0p1d3lkY05aMS1aUmR5cnk0Ym5zcTMxQ1k5aEI1N2Q3UE9fMl9WekVkcFkza0lZdGVyOGtDZWxMbjVLbk1QaExYa19oMGdfNjgwUnhJU0xzS2dnOHZCSkN1ZXo0SHlfYU9vSWpYQQ?oc=5\n• [S2] 自由健康網（2026-08-14）：6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路\n  https://news.google.com/rss/articles/CBMiZEFVX3lxTFBLSWx0YWxLSF9laWVVVWFJOXYtSjZObjIwdTN6clZOMzBsSnRDWnZfRjNxLTdEcmVVOEdVQ1EyTWU5NXZjMXNGMFNCb3RHOFMxVU5IWnUxbXdsTzdGT3dSZFRVNTA?oc=5\n• [S3] 中央社 CNA（2026-06-18）：橄欖油新制等遭疑放水食藥署預算凍結逾2千萬| 生活\n  https://news.google.com/rss/articles/CBMiX0FVX3lxTE0wOXNaQzdfNGcybjBDR3k5cmxuUUItNkN2NzFGdE1BQjRBQzZaTU14LW9leTFSNm9PaHRaeVVfRXJpRXNaWFN6MWxTVWtlREFOTUM1cE1FbnVQMkYxWjcw?oc=5\n• [S4] UDN（2026-08-14）：橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路\n  https://news.google.com/rss/articles/CBMiUEFVX3lxTE83TkVDN0RKeEtFMldTUlRob0d4Y0pMNDJTY1NMUjQtMWdvMkZtckRiVGJQOXJwMEdNMGRlVHR5RUdFcGo4cWhTN2tOY3BoSHdJ0gFWQVVfeXFMTzEweUF0UVQ2TUlGS25sck1yTFpIMVN0bXY4bU16Tk5MendFV213M0NPeWdPazhzV1MyZDVuNEl0cEFxVzd3S2Uwa0xRNFA5eEdCUmZQM0E?oc=5\n\n本影片內容僅為公共議題分析，所有資訊皆來自公開資料、政府法規與統計報導，僅供公共利益與教育用途。"
+}

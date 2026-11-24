@@ -1,0 +1,159 @@
+{
+  "ok": true,
+  "run_id": "demo_unattended_ep01",
+  "run_dir": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/demo_unattended_ep01",
+  "selected_topic": {
+    "rank": 1,
+    "pillar": "wage_labor_stats",
+    "proposed_title": "實質薪資倒退還是創歷史新高？主計總處「總薪資」與「經常性薪資」背後的統計溫度差",
+    "short_hook_question": "政府說平均月薪破6萬創新高，為什麼你的錢包完全沒感覺？",
+    "core_contradiction": "半導體分紅與年終拉高全年總薪資平均，但扣除物價CPI後的實質經常性薪資中位數卻讓近七成受僱者低於平均",
+    "search_queries": [
+      "主計總處 經常性薪資 中位數 總薪資 台灣",
+      "實質經常性薪資 CPI 物價 台灣",
+      "受僱員工薪資調查 低於平均 七成"
+    ],
+    "seed_headlines": [
+      "這你敢信！ 全國受僱員工七、八月總薪資平均約七萬",
+      "126萬人月薪不到3.3萬元！主計總處：低於平均薪資不算低薪",
+      "主計總處揭低薪門檻：年薪39萬 2024年約126萬人低於標準",
+      "2026最新薪資數據公布！月薪中位數39453元，你的薪水贏過多少台灣人？"
+    ],
+    "score": 94.0
+  },
+  "citations_count": 10,
+  "citations": [
+    {
+      "source_id": "S1",
+      "publisher": "好房網News",
+      "title": "科技業月薪7萬起仍找嘸人！6成企業陷招募困境　專家揭原因",
+      "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE43SHEzS1pNSGhmVDd6MWotRW9qSENjQXZIMXRyVllrZndJbVNZblFlRWFRbTZYa2p5aHllZjVFLUQ0dTBUemxKaDVDbWk0cS1OUmZMbkRvLU9JOTlVR2hWaWxGMWVRX1NSbUVr0gFwQVVfeXFMTUFZNmlCREFJYy1ZTzFJRDRzQ043N3BDTHpGa0tyWUdxYll2Sm13YWNITTlUcFNZMk9PVEt0SlhHdXZ4QTl5RUg0NUdtSVZZbE5lazdEOGl4eHZOUFdKQ2xmQzUydFFfTWN6OFpad29PdA?oc=5",
+      "published_date": "2026-11-23",
+      "accessed_date": "20261125",
+      "excerpt": "科技業月薪7萬起仍找嘸人！6成企業陷招募困境 專家揭原因 好房網News",
+      "category": "gov_regulator"
+    },
+    {
+      "source_id": "S2",
+      "publisher": "經理人",
+      "title": "是你嗎？月薪近 5 萬元加薪速度最慢！近 6 年實質薪資負成長",
+      "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5ZUm1FbnVmNGRTX0d4VVBUcktXNTdyMjlGLS1UcFpGNlB3THNUNWxvemNmOVF2dzdYZ29rajJGQWswNVdSZS1GVTJRVDhNbkRMb3k2ZkVWaDItN2tBakpxUg?oc=5",
+      "published_date": "2026-11-19",
+      "accessed_date": "20261125",
+      "excerpt": "是你嗎？月薪近 5 萬元加薪速度最慢！近 6 年實質薪資負成長 經理人",
+      "category": "gov_regulator"
+    },
+    {
+      "source_id": "S3",
+      "publisher": "TVBS新聞網",
+      "title": "影音／經常性薪資近5萬中位數卻不到4萬 揭薪資差距擴大真相",
+      "url": "https://news.google.com/rss/articles/CBMiT0FVX3lxTFBtN3NfYVo5SzhDYkNidjE1N1pzUm0tWjJualI1THhqdElBdld1azB1NWE3ZlZJYlZNa1FIX0FCQkhMN19seVZYdXJvVTZVRnc?oc=5",
+      "published_date": "2026-11-19",
+      "accessed_date": "20261125",
+      "excerpt": "影音／經常性薪資近5萬中位數卻不到4萬 揭薪資差距擴大真相 TVBS新聞網",
+      "category": "gov_regulator"
+    },
+    {
+      "source_id": "S4",
+      "publisher": "風傳媒",
+      "title": "圖解》你有領到嗎？台灣最新「平均薪資」又創高 但近7成受僱員工薪資低於平均數 | 蔣季容 | 新聞",
+      "url": "https://news.google.com/rss/articles/CBMiTkFVX3lxTFBhTGRSUFlhYjkxeHFLOExJUkFXaDloaVpDUDFBNHlXYmJWOFZoSTVXM3I2LTFwMVRCd3JrUVNReExzdklmNGRYUnZGaXVHQQ?oc=5",
+      "published_date": "2026-11-11",
+      "accessed_date": "20261125",
+      "excerpt": "圖解》你有領到嗎？台灣最新「平均薪資」又創高 但近7成受僱員工薪資低於平均數 | 蔣季容 | 新聞 風傳媒",
+      "category": "gov_regulator"
+    },
+    {
+      "source_id": "S5",
+      "publisher": "Yahoo股市",
+      "title": "全台平均總薪資7.1萬！一圖「看N歲的你」達標沒",
+      "url": "https://news.google.com/rss/articles/CBMipAJBVV95cUxPSzQ4bUFkQVN5SFdqc0NMTURoWnBIajlhZU9MRldKV2xGZFpnSE5wYXY4VE1zcnVMUE1WaU9oeWxWcGtJT2g4Nks2OFhvMy04eVdPQS1MX3dRdERZd1dXLTY0eTQ5d3JDR1BLbDRndTNLdTBNRmJHTkV3Y0M5OVZpNnE2UDJCRVNZUWE5RWRDUlhvaTM0WEFJSzd4MEVfQzFnanlRdkhNTWpVLURZMno2MFBVVkZfQlBCalM1MHpRTG9JWGZjNzhpTnh1Q054Z0Jrd0ZIS0Q2bWtZcWNJUlVNcFRhbmFGVGFwd3pGeUhtR2Y5VUROa3BhSXpRdk1wSnpLaEN3bDdmVU40a1VkVGdDY0lKQjJhQVliMnU3U29IeFpvRmtw?oc=5",
+      "published_date": "2026-09-18",
+      "accessed_date": "20261125",
+      "excerpt": "全台平均總薪資7.1萬！一圖「看N歲的你」達標沒 Yahoo股市",
+      "category": "gov_regulator"
+    },
+    {
+      "source_id": "S6",
+      "publisher": "Yahoo股市",
+      "title": "你有嗎？前9月經常性薪資平均4萬9152元 近7成國人領不到",
+      "url": "https://news.google.com/rss/articles/CBMi7gJBVV95cUxOM3p5VHhMbEc1OExJS21rS0hwVEFVbGlmZzJ4N1J4eWNsbVdrTk90YzNKVndBWktJNDc3SEF1YVRXY0wzX0QtQTRUZ1JLNV9Fd2FGWkdfS2k4dTRwSUN4UE5IZWxaNldoVlJOUnpHMTNScll1VE81bWxQZ3o5bmV5dW55cGRBSGJoQUZlTVdTTU1wYjhKb25lNDlfVFZEeUpxMWlaLXBEOG9RekNyVmpWcWFjREY2alpuWnVTcmtGUjVIaU5udE1QMUQ5OXJNcDBjWngyVERNaVBZLXgyZ2djRXhKUUlPNS1rWWxUSnNNVW53QncyanVYR2lMQnFJN3VUMzlIU3NLSGlnVnJlZnBfdldhZk1fcm0zS2o1eEZuYlpRNm1pbi12c0V2Q2JSQ2E5U2c1Smg4eGFRQ1ZjWFZfeE5HY1NZNG1GSnpaUlp1S1RWVG1HTWJkc2lmZWQ0OHJualJ3eGZaeTl5MmxxOUE?oc=5",
+      "published_date": "2026-11-11",
+      "accessed_date": "20261125",
+      "excerpt": "你有嗎？前9月經常性薪資平均4萬9152元 近7成國人領不到 Yahoo股市",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S7",
+      "publisher": "風傳媒",
+      "title": "你的薪水有達標嗎？主計處公布「全國最新平均薪資」又創高，近7 成勞工都沒領到",
+      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5xeWthRjYwMmI0WWgtS056S2t1b1FDUW9NdHdtaEgxdEhrYTNqNTJiY2U0LVd1QnduZjZJLVZqYnNqdlZ1eDc5emxCdlZOSHNh?oc=5",
+      "published_date": "2026-11-12",
+      "accessed_date": "20261125",
+      "excerpt": "你的薪水有達標嗎？主計處公布「全國最新平均薪資」又創高，近7 成勞工都沒領到 風傳媒",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S8",
+      "publisher": "永豐金證券",
+      "title": "台灣前三季薪資中位數41120元 主計：實質薪資成長1.4%｜新聞快訊｜豐雲學堂",
+      "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBxc0FaWWRkczBabGotQ1VBaExOa3ZidkNOTmhiX2wzcUJMRWt1S3FkOVV2TkNYNnluYjA2MkNFczhqUXA3Y2haWnZvZGxjdFVUNjJ2RWlVSldJdkZvM3hvNmlYanhLYWN2bjZhOHlNc3RZOXdjcnc?oc=5",
+      "published_date": "2026-11-10",
+      "accessed_date": "20261125",
+      "excerpt": "台灣前三季薪資中位數41120元 主計：實質薪資成長1.4%｜新聞快訊｜豐雲學堂 永豐金證券",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S9",
+      "publisher": "風傳媒",
+      "title": "台灣人真的有加薪？7月平均薪資4.9萬元、中位數不到4萬， 主計總處公布最新數據",
+      "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE5BTnhpdW9ZYmphd2R5X3p1ZmVsLW5kMlE4emliaGxOd1dPQ3drLWRjN1NxS01sbVVQQ3ZTVmZDbjJjMGt2TFEwU3Y2XzE4T3JB?oc=5",
+      "published_date": "2026-09-14",
+      "accessed_date": "20261125",
+      "excerpt": "台灣人真的有加薪？7月平均薪資4.9萬元、中位數不到4萬， 主計總處公布最新數據 風傳媒",
+      "category": "public_news"
+    },
+    {
+      "source_id": "S10",
+      "publisher": "理財鴿",
+      "title": "台灣第一季實質薪資漲幅創11年高，近七成勞工未達平均",
+      "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBoX1c3RmxYazgtZE1iTDVzTDJyVEQ0eDFtek5EWkZwZGZFQnhRb2VGWWNTSHAxUklmWV9mYzh5TWhWcENLX3VvVmQ1eWdQZjdOU3hKc3hlbFZuel9XbGdMR05rbF9Qay1MUTRDZkRJMEM?oc=5",
+      "published_date": "2026-05-12",
+      "accessed_date": "20261125",
+      "excerpt": "台灣第一季實質薪資漲幅創11年高，近七成勞工未達平均 理財鴿",
+      "category": "public_news"
+    }
+  ],
+  "long_title": "實質薪資倒退還是創新高？主計總處統計背後的溫度差",
+  "short_title": "#實質薪資倒退 #創新高 #回答我",
+  "outputs": {
+    "long_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/demo_unattended_ep01/output/long_episode_1080p.mp4",
+    "long_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/demo_unattended_ep01/output/long_episode.zh-TW.srt",
+    "long_duration_sec": 72.67,
+    "short_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/demo_unattended_ep01/output/short_promo_1080x1920.mp4",
+    "short_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/demo_unattended_ep01/output/short_promo.zh-TW.srt",
+    "short_duration_sec": 27.98
+  },
+  "verification": {
+    "long_probe": {
+      "width": 1920,
+      "height": 1080,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 72.67,
+      "size_mb": 28.6
+    },
+    "short_probe": {
+      "width": 1080,
+      "height": 1920,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 27.98,
+      "size_mb": 14.98
+    }
+  }
+}
