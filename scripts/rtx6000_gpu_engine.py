@@ -22,7 +22,6 @@ from pathlib import Path
 
 import numpy as np
 import soundfile as sf
-import torch
 
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -199,6 +198,8 @@ def _chat_once(
     max_new_tokens: int = 3400,
     temperature: float = 0.52,
 ) -> str:
+    import torch
+
     messages = [
         {"role": "system", "content": system},
         {"role": "user", "content": user},
@@ -206,7 +207,7 @@ def _chat_once(
     prompt_text = tokenizer.apply_chat_template(
         messages, tokenize=False, add_generation_prompt=True
     )
-    inputs = tokenizer([prompt_text], return_tensors="pt").to("cuda")
+    inputs = tokenizer([prompt_text], return_tensors="pt").to(model.device)
     with torch.inference_mode():
         gen_ids = model.generate(
             **inputs,
@@ -221,14 +222,32 @@ def _chat_once(
 
 
 def task_llm_generate(req_path: Path, out_path: Path) -> None:
+    import os
+    import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
+    os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "expandable_segments:True"
     req = json.loads(req_path.read_text(encoding="utf-8"))
-    model_id = req.get("model", "unsloth/Qwen2.5-32B-Instruct-bnb-4bit")
+    free_bytes, _ = torch.cuda.mem_get_info(0)
+    free_gib = free_bytes / (1024**3)
+    # Dynamically select 32B-4bit if >= 24 GiB VRAM is free, else 14B-4bit (~9.5 GiB) + CPU offload safety!
+    default_model = (
+        "unsloth/Qwen2.5-32B-Instruct-bnb-4bit"
+        if free_gib >= 24.0
+        else "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+    )
+    model_id = req.get("model") or default_model
+    if "32B" in model_id and free_gib < 23.0:
+        print(f"[VRAM GUARD] Only {free_gib:.1f} GiB free due to sibling session; switching to 14B-bnb-4bit", flush=True)
+        model_id = "unsloth/Qwen2.5-14B-Instruct-bnb-4bit"
+
+    gpu_budget = f"{max(4, int(free_gib - 1.8))}GiB"
     tokenizer = AutoTokenizer.from_pretrained(model_id)
     model = AutoModelForCausalLM.from_pretrained(
         model_id,
-        device_map="cuda",
+        device_map="auto",
+        max_memory={0: gpu_budget, "cpu": "96GiB"},
+        low_cpu_mem_usage=True,
     )
 
     if "passes" in req:
@@ -336,6 +355,7 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
 
 
 def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
+    import torch
     from f5_tts.api import F5TTS
 
     req = json.loads(req_path.read_text(encoding="utf-8"))
@@ -411,6 +431,7 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
 
 def task_generate_images(req_path: Path, out_dir: Path) -> None:
     """24-step High-Definition SDXL Base 1.0 (EulerDiscreteScheduler, CFG=6.5) — zero 4-step melting."""
+    import torch
     from diffusers import EulerDiscreteScheduler, StableDiffusionXLPipeline
 
     req = json.loads(req_path.read_text(encoding="utf-8"))
@@ -419,6 +440,8 @@ def task_generate_images(req_path: Path, out_dir: Path) -> None:
         base_id, torch_dtype=torch.float16, variant="fp16"
     ).to("cuda")
     pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
+    pipe.enable_vae_slicing()
+    pipe.enable_vae_tiling()
 
     out_dir.mkdir(parents=True, exist_ok=True)
     generated = []
