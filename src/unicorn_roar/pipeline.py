@@ -45,6 +45,7 @@ def _probe_video(mp4_path: Path) -> dict[str, Any]:
         "audio_codec": a_stream.get("codec_name"),
         "sample_rate": a_stream.get("sample_rate"),
         "duration_sec": round(float(data.get("format", {}).get("duration", 0.0)), 2),
+        "duration_min": round(float(data.get("format", {}).get("duration", 0.0)) / 60.0, 2),
         "size_mb": round(int(data.get("format", {}).get("size", 0)) / (1024 * 1024), 2),
     }
 
@@ -52,16 +53,15 @@ def _probe_video(mp4_path: Path) -> dict[str, Any]:
 def run_unattended_episode(
     pillar: str | None = None,
     manual_topic: str | None = None,
-    long_scenes: int = 10,
-    short_scenes: int = 5,
+    scale_factor: float = 1.0,
     run_id: str | None = None,
 ) -> dict[str, Any]:
-    """Execute the full unattended pipeline from autonomous topic radar to Long + Short MP4s."""
+    """Execute the full unattended 6-Act pipeline (~12-15m Long + ~2m Short)."""
     rid = run_id or dt.datetime.now().strftime("ep_%Y%m%d_%H%M%S")
     run_dir = RUNS_DIR / rid
     run_dir.mkdir(parents=True, exist_ok=True)
 
-    console.rule(f"[bold yellow]獨角獸那麼叫 無人值守雙軌產線｜Run {rid}")
+    console.rule(f"[bold yellow]獨角獸那麼叫 無人值守六幕長篇雙軌產線｜Run {rid}")
 
     # Phase 1: Autonomous Topic Radar
     console.print("[cyan][1/6] 自動巡檢公開議題與篩選最佳主題...")
@@ -75,35 +75,40 @@ def run_unattended_episode(
     )
     console.print(f"  ✓ 鎖定主題：[bold white]{winner.proposed_title}[/] (score={winner.score})")
 
-    # Phase 2: Public Web Crawler + Source Citations
-    console.print("[cyan][2/6] 啟動多源公開資訊爬蟲並建立來源引用檔案...")
+    # Phase 2: Public Web Crawler + Source Citations (including international regulatory benchmarks)
+    console.print("[cyan][2/6] 啟動多源公開資訊與跨國法規爬蟲...")
     dossier = build_research_dossier(
         topic=winner.proposed_title,
         category=winner.pillar,
         extra_queries=winner.search_queries,
-        max_citations=10,
+        max_citations=15,
     )
     (run_dir / "02_research_dossier.json").write_text(
         dossier.model_dump_json(indent=2),
         encoding="utf-8",
     )
-    console.print(f"  ✓ 爬取並綁定 [bold green]{len(dossier.citations)}[/] 筆公開來源與法規引用")
+    console.print(f"  ✓ 爬取並綁定 [bold green]{len(dossier.citations)}[/] 筆公開來源與跨國法規引用")
 
-    # Phase 3: Dual-Track AI Script Generation
-    console.print("[cyan][3/6] 生成「獨角獸那麼叫」16:9 正片腳本 + 9:16 推流 Short 腳本...")
+    # Phase 3: 6-Act Distilled RAG Script Generation
+    console.print("[cyan][3/6] 啟動六幕式蒸餾文案檢索產稿（對標頻道 4,000+ 字 / 13 分鐘正片規格）...")
     blueprint = generate_episode_blueprint(
         candidate=winner,
         dossier=dossier,
         run_dir=run_dir,
-        target_long_scenes=long_scenes,
-        target_short_scenes=short_scenes,
+        scale_factor=scale_factor,
     )
     (run_dir / "03_episode_blueprint.json").write_text(
         blueprint.model_dump_json(indent=2),
         encoding="utf-8",
     )
-    console.print(f"  ✓ 正片標題：[bold yellow]{blueprint.long_video.title}[/]")
-    console.print(f"  ✓ Short 標題：[bold yellow]{blueprint.short_video.title}[/]")
+    console.print(
+        f"  ✓ 正片標題：[bold yellow]{blueprint.long_video.title}[/] "
+        f"({len(blueprint.long_video.scenes)} 場景 / {blueprint.long_cjk_chars} 中文字)"
+    )
+    console.print(
+        f"  ✓ Short 標題：[bold yellow]{blueprint.short_video.title}[/] "
+        f"({len(blueprint.short_video.scenes)} 場景 / {blueprint.short_cjk_chars} 中文字)"
+    )
 
     # Phase 4: PyTorch Owner Voice Cloning TTS
     console.print("[cyan][4/6] 執行 PyTorch 頻道主本人聲音克隆配音與逐句時間軸對齊...")
@@ -116,7 +121,7 @@ def run_unattended_episode(
     console.print(f"  ✓ 完成 [bold green]{len(ai_images)}[/] 張高解析 AI 視覺場景圖")
 
     # Phase 6: Broadcast Composition (Long + Short)
-    console.print("[cyan][6/6] 合成 1920x1080 正片與 1080x1920 導流 Short 成片...")
+    console.print("[cyan][6/6] 合成 1920x1080 長篇正片與 1080x1920 導流 Short 成片...")
     composed = compose_long_and_short_videos(
         blueprint=blueprint,
         dossier=dossier,
@@ -134,7 +139,10 @@ def run_unattended_episode(
         "run_dir": str(run_dir),
         "selected_topic": winner.model_dump(),
         "citations_count": len(dossier.citations),
-        "citations": [c.model_dump() for c in dossier.citations],
+        "long_cjk_chars": blueprint.long_cjk_chars,
+        "short_cjk_chars": blueprint.short_cjk_chars,
+        "long_scene_count": len(blueprint.long_video.scenes),
+        "short_scene_count": len(blueprint.short_video.scenes),
         "long_title": blueprint.long_video.title,
         "short_title": blueprint.short_video.title,
         "outputs": composed,
@@ -147,5 +155,7 @@ def run_unattended_episode(
         json.dumps(summary, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    console.print("[bold green]✓ 無人值守雙軌成片產出完成！[/]")
+    console.print(
+        f"[bold green]✓ 無人值守雙軌長篇成片完成！正片時長：{long_probe['duration_sec']}s ({long_probe['duration_min']} 分鐘)｜Short 時長：{short_probe['duration_sec']}s[/]"
+    )
     return summary

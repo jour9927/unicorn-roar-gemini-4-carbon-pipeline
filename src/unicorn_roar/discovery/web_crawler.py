@@ -190,7 +190,7 @@ def build_research_dossier(
     topic: str,
     category: str = "food_labeling",
     extra_queries: list[str] | None = None,
-    max_citations: int = 10,
+    max_citations: int = 15,
 ) -> ResearchDossier:
     """Build a multi-source verified public dossier with citations & excerpts for a video topic."""
     accessed = _today_yyyymmdd()
@@ -199,10 +199,13 @@ def build_research_dossier(
         for q in extra_queries:
             if q and q not in queries:
                 queries.append(q)
-    else:
-        # Derive smart sub-queries for Taiwanese regulatory & consumer data
-        core_terms = re.findall(r"[\u4e00-\u9fffA-Za-z0-9]{2,8}", topic)[:3]
-        if core_terms:
+    # Always append international regulatory comparison query for Act 4 cross-country deep-dive
+    core_terms = re.findall(r"[\u4e00-\u9fffA-Za-z0-9]{2,8}", topic)[:3]
+    if core_terms:
+        intl_q = f"{core_terms[0]} 日本 美國 歐盟 韓國 法規 標準 標示"
+        if intl_q not in queries:
+            queries.append(intl_q)
+        if not extra_queries:
             queries.append(" ".join(core_terms[:2]) + " 台灣 標示 法規")
             queries.append(core_terms[0] + " 消基會 食藥署 主計總處")
 

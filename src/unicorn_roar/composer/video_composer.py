@@ -15,6 +15,7 @@ Reconstructs the exact visual, subtitle, citation, and audio mix aesthetics:
 """
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor
 import math
 import platform
 import subprocess
@@ -604,8 +605,8 @@ def compose_long_and_short_videos(
     long_mix_wav, long_timings = _synthesize_ambient_bed_and_mix(
         long_wav_list, work_dir / "long_master_audio.wav", inter_pause_sec=0.35
     )
-    long_clips: list[Path] = []
-    for i, sc in enumerate(long_scenes):
+    def _build_long_idx(i_sc: tuple[int, SceneSpec]) -> tuple[int, Path]:
+        i, sc = i_sc
         start_t, _ = long_timings[i]
         next_start = (
             long_timings[i + 1][0]
@@ -617,7 +618,12 @@ def compose_long_and_short_videos(
         clip = _render_long_scene_clip(
             i, sc, tts_map[sc.scene_id], slot_dur, cite, ai_images, work_dir
         )
-        long_clips.append(clip)
+        return i, clip
+
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        rendered_long = list(pool.map(_build_long_idx, list(enumerate(long_scenes))))
+    rendered_long.sort(key=lambda x: x[0])
+    long_clips = [c for _, c in rendered_long]
 
     long_concat_txt = work_dir / "long_concat.txt"
     long_concat_txt.write_text(
@@ -667,8 +673,8 @@ def compose_long_and_short_videos(
     short_mix_wav, short_timings = _synthesize_ambient_bed_and_mix(
         short_wav_list, work_dir / "short_master_audio.wav", inter_pause_sec=0.22
     )
-    short_clips: list[Path] = []
-    for i, sc in enumerate(short_scenes):
+    def _build_short_idx(i_sc: tuple[int, SceneSpec]) -> tuple[int, Path]:
+        i, sc = i_sc
         start_t, _ = short_timings[i]
         next_start = (
             short_timings[i + 1][0]
@@ -688,7 +694,12 @@ def compose_long_and_short_videos(
             work_dir,
             disclaimer_en,
         )
-        short_clips.append(clip)
+        return i, clip
+
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        rendered_short = list(pool.map(_build_short_idx, list(enumerate(short_scenes))))
+    rendered_short.sort(key=lambda x: x[0])
+    short_clips = [c for _, c in rendered_short]
 
     short_concat_txt = work_dir / "short_concat.txt"
     short_concat_txt.write_text(

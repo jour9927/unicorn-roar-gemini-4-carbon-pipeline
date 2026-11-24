@@ -17,6 +17,7 @@ dependencies = [
     "Pillow>=10.3.0",
     "numpy>=1.26.0",
     "soundfile>=0.12.1",
+    "opencc-python-reimplemented>=0.1.7",
     "rich>=13.7.0",
 ]
 

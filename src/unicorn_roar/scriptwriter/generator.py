@@ -1,14 +1,12 @@
-"""Dual-Track AI Scriptwriter for 獨角獸那麼叫 (@unicorn-roar).
+"""Distilled 6-Act Dual-Track AI Scriptwriter for 獨角獸那麼叫 (@unicorn-roar).
 
-Generates a complete, source-grounded EpisodeBlueprint containing:
-1. 16:9 Long-form analytical script (with `evidence_doc`, `kinetic_black`, and `ai_scene` visual cues + source IDs)
-2. 9:16 Corresponding Traffic-Push Short script ("回答我!" hook -> core shock -> push to full Long video)
-3. Full YouTube descriptions with cited public URLs and bilingual channel disclaimers.
-
-Compute priority:
-1. OpenAI-compatible / Gemini API if active key is configured
-2. Colab RTX PRO 6000 PyTorch `Qwen/Qwen2.5-14B-Instruct` (bfloat16 CUDA)
-3. Local Ollama (`qwen3:8b`) fallback
+Powered by `assets/script_distillation/distilled_playbook.json` (distilled from 25 full-length
+human-authored @unicorn-roar scripts + 7 Shorts, totaling 110,956 CJK characters):
+- Generates Long episodes via 6 dedicated Act passes (`act_1`..`act_6`), retrieving real
+  pillar-matched @unicorn-roar exemplar passages per Act and enforcing >= 4,000 CJK characters
+  (~12.5 to 15 minutes @ ~315 chars/min, matching the channel's 793s empirical mean).
+- Generates Corresponding Traffic-Push Shorts (~750-950 CJK chars, ~125-155s) modeled on
+  real @unicorn-roar Shorts ("回答我!" hook -> core conflict -> push to full Long video).
 """
 from __future__ import annotations
 
@@ -21,12 +19,17 @@ from typing import Any, Literal
 import httpx
 from pydantic import BaseModel, Field
 
-from unicorn_roar.config import get_runtime_endpoint_path, load_channel_profile
+from unicorn_roar.config import REPO_ROOT, get_runtime_endpoint_path, load_channel_profile
 from unicorn_roar.discovery.topic_radar import TopicCandidate
 from unicorn_roar.discovery.web_crawler import ResearchDossier
 from unicorn_roar.remote.rtx6000_client import (
     RTX6000WorkerClient,
     RemoteWorkerEndpoint,
+)
+from unicorn_roar.scriptwriter.distiller import (
+    SIX_ACT_SCHEMA,
+    load_distilled_playbook,
+    retrieve_act_exemplars,
 )
 
 
@@ -67,113 +70,175 @@ class ShortVideoSpec(BaseModel):
 class EpisodeBlueprint(BaseModel):
     topic: str
     pillar: str
+    long_cjk_chars: int = 0
+    short_cjk_chars: int = 0
     long_video: LongVideoSpec
     short_video: ShortVideoSpec
     long_description: str = ""
     short_description: str = ""
 
 
-SYSTEM_PROMPT = """你是台灣知名百萬觀看級知識評論 YouTube 頻道「獨角獸那麼叫 (@unicorn-roar)」的首席總編劇。
-你的任務是根據「爬蟲抓回來的真實公開新聞、政府法規與統計來源」，同時產出一支【16:9 深度長片腳本】與一支【9:16 對應導流 Short 腳本】。
+BASE_SYSTEM_PROMPT = """你是台灣百萬觀看級深度消費與制度拆解頻道「獨角獸那麼叫 (@unicorn-roar)」本尊編劇。
+你必須嚴格按照「頻道原片蒸餾語氣、句式節奏與字數密度」撰寫逐字口播稿：
 
-### 頻道靈魂與語氣鐵律（必須100%還原）：
-1. **繁體中文（台灣慣用語）**：使用「主計總處、食藥署、消基會、超商、盤子、話術、統計口徑、約定俗成」，自然口語且節奏犀利。
-2. **長片開場前兩段（Hook）**：第一句直接拋出荒謬的數字反差或標示矛盾（參考真片原句風格：「白麵粉占90%竟也能叫全麥？」「126萬人算低薪，換個標準卻變成0人？你沒聽錯！難道是薛丁格的低薪嗎？」）。
-3. **吐槽與硬核證據交替**：幽默反諷（「好樣的」、「你先別急著生氣啊」、「這標題是寫給誰看的啊」）之後，立刻切入「認真來說」，引用爬蟲提供的真實來源編號（如 S1、S2、S3）拆解法規門檻、計算公式或各國制度對比。
-4. **三種視覺場景嚴格交替編排 (`scene_mode`)**：
-   - `"ai_scene"`：寫實電影感或諷刺隱喻畫面，`image_prompt` 必須用英文撰寫具體場景（禁止在圖片 prompt 要求印出中文字，例如："Cinematic close-up of colorful fruit juice cartons on a modern Taiwanese convenience store shelf, dramatic moody lighting, photorealistic, 8k"）。
-   - `"evidence_doc"`：白底公文/法規/新聞證據卡，必須綁定真實 `citation_id`（如 `"S1"`），提供 `document_heading`（公文或報導標題）、`document_excerpt`（60-110字內文摘要）以及 `red_underline_quote`（必須是 `document_excerpt` 中最關鍵的一句話，12-26字，系統會自動畫上紅線並於左上角標註來源與 accessed 日期！）。
-   - `"kinetic_black"`：純黑底大字公式或對比圖卡，提供 2 到 3 行 `kinetic_lines`，每行含 `text`（如 `"標示門檻: 原汁 10%"`）與要變色的關鍵詞 `highlight`（如 `"10%"`）及 `highlight_color`（`"yellow"` 或 `"red"`）。
-5. **對應推流 Short 鐵律**：
-   - `top_hook_line1` 與 `top_hook_line2` 每行 7~13 個繁體中文字，極具視覺衝擊力（例如：「包裝畫滿整顆水果」「結果原汁只有10%？回答我！」）。
-   - Short 共 5~6 個緊湊場景，最後一個場景 (`S05` 或 `S06`) 的旁白必須留下一個關鍵制度懸念並明確引導觀眾：「想知道背後完整的法規漏洞跟各國標準對比，直接點下方關聯正片，我們一次拆給你聽！」
-
-請嚴格只輸出合法 JSON，不要加任何 markdown 註解或額外說明文字。"""
+### 頻道不可妥協之寫作鐵律：
+1. **純台灣繁體口語**：使用「主計總處、食藥署、農業部、消基會、超商、盤子、統計口徑、約定俗成、業者」，語氣犀利、冷幽默吐槽與硬核法規算術交替推進。
+2. **禁止空洞摘要句**：每一段 `narration` 必須是 **可以直接唸出來的完整口語段落（每段 105～140 個中文字，包含具體數字試算、條文門檻、生活場景舉例與反問句）**，絕不可寫成短短二三十字的投影片大綱！
+3. **三種視覺場景交替編排 (`scene_mode`)**：
+   - `"ai_scene"`：寫實電影感或諷刺隱喻畫面，`image_prompt` 用具體英文攝影描述（禁止要求印字）。
+   - `"evidence_doc"`：白底公文/法規/新聞證據卡，綁定真實 `citation_id`（如 `"S1"`），`document_heading` 寫公文或報導標題，`document_excerpt` 寫 75～115 字具體法規條文或數據重點摘要（不可照抄標題），`red_underline_quote` 擷取 `document_excerpt` 中最關鍵的 12～24 字（系統自動畫紅線並壓左上角 `accessed:YYYYMMDD` 來源標記）。
+   - `"kinetic_black"`：純黑底黃紅高對比大字公式或排名對照圖卡，填寫 2～3 行 `kinetic_lines`（含 `text`, `highlight`, `highlight_color`: `"yellow"` 或 `"red"`）。
+4. 只輸出合法 JSON，不加任何額外說明文字。"""
 
 
-def _build_user_prompt(
+def _format_sources_block(dossier: ResearchDossier) -> str:
+    lines = []
+    for c in dossier.citations:
+        lines.append(
+            f"- [{c.source_id}] {c.publisher}（{c.published_date}）：{c.title}\n"
+            f"  摘要：{c.excerpt}"
+        )
+    if dossier.background_notes:
+        lines.append("\n【百科與法規背景知識】：\n" + "\n".join(dossier.background_notes))
+    return "\n".join(lines)
+
+
+def _build_six_act_passes(
     candidate: TopicCandidate,
     dossier: ResearchDossier,
-    target_long_scenes: int = 10,
-    target_short_scenes: int = 5,
-) -> str:
-    sources_block = []
-    for c in dossier.citations:
-        sources_block.append(
-            f"- [{c.source_id}] 機構/媒體：{c.publisher}｜日期：{c.published_date}\n"
-            f"  標題：{c.title}\n"
-            f"  摘要：{c.excerpt}\n"
-            f"  URL：{c.url}"
+    playbook: dict[str, Any],
+    scale_factor: float = 1.0,
+) -> list[dict[str, Any]]:
+    sources_txt = _format_sources_block(dossier)
+    gems = playbook.get("rhetorical_gems", {})
+    gems_txt = "\n".join(
+        f"• {cat}：" + " ／ ".join(f"「{g[:55]}」" for g in items[:3])
+        for cat, items in gems.items()
+    )
+
+    passes: list[dict[str, Any]] = []
+    for act_idx, act in enumerate(SIX_ACT_SCHEMA, 1):
+        act_id = act["act_id"]
+        target_chars = max(320, int(round(act["target_cjk_chars"] * scale_factor)))
+        target_scenes = max(4, int(round(act["target_scenes"] * scale_factor)))
+        exemplars = retrieve_act_exemplars(playbook, candidate.pillar, act_id, max_exemplars=2, max_chars_each=400)
+        ex_block = "\n\n".join(
+            f"【原片同幕真實逐字範本 {i+1}：《{ex['title'][:32]}》】\n「{ex['excerpt']}」"
+            for i, ex in enumerate(exemplars)
         )
-    bg_block = "\n".join(dossier.background_notes) if dossier.background_notes else "（無額外百科條目）"
 
-    schema_hint = {
-        "long_video": {
-            "title": "犀利雙問號標題（約30-55字，含核心關鍵字）",
-            "seo_tags": ["關鍵字1", "關鍵字2", "關鍵字3", "關鍵字4", "關鍵字5"],
-            "scenes": [
-                {
-                    "scene_id": "L01",
-                    "scene_mode": "ai_scene",
-                    "voice_style": "hook_question",
-                    "narration": "請撰寫約85到120字的完整3到4句口語旁白，開場直接拋出反差數據與消費者痛點，語氣犀利自然。",
-                    "citation_id": "S1",
-                    "document_heading": "",
-                    "document_excerpt": "",
-                    "red_underline_quote": "",
-                    "kinetic_lines": [],
-                    "image_prompt": "Write a specific English photorealistic editorial scene matching THIS topic (do not copy generic examples), dramatic lighting, shallow depth of field, no text",
-                }
-            ],
-        },
-        "short_video": {
-            "title": "一句犀利繁中問句標題 #標籤1 #標籤2 #回答我",
-            "top_hook_line1": "第一行醒目大字(8-12字)",
-            "top_hook_line2": "第二行靈魂拷問(8-12字)!",
-            "hook_highlight_words": ["關鍵詞1", "回答我!"],
-            "push_cta_banner": "▶ 點擊下方連結觀看完整正片拆解",
-            "scenes": [
-                {
-                    "scene_id": "S01",
-                    "scene_mode": "ai_scene",
-                    "voice_style": "hook_question",
-                    "narration": "請撰寫約45到65字的2到3句快節奏開場旁白...",
-                    "citation_id": "S1",
-                    "document_heading": "",
-                    "document_excerpt": "",
-                    "red_underline_quote": "",
-                    "kinetic_lines": [],
-                    "image_prompt": "Write a specific English close-up photorealistic scene matching THIS topic, no text",
-                }
-            ],
-        },
-    }
+        extra_meta_req = ""
+        if act_idx == 1:
+            extra_meta_req = (
+                '"title": "具強烈反差感與雙問號的獨角獸那麼叫風格正片長標題（35-58字）",\n'
+                '  "seo_tags": ["標籤1", "標籤2", "標籤3", "標籤4", "標籤5", "標籤6"],\n  '
+            )
 
-    return f"""請針對以下選定主題與爬蟲公開資料，撰寫「獨角獸那麼叫」雙軌腳本：
+        user_prompt = f"""現在請撰寫整支 13 分鐘深度長片的 **【{act['name']}】（第 {act_idx}/6 幕）**。
 
-【選定主題】：{candidate.proposed_title}
-【核心矛盾】：{candidate.core_contradiction}
-【建議 Short 靈魂拷問】：{candidate.short_hook_question}
+【本片總主題】：{candidate.proposed_title}
+【核心制度矛盾】：{candidate.core_contradiction}
 
-【爬蟲實時抓取之公開資訊與法規來源（請務必在腳本中引用至少 4 個不同 S 編號，且數字與事實須忠於來源）】：
-{chr(10).join(sources_block)}
+【本幕專屬敘事任務】：
+{act['role_guide']}
 
-【背景知識補充】：
-{bg_block}
+【頻道原片蒸餾語氣轉折句式參考（請自然融入類似節奏，勿照抄無關主題詞彙）】：
+{gems_txt}
 
-【結構與場景數量要求】：
-1. `long_video.scenes` 請精準產出 **{target_long_scenes} 個場景**（編號 `L01` 到 `L{target_long_scenes:02d}`），每段 `narration` 必須包含 **3~4 句完整口語論述（每段約 85~125 字，總字數至少 1000 字以上）**，深入拆解數字換算、法規條文細節與商業話術，絕不可只寫短短一句話！
-   - 至少包含 3 個 `"evidence_doc"` 場景：綁定真實 `citation_id`，`document_heading` 寫公文或報導核心標題，`document_excerpt` 必須撰寫 **70~110 字具體法規門檻、官方說法與爭議重點摘要（絕對不可重複照抄標題文字！）**，並從 `document_excerpt` 中挑出最關鍵的一句（12~24字）填入 `red_underline_quote`。
-   - 至少包含 3 個 `"kinetic_black"` 場景（填寫 2~3 行 `kinetic_lines` 呈現數字換算或標準對比）。
-   - 至少包含 4 個 `"ai_scene"` 場景（每個場景的 `image_prompt` 必須緊扣該段旁白描述台灣的具體消費/商品/工廠/生活情境，英文描述，不含文字）。
-2. `short_video.scenes` 請精準產出 **{target_short_scenes} 個場景**（編號 `S01` 到 `S{target_short_scenes:02d}`），每段 `narration` 必須包含 **2~3 句緊湊旁白（每段約 45~65 字）**。
-   - `short_video.title` 必須先寫一句完整吸睛繁中問句，後面再加上 `#標籤`。
-   - 包含至少 1 個 `"evidence_doc"`、1 個 `"kinetic_black"`、以及 2~4 個 `"ai_scene"`。
-   - 最後一段 `S{target_short_scenes:02d}` 必須明確推流引導點擊下方關聯長片！
+{ex_block}
 
-【輸出 JSON 格式範例】：
-{json.dumps(schema_hint, ensure_ascii=False, indent=2)}
-"""
+【可引用之爬蟲公開來源與數據（請挑選與本幕最相關的 S 編號深入拆解）】：
+{sources_txt}
+
+【本幕硬性規格要求】：
+1. 請產出 **{target_scenes} 個場景**，每個場景的 `narration` 必須寫滿 **110～140 個繁體中文字（4～6 句口語完整推論、算術對比或實例吐槽）**，本幕合計中文字數必須 **不少於 {target_chars} 字**！
+2. 本幕內請交替安排至少 2 個 `"ai_scene"`、2 個 `"evidence_doc"`、1～2 個 `"kinetic_black"`。
+3. 請嚴格輸出以下合法 JSON 結構：
+{{
+  {extra_meta_req}"scenes": [
+    {{
+      "scene_id": "TEMP_1",
+      "scene_mode": "ai_scene",
+      "voice_style": "{"hook_question" if act_idx == 1 else "narrative_explain"}",
+      "narration": "請在此寫滿 110 到 140 字的道地獨角獸那麼叫口播逐字稿...",
+      "citation_id": "S1",
+      "document_heading": "",
+      "document_excerpt": "",
+      "red_underline_quote": "",
+      "kinetic_lines": [],
+      "image_prompt": "Specific English photorealistic editorial scene matching this paragraph, no text"
+    }}
+  ]
+}}"""
+        passes.append(
+            {
+                "id": act_id,
+                "system": BASE_SYSTEM_PROMPT,
+                "user": user_prompt,
+                "min_cjk_chars": target_chars,
+                "max_new_tokens": 3600,
+                "temperature": 0.56,
+                "inject_prior_summary": act_idx > 1,
+            }
+        )
+
+    # Pass 7: Full-Length Corresponding Traffic-Push Short (~130-150s, >= 720 CJK chars)
+    short_target_chars = max(360, int(round(760 * scale_factor)))
+    short_target_scenes = max(5, int(round(7 * scale_factor)))
+    short_exs = playbook.get("short_exemplars", [])[:2]
+    short_ex_txt = "\n\n".join(
+        f"【原片推流 Short 真實逐字範本 {i+1}：《{sx['title'][:30]}》（{sx['duration_sec']}秒 / {sx['cjk_char_count']}字）】\n「{sx['full_text'][:380]}…」"
+        for i, sx in enumerate(short_exs)
+    )
+
+    short_user = f"""現在請針對同一支長片主題，撰寫對應導流推流的 **【9:16 完整版 YouTube Short 腳本】（目標時長約 120～150 秒，總字數至少 {short_target_chars} 字）**。
+
+【對應長片主題】：{candidate.proposed_title}
+【建議靈魂拷問 Hook】：{candidate.short_hook_question}
+
+{short_ex_txt}
+
+【可引用之爬蟲公開來源】：
+{sources_txt}
+
+【推流 Short 硬性規格要求】：
+1. 產出 **{short_target_scenes} 個快節奏場景**（`S01`..`S{short_target_scenes:02d}`），每段 `narration` 寫滿 **95～130 個繁體中文字**，合計中文字數 **不少於 {short_target_chars} 字**！
+2. 開頭第一段直接向護航話術或荒謬現象發起靈魂拷問（如「回答我！」），中段拆解最反直覺的 2 個公開數據反差，最後一段 `S{short_target_scenes:02d}` 留下關鍵制度盲點懸念，明確引導觀眾：「至於各國法規怎麼罰、完整公文數據怎麼算，我全部整理在下方關聯正片裡，點進去一次看懂！」
+3. 請嚴格輸出以下合法 JSON：
+{{
+  "title": "一句犀利繁中問句標題 #標籤1 #標籤2 #回答我",
+  "top_hook_line1": "上方黑底第一行大字(8-12字)",
+  "top_hook_line2": "第二行靈魂拷問(8-12字)!",
+  "hook_highlight_words": ["關鍵詞1", "回答我!"],
+  "push_cta_banner": "▶ 點擊下方連結觀看完整正片拆解",
+  "scenes": [
+    {{
+      "scene_id": "S01",
+      "scene_mode": "ai_scene",
+      "voice_style": "hook_question",
+      "narration": "請在此寫滿 95 到 130 字的快節奏靈魂拷問口播稿...",
+      "citation_id": "S1",
+      "document_heading": "",
+      "document_excerpt": "",
+      "red_underline_quote": "",
+      "kinetic_lines": [],
+      "image_prompt": "Specific English dramatic close-up scene matching this topic, no text"
+    }}
+  ]
+}}"""
+
+    passes.append(
+        {
+            "id": "short_promo_pass",
+            "system": BASE_SYSTEM_PROMPT,
+            "user": short_user,
+            "min_cjk_chars": short_target_chars,
+            "max_new_tokens": 3400,
+            "temperature": 0.58,
+            "inject_prior_summary": False,
+        }
+    )
+    return passes
 
 
 def _extract_json_dict(raw: str) -> dict[str, Any]:
@@ -189,55 +254,171 @@ def _extract_json_dict(raw: str) -> dict[str, Any]:
     return json.loads(cleaned)
 
 
-def _call_rtx6000_llm(system: str, user: str, run_dir: Path) -> str:
+def _execute_passes_rtx6000(passes: list[dict[str, Any]], run_dir: Path) -> list[dict[str, str]]:
     ep = RemoteWorkerEndpoint.from_file(get_runtime_endpoint_path())
     if not ep:
         raise RuntimeError("No RTX PRO 6000 endpoint configured")
     client = RTX6000WorkerClient(ep)
-    req_payload = {
-        "model": "Qwen/Qwen2.5-14B-Instruct",
-        "system": system,
-        "user": user,
-        "max_new_tokens": 5200,
-        "temperature": 0.5,
-    }
-    local_req = run_dir / "temp" / "llm_req.json"
+    req_payload = {"model": "Qwen/Qwen2.5-14B-Instruct", "passes": passes}
+    local_req = run_dir / "temp" / "llm_passes_req.json"
     local_req.parent.mkdir(parents=True, exist_ok=True)
-    local_req.write_text(json.dumps(req_payload, ensure_ascii=False), encoding="utf-8")
+    local_req.write_text(json.dumps(req_payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
     remote_job_dir = f"runs/{run_dir.name}"
-    client.upload_file(Path(__file__).resolve().parents[3] / "scripts/rtx6000_gpu_engine.py", "scripts/rtx6000_gpu_engine.py")
-    client.upload_file(local_req, f"{remote_job_dir}/llm_req.json")
+    client.upload_file(REPO_ROOT / "scripts/rtx6000_gpu_engine.py", "scripts/rtx6000_gpu_engine.py")
+    client.upload_file(local_req, f"{remote_job_dir}/llm_passes_req.json")
     jid = client.submit_job(
         f".venv/bin/python scripts/rtx6000_gpu_engine.py --task llm_generate "
-        f"--req {remote_job_dir}/llm_req.json --out {remote_job_dir}/llm_out.json",
-        job_id=f"llm_{run_dir.name}",
+        f"--req {remote_job_dir}/llm_passes_req.json --out {remote_job_dir}/llm_passes_out.json",
+        job_id=f"llm6act_{run_dir.name}",
     )
-    info = client.wait_job(jid, poll_interval=3.0, timeout=600.0)
+    info = client.wait_job(jid, poll_interval=4.0, timeout=1500.0)
     if info.get("rc") != 0:
-        raise RuntimeError(f"RTX6000 LLM job failed: {info.get('log_tail', '')[-1200:]}")
-    local_out = run_dir / "temp" / "llm_out.json"
-    client.download_file(f"{remote_job_dir}/llm_out.json", local_out)
-    return json.loads(local_out.read_text(encoding="utf-8"))["content"]
+        raise RuntimeError(f"RTX6000 6-Act LLM job failed: {info.get('log_tail', '')[-1800:]}")
+    local_out = run_dir / "temp" / "llm_passes_out.json"
+    client.download_file(f"{remote_job_dir}/llm_passes_out.json", local_out)
+    return json.loads(local_out.read_text(encoding="utf-8"))["passes"]
 
 
-def _call_local_ollama(system: str, user: str) -> str:
-    with httpx.Client(timeout=300.0) as client:
-        resp = client.post(
-            "http://127.0.0.1:11434/api/chat",
-            json={
-                "model": "qwen3:8b",
-                "stream": False,
-                "format": "json",
-                "messages": [
-                    {"role": "system", "content": system + "\n/no_think"},
-                    {"role": "user", "content": user},
-                ],
-                "options": {"temperature": 0.5, "num_ctx": 12288, "num_predict": 5000},
-            },
-        )
-        resp.raise_for_status()
-        return resp.json()["message"]["content"]
+def _execute_passes_local_or_api(passes: list[dict[str, Any]], run_dir: Path) -> list[dict[str, str]]:
+    api_key = os.environ.get("OPENAI_API_KEY")
+    api_base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
+    results: list[dict[str, str]] = []
+    prior: list[str] = []
+
+    for p in passes:
+        user_msg = p["user"]
+        if prior and p.get("inject_prior_summary", True):
+            user_msg += "\n\n【前序章節已講重點（請勿重複）】：\n" + "\n".join(f"- {x}" for x in prior[-5:])
+
+        if api_key:
+            with httpx.Client(timeout=180.0) as client:
+                r = client.post(
+                    f"{api_base.rstrip('/')}/chat/completions",
+                    headers={"Authorization": f"Bearer {api_key}"},
+                    json={
+                        "model": os.environ.get("OPENAI_MODEL", "gpt-4o"),
+                        "response_format": {"type": "json_object"},
+                        "messages": [
+                            {"role": "system", "content": p["system"]},
+                            {"role": "user", "content": user_msg},
+                        ],
+                    },
+                )
+                r.raise_for_status()
+                raw = r.json()["choices"][0]["message"]["content"]
+        else:
+            with httpx.Client(timeout=360.0) as client:
+                r = client.post(
+                    "http://127.0.0.1:11434/api/chat",
+                    json={
+                        "model": "qwen3:8b",
+                        "stream": False,
+                        "format": "json",
+                        "messages": [
+                            {"role": "system", "content": p["system"] + "\n/no_think"},
+                            {"role": "user", "content": user_msg},
+                        ],
+                        "options": {"temperature": 0.55, "num_ctx": 12288, "num_predict": 3600},
+                    },
+                )
+                r.raise_for_status()
+                raw = r.json()["message"]["content"]
+
+        try:
+            obj = _extract_json_dict(raw)
+            scs = obj.get("scenes", [])
+            if scs:
+                prior.append(f"{p['id']}: " + " / ".join(s.get("narration", "")[:26] for s in scs[:3]))
+        except Exception:
+            pass
+        results.append({"id": p["id"], "content": raw})
+
+    local_out = run_dir / "temp" / "llm_passes_out.json"
+    local_out.parent.mkdir(parents=True, exist_ok=True)
+    local_out.write_text(json.dumps({"ok": True, "passes": results}, ensure_ascii=False, indent=2), encoding="utf-8")
+    return results
+
+
+def _sanitize_scene_list(
+    raw_scenes: list[dict[str, Any]],
+    prefix: str,
+    dossier: ResearchDossier,
+    is_short: bool = False,
+) -> list[dict[str, Any]]:
+    valid_modes = {"evidence_doc", "kinetic_black", "ai_scene"}
+    valid_voices = {"hook_question", "narrative_explain", "satire_punch", "short_energetic"}
+    valid_ids = {c.source_id: c for c in dossier.citations}
+    cite_keys = list(valid_ids.keys())
+
+    cleaned: list[dict[str, Any]] = []
+    for idx, sc in enumerate(raw_scenes, 1):
+        nar = re.sub(r"\s+", " ", str(sc.get("narration", "")).strip())
+        if len(nar) < 12:
+            continue
+        sc["scene_id"] = f"{prefix}{idx:02d}"
+        sc["narration"] = nar
+
+        raw_mode = str(sc.get("scene_mode", "ai_scene")).lower().strip()
+        if raw_mode not in valid_modes:
+            if any(w in raw_mode for w in ("doc", "evidence", "news")):
+                sc["scene_mode"] = "evidence_doc"
+            elif any(w in raw_mode for w in ("kinetic", "black", "stat", "math")):
+                sc["scene_mode"] = "kinetic_black"
+            else:
+                sc["scene_mode"] = "ai_scene"
+
+        # Prevent 3 identical non-AI static cards in a row for dynamic visual pacing
+        if len(cleaned) >= 2 and sc["scene_mode"] == cleaned[-1]["scene_mode"] == cleaned[-2]["scene_mode"]:
+            sc["scene_mode"] = "ai_scene" if sc["scene_mode"] != "ai_scene" else "kinetic_black"
+
+        raw_vs = str(sc.get("voice_style", "")).lower().strip()
+        if raw_vs not in valid_voices:
+            if idx == 1 or "hook" in raw_vs or "question" in raw_vs:
+                sc["voice_style"] = "hook_question"
+            elif any(w in raw_vs for w in ("satire", "punch", "irony", "roar")):
+                sc["voice_style"] = "satire_punch"
+            elif is_short or any(w in raw_vs for w in ("short", "fast", "energetic")):
+                sc["voice_style"] = "short_energetic"
+            else:
+                sc["voice_style"] = "narrative_explain"
+
+        # Rotate citations cleanly if missing or invalid so all crawled sources get featured
+        cid = sc.get("citation_id")
+        if cid not in valid_ids:
+            cid = cite_keys[(idx - 1) % len(cite_keys)] if cite_keys else None
+            sc["citation_id"] = cid
+
+        if sc["scene_mode"] == "evidence_doc" and cid and cid in valid_ids:
+            cite = valid_ids[cid]
+            if not sc.get("document_heading"):
+                sc["document_heading"] = f"{cite.publisher}｜{cite.title}"
+            if not sc.get("document_excerpt") or sc["document_excerpt"].strip() == cite.title.strip():
+                sc["document_excerpt"] = f"{cite.excerpt}（重點摘要：{nar[:65]}）"
+            if not sc.get("red_underline_quote"):
+                sc["red_underline_quote"] = nar[:20]
+
+        if sc["scene_mode"] == "kinetic_black":
+            kls = sc.get("kinetic_lines")
+            if not isinstance(kls, list) or not kls:
+                parts = [p.strip() for p in re.split(r"[，。！？!?]", nar) if p.strip()][:2]
+                sc["kinetic_lines"] = [
+                    {"text": pt[:18], "highlight": "", "highlight_color": "yellow"} for pt in parts
+                ]
+            else:
+                for kl in kls:
+                    if isinstance(kl, dict):
+                        hc = str(kl.get("highlight_color", "yellow")).lower().strip()
+                        kl["highlight_color"] = "red" if ("red" in hc or "crimson" in hc) else "yellow"
+
+        if sc["scene_mode"] == "ai_scene" and not sc.get("image_prompt"):
+            sc["image_prompt"] = (
+                "Editorial documentary photograph of Taiwanese retail market and consumer products, "
+                "dramatic studio lighting, shallow depth of field, photorealistic, no text"
+            )
+
+        cleaned.append(sc)
+    return cleaned
 
 
 def format_youtube_descriptions(
@@ -260,7 +441,7 @@ def format_youtube_descriptions(
     )
     short_desc = (
         f"▶ 完整數據與法規拆解正片：《{blueprint.long_video.title}》\n\n"
-        + "\n".join(cite_lines[:5])
+        + "\n".join(cite_lines[:6])
         + "\n\n本影片內容僅為公共議題分析，所有資訊皆來自公開資料、政府法規與統計報導，僅供公共利益與教育用途。"
     )
     return long_desc, short_desc
@@ -270,132 +451,87 @@ def generate_episode_blueprint(
     candidate: TopicCandidate,
     dossier: ResearchDossier,
     run_dir: Path,
-    target_long_scenes: int = 10,
-    target_short_scenes: int = 5,
+    scale_factor: float = 1.0,
 ) -> EpisodeBlueprint:
-    """Generate and validate the complete Long + Short script blueprint."""
-    user_prompt = _build_user_prompt(
-        candidate,
-        dossier,
-        target_long_scenes=target_long_scenes,
-        target_short_scenes=target_short_scenes,
+    """Generate a full 12-15 minute 6-Act Long script + 2-minute Traffic-Push Short script."""
+    playbook = load_distilled_playbook()
+    passes = _build_six_act_passes(candidate, dossier, playbook, scale_factor=scale_factor)
+
+    cached_passes = run_dir / "temp" / "llm_passes_out.json"
+    pass_results: list[dict[str, str]] | None = None
+    if cached_passes.exists():
+        try:
+            pass_results = json.loads(cached_passes.read_text(encoding="utf-8")).get("passes")
+        except Exception:
+            pass_results = None
+
+    if not pass_results:
+        if os.environ.get("OPENAI_API_KEY"):
+            pass_results = _execute_passes_local_or_api(passes, run_dir)
+        else:
+            try:
+                pass_results = _execute_passes_rtx6000(passes, run_dir)
+            except Exception:
+                pass_results = _execute_passes_local_or_api(passes, run_dir)
+
+    all_long_raw_scenes: list[dict[str, Any]] = []
+    long_title = candidate.proposed_title
+    seo_tags = ["獨角獸那麼叫", "台灣", "公開資訊", "法規拆解", "消費者權益"]
+    short_parsed: dict[str, Any] = {}
+
+    for pr in pass_results:
+        pid = pr["id"]
+        obj = _extract_json_dict(pr["content"])
+        if pid == "short_promo_pass":
+            short_parsed = obj
+        else:
+            if pid == "act_1_hook_reversal":
+                if obj.get("title"):
+                    long_title = str(obj["title"]).strip()
+                if isinstance(obj.get("seo_tags"), list) and obj["seo_tags"]:
+                    seo_tags = [str(t) for t in obj["seo_tags"]]
+            all_long_raw_scenes.extend(obj.get("scenes", []))
+
+    clean_long_scenes = _sanitize_scene_list(all_long_raw_scenes, "L", dossier, is_short=False)
+    clean_short_scenes = _sanitize_scene_list(
+        short_parsed.get("scenes", []), "S", dossier, is_short=True
     )
 
-    raw_text: str | None = None
-    last_err: Exception | None = None
+    long_cjk = len(re.findall(r"[\u4e00-\u9fff]", "".join(s["narration"] for s in clean_long_scenes)))
+    short_cjk = len(re.findall(r"[\u4e00-\u9fff]", "".join(s["narration"] for s in clean_short_scenes)))
 
-    cached_llm_out = run_dir / "temp" / "llm_out.json"
-    if cached_llm_out.exists():
-        try:
-            raw_text = json.loads(cached_llm_out.read_text(encoding="utf-8")).get("content")
-        except Exception:
-            raw_text = None
-
-    # 1. Try OpenAI-compatible env API if user configured OPENAI_API_KEY
-    api_key = os.environ.get("OPENAI_API_KEY")
-    api_base = os.environ.get("OPENAI_BASE_URL", "https://api.openai.com/v1")
-    if raw_text is None and api_key:
-        try:
-            with httpx.Client(timeout=120.0) as client:
-                r = client.post(
-                    f"{api_base.rstrip('/')}/chat/completions",
-                    headers={"Authorization": f"Bearer {api_key}"},
-                    json={
-                        "model": os.environ.get("OPENAI_MODEL", "gpt-4o"),
-                        "response_format": {"type": "json_object"},
-                        "messages": [
-                            {"role": "system", "content": SYSTEM_PROMPT},
-                            {"role": "user", "content": user_prompt},
-                        ],
-                    },
-                )
-                r.raise_for_status()
-                raw_text = r.json()["choices"][0]["message"]["content"]
-        except Exception as exc:
-            last_err = exc
-
-    # 2. Primary Heavy Node: Colab RTX PRO 6000 (Qwen2.5-14B-Instruct bfloat16)
-    if raw_text is None:
-        try:
-            raw_text = _call_rtx6000_llm(SYSTEM_PROMPT, user_prompt, run_dir)
-        except Exception as exc:
-            last_err = exc
-
-    # 3. Local Fallback: Ollama qwen3:8b
-    if raw_text is None:
-        try:
-            raw_text = _call_local_ollama(SYSTEM_PROMPT, user_prompt)
-        except Exception as exc:
-            raise RuntimeError(f"All LLM backends failed; last={exc}, prev={last_err}") from exc
-
-    parsed = _extract_json_dict(raw_text)
-    valid_ids = {c.source_id: c for c in dossier.citations}
-    default_cid = dossier.citations[0].source_id if dossier.citations else None
-
-    # Sanitize & guarantee enum values and citation bindings for 100% unattended resilience
-    valid_modes = {"evidence_doc", "kinetic_black", "ai_scene"}
-    valid_voices = {"hook_question", "narrative_explain", "satire_punch", "short_energetic"}
-
-    for track_key in ("long_video", "short_video"):
-        scenes = parsed.get(track_key, {}).get("scenes", [])
-        for idx_s, sc in enumerate(scenes):
-            raw_mode = str(sc.get("scene_mode", "ai_scene")).lower().strip()
-            if raw_mode not in valid_modes:
-                if "doc" in raw_mode or "evidence" in raw_mode or "news" in raw_mode:
-                    sc["scene_mode"] = "evidence_doc"
-                elif "kinetic" in raw_mode or "black" in raw_mode or "stat" in raw_mode or "math" in raw_mode:
-                    sc["scene_mode"] = "kinetic_black"
-                else:
-                    sc["scene_mode"] = "ai_scene"
-
-            raw_vs = str(sc.get("voice_style", "")).lower().strip()
-            if raw_vs not in valid_voices:
-                if idx_s == 0 or "hook" in raw_vs or "question" in raw_vs:
-                    sc["voice_style"] = "hook_question"
-                elif "satire" in raw_vs or "punch" in raw_vs or "irony" in raw_vs or "roar" in raw_vs:
-                    sc["voice_style"] = "satire_punch"
-                elif track_key == "short_video" or "short" in raw_vs or "fast" in raw_vs or "energetic" in raw_vs:
-                    sc["voice_style"] = "short_energetic"
-                else:
-                    sc["voice_style"] = "narrative_explain"
-
-            if isinstance(sc.get("kinetic_lines"), list):
-                for kl in sc["kinetic_lines"]:
-                    if isinstance(kl, dict):
-                        hc = str(kl.get("highlight_color", "yellow")).lower().strip()
-                        kl["highlight_color"] = "red" if ("red" in hc or "crimson" in hc) else "yellow"
-
-            cid = sc.get("citation_id")
-            if cid not in valid_ids:
-                sc["citation_id"] = default_cid
-                cid = default_cid
-            if sc.get("scene_mode") == "evidence_doc" and cid and cid in valid_ids:
-                cite = valid_ids[cid]
-                if not sc.get("document_heading"):
-                    sc["document_heading"] = f"{cite.publisher}｜{cite.title}"
-                if not sc.get("document_excerpt"):
-                    sc["document_excerpt"] = cite.excerpt
-                if not sc.get("red_underline_quote"):
-                    sc["red_underline_quote"] = cite.excerpt[:22]
-            if sc.get("scene_mode") == "kinetic_black" and not sc.get("kinetic_lines"):
-                sc["kinetic_lines"] = [
-                    {"text": sc.get("narration", "")[:14], "highlight": "", "highlight_color": "yellow"}
-                ]
-            if sc.get("scene_mode") == "ai_scene" and not sc.get("image_prompt"):
-                sc["image_prompt"] = (
-                    "Cinematic editorial photography in a modern Taiwanese supermarket aisle, "
-                    "dramatic lighting, shallow depth of field, ultra detailed, photorealistic, no text"
-                )
+    hook_l1 = str(short_parsed.get("top_hook_line1") or candidate.short_hook_question[:11]).strip()
+    hook_l2 = str(short_parsed.get("top_hook_line2") or "真相到底是什麼 回答我！").strip()
+    s_title = str(short_parsed.get("title") or f"{hook_l1}，{hook_l2} #獨角獸那麼叫 #回答我").strip()
+    if s_title.startswith("#"):
+        s_title = f"{hook_l1}，{hook_l2} {s_title}"
 
     bp = EpisodeBlueprint(
         topic=candidate.proposed_title,
         pillar=candidate.pillar,
-        long_video=LongVideoSpec.model_validate(parsed["long_video"]),
-        short_video=ShortVideoSpec.model_validate(parsed["short_video"]),
+        long_cjk_chars=long_cjk,
+        short_cjk_chars=short_cjk,
+        long_video=LongVideoSpec.model_validate(
+            {
+                "title": long_title,
+                "seo_tags": seo_tags,
+                "scenes": clean_long_scenes,
+            }
+        ),
+        short_video=ShortVideoSpec.model_validate(
+            {
+                "title": s_title,
+                "top_hook_line1": hook_l1,
+                "top_hook_line2": hook_l2,
+                "hook_highlight_words": [
+                    str(w) for w in (short_parsed.get("hook_highlight_words") or ["回答我!"])
+                ],
+                "push_cta_banner": str(
+                    short_parsed.get("push_cta_banner") or "▶ 點擊下方連結觀看完整正片拆解"
+                ),
+                "scenes": clean_short_scenes,
+            }
+        ),
     )
-    if bp.short_video.title.strip().startswith("#"):
-        bp.short_video.title = (
-            f"{bp.short_video.top_hook_line1}，{bp.short_video.top_hook_line2} {bp.short_video.title.strip()}"
-        )
     bp.long_description, bp.short_description = format_youtube_descriptions(bp, dossier)
     return bp

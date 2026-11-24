@@ -73,3 +73,19 @@ def test_manual_topic_selection() -> None:
     assert winner.rank == 1
     assert "全麥" in winner.proposed_title
     assert len(cands) == 1
+
+
+def test_distilled_playbook_retrieval() -> None:
+    from unicorn_roar.scriptwriter.distiller import (
+        SIX_ACT_SCHEMA,
+        load_distilled_playbook,
+        retrieve_act_exemplars,
+    )
+
+    pb = load_distilled_playbook()
+    assert pb["empirical_metrics"]["long_episode_count"] >= 20
+    assert pb["empirical_metrics"]["long_avg_cjk_chars"] >= 3800
+    exs = retrieve_act_exemplars(pb, "food_labeling", SIX_ACT_SCHEMA[0]["act_id"])
+    assert len(exs) == 2
+    assert len(exs[0]["excerpt"]) >= 120
+
