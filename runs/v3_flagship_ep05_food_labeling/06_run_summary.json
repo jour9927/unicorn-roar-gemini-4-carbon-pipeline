@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "run_id": "v3_flagship_ep05_food_labeling",
+  "run_dir": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/v3_flagship_ep05_food_labeling",
+  "selected_topic": {
+    "rank": 1,
+    "pillar": "food_labeling",
+    "proposed_title": "瓶身寫義大利橄欖油，翻過來卻是調合油？食藥署品名標示規範與食用油等級真相",
+    "short_hook_question": "加一點橄欖油就能叫橄欖調合油？超市買油到底怎麼看！",
+    "core_contradiction": "高價特級初榨與精煉果渣油、調合油價差數倍，外文與圖案卻讓消費者誤認純度",
+    "search_queries": [
+      "台灣 橄欖油 調合油 標示 食藥署",
+      "市售橄欖油 消基會 抽驗 標示",
+      "包裝調合油品名標示相關規定"
+    ],
+    "seed_headlines": [
+      "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+      "【查證】全球橄欖油造假亂象影片？進口特級初榨很難買？食藥署詳解",
+      "純橄欖油爆摻入芥花油挨罰 譚敦慈授挑油秘訣：小罐買、別有品牌迷思"
+    ],
+    "score": 81.12
+  },
+  "citations_count": 10,
+  "long_cjk_chars": 3540,
+  "short_cjk_chars": 571,
+  "long_scene_count": 73,
+  "short_scene_count": 12,
+  "long_title": "義大利橄欖油標示調合油？發現標示規範漏洞，高價特級初榨與廉價調合油混為一談？外文圖案讓消費者誤認純度?",
+  "short_title": "義大利橄欖油背後藏玄機？ #食用油真相 #獨角獸那麼叫",
+  "outputs": {
+    "long_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/v3_flagship_ep05_food_labeling/output/long_episode_1080p.mp4",
+    "long_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/v3_flagship_ep05_food_labeling/output/long_episode.zh-TW.srt",
+    "long_duration_sec": 782.34,
+    "short_video_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/v3_flagship_ep05_food_labeling/output/short_promo_1080x1920.mp4",
+    "short_srt_path": "/Users/alan_dingchaoliao/Downloads/獨角獸那麼叫/runs/v3_flagship_ep05_food_labeling/output/short_promo.zh-TW.srt",
+    "short_duration_sec": 107.64
+  },
+  "verification": {
+    "long_probe": {
+      "width": 1920,
+      "height": 1080,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 782.34,
+      "duration_min": 13.04,
+      "size_mb": 313.52
+    },
+    "short_probe": {
+      "width": 1080,
+      "height": 1920,
+      "fps": "30/1",
+      "video_codec": "h264",
+      "audio_codec": "aac",
+      "sample_rate": "44100",
+      "duration_sec": 107.64,
+      "duration_min": 1.79,
+      "size_mb": 73.49
+    }
+  }
+}

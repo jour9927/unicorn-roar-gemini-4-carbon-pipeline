@@ -34,29 +34,37 @@ def _to_zhtw(text: str) -> str:
         return text
 
 
-def split_subtitle_phrases(text: str, max_chars: int = 14) -> list[str]:
-    """Split Traditional Chinese narration into balanced @unicorn-roar 9-15 char subtitle cues (zero 1-3 char orphans)."""
+def split_subtitle_phrases(text: str, max_chars: int = 15) -> list[str]:
+    """Split Traditional Chinese narration at natural phrase boundaries (zero mid-word breaks like `更多/錢`)."""
     text = _to_zhtw(text)
-    raw_parts = re.split(r"[，。！？!?；;：:、\n]+", text)
+    raw_parts = re.split(r"[，。！？!?；;：:、\s]+", text)
     phrases: list[str] = []
-    soft_max = max_chars + 2  # Allow up to 16 chars intact rather than leaving a 1-2 char orphan!
+    soft_max = max_chars + 2  # Keep <= 17-char clauses intact on one crisp line!
     for part in raw_parts:
         p = part.strip(" 「」『』")
         if not p:
             continue
         while len(p) > soft_max:
             cut: int | None = None
-            for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻", "而且", "如果", "問題是", "也就是"):
-                idx = p.find(kw, 5, max_chars + 1)
+            for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻是", "而是", "而且", "如果", "問題是", "也就是"):
+                idx = p.find(kw, 5, max_chars + 2)
                 if idx != -1 and (len(p) - idx) >= 5:
                     cut = idx
                     break
             if cut is None:
                 mid = (len(p) + 1) // 2
-                for ch_kw in ("的", "在", "把", "被", "讓", "跟", "和", "與", "或"):
-                    idx = p.find(ch_kw, max(5, mid - 3), min(max_chars, mid + 4))
+                # Prefer cutting AFTER `了`, `過`, `完`, `後`, `時`, `裡`, `上`, `下` or BEFORE prepositions `在`, `把`, `被`, `讓`, `向`, `從`
+                for after_ch in ("了", "過", "後", "時", "裡", "上", "下"):
+                    idx = p.find(after_ch, max(5, mid - 4), min(max_chars, mid + 4))
                     if idx != -1 and (len(p) - (idx + 1)) >= 5:
                         cut = idx + 1
+                        break
+            if cut is None:
+                mid = (len(p) + 1) // 2
+                for before_ch in ("在", "把", "被", "讓", "跟", "從", "對", "比", "卻", "就", "都", "還"):
+                    idx = p.find(before_ch, max(5, mid - 4), min(max_chars, mid + 4))
+                    if idx != -1 and (len(p) - idx) >= 5:
+                        cut = idx
                         break
             if cut is None:
                 cut = min(max_chars, max(6, (len(p) + 1) // 2))
@@ -65,6 +73,42 @@ def split_subtitle_phrases(text: str, max_chars: int = 14) -> list[str]:
         if p:
             phrases.append(p)
     return phrases or [text.strip()[:soft_max]]
+
+
+def split_into_tts_clauses(text: str, target_max: int = 34) -> list[tuple[str, str]]:
+    """Break scene narration into 16-36 char spoken clauses so F5-TTS preserves natural pitch & prosody!
+
+    Returns list of `(clause_text_with_punct, ending_punct)`.
+    """
+    text = _to_zhtw(text).strip()
+    tokens = re.split(r"([。！？!?；;，,：:])", text)
+    raw_clauses: list[tuple[str, str]] = []
+    i = 0
+    while i < len(tokens):
+        seg = tokens[i].strip()
+        punct = tokens[i + 1] if (i + 1) < len(tokens) else "。"
+        i += 2
+        if not seg:
+            continue
+        raw_clauses.append((seg, punct))
+
+    merged: list[tuple[str, str]] = []
+    buf_txt = ""
+    for seg, punct in raw_clauses:
+        cand = f"{buf_txt}，{seg}" if buf_txt else seg
+        is_strong_end = punct in "。！？!?；;"
+        if is_strong_end or len(cand) >= 20:
+            if len(cand) > target_max and buf_txt:
+                merged.append((buf_txt + "，", "，"))
+                merged.append((seg + punct, punct))
+            else:
+                merged.append((cand + punct, punct))
+            buf_txt = ""
+        else:
+            buf_txt = cand
+    if buf_txt:
+        merged.append((buf_txt + "。", "。"))
+    return merged or [(text if text.endswith(("。", "！", "？")) else text + "。", "。")]
 
 
 def tight_cut_breaths(
@@ -176,8 +220,8 @@ def align_phrases_to_audio(
 
 
 def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -12.9) -> np.ndarray:
-    """Tight-cut breaths & master cloned voice to @unicorn-roar's exact `-13.0 LUFS` punch."""
-    wav = tight_cut_breaths(wav, sr, max_pause_sec=0.095, kept_pause_sec=0.035)
+    """Trim only unnatural TTS stalls (>210ms -> 110ms) while preserving natural ~12dB vocal dynamics!"""
+    wav = tight_cut_breaths(wav, sr, max_pause_sec=0.21, kept_pause_sec=0.105)
     try:
         import pyloudnorm as pyln
 
@@ -190,7 +234,6 @@ def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -12.9)
         rms = float(np.sqrt(np.mean(wav**2)) + 1e-9)
         wav = wav * (0.22 / rms)
 
-    # Transparent soft-knee peak limiter above 0.78 -> ceiling 0.93 (-0.6 dBTP) without dulling body loudness
     abs_w = np.abs(wav)
     knee = 0.78
     over = np.maximum(0.0, abs_w - knee)
@@ -454,30 +497,68 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
     total = len(req["segments"])
     for idx, item in enumerate(req["segments"], 1):
         seg_id = item["id"]
-        text = re.sub(r"\s+", "，", item["text"].strip())
-        if text and text[-1] not in "。！？!?":
-            text += "。"
+        raw_text = _to_zhtw(item["text"].strip())
         role = item.get("voice_style", "narrative_explain")
-        speed = float(item.get("speed", 1.06))
-        max_chars = int(item.get("max_chars_per_line", 14))
+        speed = float(item.get("speed", 1.01))
+        max_chars = int(item.get("max_chars_per_line", 15))
         anchor = anchors_by_role.get(role, default_anchor)
 
-        raw_wav_path = out_dir / f"{seg_id}_raw.wav"
+        clauses = split_into_tts_clauses(raw_text, target_max=34)
+        clause_wavs: list[np.ndarray] = []
+        subs: list[dict] = []
+        cursor_sec = 0.0
+        sr = 24000
+
+        for c_i, (clause_txt, punct) in enumerate(clauses):
+            raw_wav_path = out_dir / f"{seg_id}_c{c_i}_raw.wav"
+            wav_c, sr_c, _ = tts.infer(
+                ref_file=str(pack_dir / anchor["file"]),
+                ref_text=anchor["text"],
+                gen_text=clause_txt,
+                file_wave=str(raw_wav_path),
+                speed=speed,
+                remove_silence=False,
+            )
+            raw_wav_path.unlink(missing_ok=True)
+            sr = int(sr_c)
+            trimmed_c = tight_cut_breaths(np.asarray(wav_c, dtype=np.float32), sr, max_pause_sec=0.19, kept_pause_sec=0.09)
+
+            # Natural rhetorical breath gap after punctuation (matching REF_REAL 12.6% pause_pct!)
+            if c_i < len(clauses) - 1:
+                gap_sec = 0.19 if punct in "！？!?" else (0.13 if punct in "。；;" else 0.075)
+            else:
+                gap_sec = 0.04
+            gap_samples = int(gap_sec * sr)
+            full_c = np.concatenate([trimmed_c, np.zeros(gap_samples, dtype=np.float32)])
+            c_dur = len(full_c) / float(sr)
+
+            # Align sub-phrases strictly within this exact clause's ground-truth audio window!
+            c_phrases = split_subtitle_phrases(clause_txt, max_chars=max_chars)
+            c_subs = align_phrases_to_audio(full_c, sr, c_phrases)
+            for s_item in c_subs:
+                subs.append(
+                    {
+                        "start": round(cursor_sec + float(s_item["start"]), 3),
+                        "end": round(cursor_sec + float(s_item["end"]), 3),
+                        "text": s_item["text"],
+                    }
+                )
+            clause_wavs.append(full_c)
+            cursor_sec += c_dur
+
+        combined_wav = np.concatenate(clause_wavs) if clause_wavs else np.zeros(sr, dtype=np.float32)
+        mastered = master_narration_audio(combined_wav, sr, target_lufs=-12.9)
+
+        # Ensure 0.000s visual gap between consecutive subtitle cues so pills never flicker!
+        total_dur = round(len(mastered) / float(sr), 3)
+        for s_idx in range(len(subs) - 1):
+            subs[s_idx]["end"] = subs[s_idx + 1]["start"]
+        if subs:
+            subs[-1]["end"] = total_dur
+
         final_wav_path = out_dir / f"{seg_id}.wav"
-
-        wav, sr, _ = tts.infer(
-            ref_file=str(pack_dir / anchor["file"]),
-            ref_text=anchor["text"],
-            gen_text=text,
-            file_wave=str(raw_wav_path),
-            speed=speed,
-            remove_silence=False,
-        )
-        raw_wav_path.unlink(missing_ok=True)
-        mastered = master_narration_audio(np.asarray(wav), int(sr), target_lufs=-13.2)
-
         tmp_24k = out_dir / f"{seg_id}_24k.wav"
-        sf.write(str(tmp_24k), mastered, int(sr), subtype="PCM_16")
+        sf.write(str(tmp_24k), mastered, sr, subtype="PCM_16")
         subprocess.run(
             ["ffmpeg", "-y", "-i", str(tmp_24k), "-ar", "44100", "-ac", "2", str(final_wav_path)],
             check=True,
@@ -486,20 +567,17 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
         )
         tmp_24k.unlink(missing_ok=True)
 
-        phrases = split_subtitle_phrases(item["text"].strip(), max_chars=max_chars)
-        subs = align_phrases_to_audio(mastered, int(sr), phrases)
-        dur = round(len(mastered) / float(sr), 3)
         results.append(
             {
                 "id": seg_id,
                 "file": final_wav_path.name,
-                "duration": dur,
+                "duration": total_dur,
                 "voice_style": anchor["role"],
                 "subtitles": subs,
             }
         )
         if idx % 10 == 0 or idx == total:
-            print(f"[TTS {idx}/{total}] {seg_id} dur={dur}s cues={len(subs)}", flush=True)
+            print(f"[TTS {idx}/{total}] {seg_id} dur={total_dur}s clauses={len(clauses)} cues={len(subs)}", flush=True)
 
     (out_dir / "tts_results.json").write_text(
         json.dumps({"ok": True, "device": device, "segments": results}, ensure_ascii=False, indent=2),

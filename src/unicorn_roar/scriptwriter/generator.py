@@ -66,21 +66,21 @@ VisualMode = Literal[
 class KineticLine(BaseModel):
     text: str
     highlight: str = ""
-    highlight_color: Literal["yellow", "red"] = "yellow"
+    highlight_color: Literal["yellow", "red", "green"] = "yellow"
 
 
 class ComparisonSpec(BaseModel):
     heading: str = ""
-    left_title: str = "表面宣稱 / 調整前"
+    left_title: str = "正面宣稱 / 表面標準"
     left_points: list[str] = Field(default_factory=list)
-    right_title: str = "實際真相 / 調整後"
+    right_title: str = "翻開背面 / 實際真相"
     right_points: list[str] = Field(default_factory=list)
-    delta_badge: str = "資訊落差"
+    delta_badge: str = "關鍵落差"
 
 
 class CommentItem(BaseModel):
-    user: str = "@tw_consumer"
-    time: str = "3 小時前"
+    user: str = "@易天岐-tw"
+    time: str = "2 天前"
     text: str = ""
     likes: int = 246
 
@@ -90,6 +90,7 @@ class SceneSpec(BaseModel):
     scene_mode: VisualMode
     voice_style: Literal["hook_question", "narrative_explain", "satire_punch", "short_energetic"] = "narrative_explain"
     narration: str
+    trigger_meme: bool = False
     citation_id: str | None = None
     document_heading: str = ""
     document_paragraphs: list[str] = Field(default_factory=list)
@@ -135,24 +136,31 @@ AI_CLICHE_REPLACEMENTS = [
     ("消費者權益岌岌可危", "最後買單的永遠是消費者"),
     ("總結來說，", "說穿了，"),
     ("綜上所述，", "講白了，"),
+    ("看看網友們怎麼評論這件事吧", "結果翻開新聞底下的留言"),
+    ("真是各說各話", "風向完全搞錯重點"),
+    ("這樣的情況是不是讓你覺得有點傻眼", "這就是水最深的地方"),
+    ("其實這種情況並不少見", "而且這根本不是個案"),
+    ("到底該如何解決這個問題呢", "那問題到底卡在哪裡？"),
 ]
 
 BASE_SYSTEM_PROMPT = """你是台灣百萬觀看級深度消費與制度拆解頻道「獨角獸那麼叫 (@unicorn-roar)」本尊總編劇。
 
 ### 絕對禁止違反之鐵律：
-1. **100% 事實與數據忠誠度**：所有引用的百分比、法規條文、金額與日期，**必須完全來自下方提供的【爬蟲真實公開全文資料】**！若爬蟲資料未提及某個數字，絕對禁止自行編造任何「±10%」「七成商品」等假統計！
-2. **純血「獨角獸那麼叫」口語氣口（拒絕教科書 AI 腔）**：
-   - 嚴禁出現「你知道嗎？」「你可能會問」「總結來說」「讓人頭疼」「岌岌可危」等生硬翻譯腔或說教套話！
-   - 開場第一句必須像原片一樣直接切入具體消費現場算帳或新聞反差（例如：「星巴克大杯拿鐵，去冰補滿以前免費，現在補滿要多收15元，不想多付錢結果拿到手只剩三分之二杯！」「蒲燒鯛魚漲5元，你生氣嗎？你先別急著生氣啊！」）。
-   - 善用原片招牌節奏：「你沒聽錯！」「好樣的」「問題來了」「好吧認真來說」「這標題是寫給誰看的啊」「難道……嗎？」。
-3. **豐富視覺場景編排（7 種原片實景模式交替使用，嚴禁單調重複）**：
-   - `"news_portal"`：真實新聞網站截圖 + 放大紅線畫記（綁定 `citation_id`，提供 `red_underline_quote` 擷取來源真句 10-22 字）。
-   - `"official_gov_doc"`：中華民國政府機關正式公文（函／令）A4 截圖 + 放大紅線畫記（適合食藥署、農業部、主計總處、公平會法規條文）。
-   - `"gov_web_portal"`：政府官網公告專區頁面 + 放大紅線畫記。
-   - `"product_comparison"`：雙欄對照圖卡（填寫 `comparison`: `{heading, left_title, left_points:[2-3點], right_title, right_points:[2-3點], delta_badge:"如 ↗ 變相漲價+18%"}`）。
-   - `"netizen_comments"`：台灣網友社群真實反應留言牆（當旁白提到網友反應、輿論炸鍋或護航說法時使用，填寫 `comments`: 4 則道地台灣網友留言 `{user, time, text, likes}`）。
-   - `"kinetic_black"`：純黑底黃紅高對比算術／排名圖卡（填寫 2-3 行 `kinetic_lines`: `{text, highlight, highlight_color: "yellow"|"red"}`，其中 `highlight` 必須是 `text` 裡要變色的子字串，例如 `"15元"`，不可填 boolean！）。
-   - `"ai_scene"`：寫實情境攝影畫面（填寫具體英文 `image_prompt`，要求無文字乾淨構圖 `clean unbranded surface, no text, no letters`，並填 1-2 個英文實體名詞於 `wikimedia_query` 如 `"olive oil bottle"` 或 `"supermarket aisle"`）。
+1. **100% 事實與數據忠誠度**：所有引用的百分比、法規條文、金額與日期，**必須完全來自下方提供的【爬蟲真實公開全文資料】**！禁止自行編造任何未出現在爬蟲資料裡的數字！
+2. **零水詞、刀刀見骨的「獨角獸那麼叫」真跡口吻（嚴禁 AI 廢話過渡句）**：
+   - **絕對禁止出現以下廢話水詞**：「看看網友們怎麼評論這件事吧」「有人覺得這是騙人的，有人則認為……真是各說各話」「這樣的情況是不是讓你覺得有點傻眼」「其實這種情況並不少見」「希望能夠更加清楚地區分」「到底該如何解決這個問題呢」「你知道嗎？」。
+   - **每一句都必須推進具體資訊、法規拆解或算術反差**！對標原片真實句構：
+     • 開場反轉：「蒲燒鯛魚漲5元，你生氣嗎？你先別急著生氣啊！現在重點已經不是漲價了，而是你花100多元買到的這份鯛魚，它真的是鯛魚嗎？那不是鯛魚！是吳郭魚！」
+     • 拆解定義：「既然要講真的假的，那就得先確定兩件事：台灣的法規怎麼定義，以及你面前的產品究竟是怎麼調出來的！不不不，這裡就是水深的地方！」
+     • 算帳重擊：「580公升的芥花油，只倒進20公升橄欖油，純橄欖油連4%都不到，轉頭貼上義大利進口標籤，直接撈走3760萬！看懂了嗎？這就是一個死結！」
+3. **短促犀利的分鏡節奏（每段 `narration` 嚴格控制在 65～95 字，句讀清晰）**：
+   - **第 1 幕第 1 個場景必須設為 `"ai_scene"`**（實拍食物／賣場特寫畫面 + 貓咪反應梗片切鏡），絕不可在 0 秒放靜態網頁！
+   - `"news_portal"`：真實新聞網站截圖 + 推進畫紅線（綁定 `citation_id` 與 12-22 字原句 `red_underline_quote`）。
+   - `"official_gov_doc"`：全國法規資料庫（`第22條`/`第28條`）條文截圖 + 推進畫紅線。
+   - `"product_comparison"`：正面宣稱 vs 背面真相雙欄圖卡（填寫具體數字與成分對比）。
+   - `"netizen_comments"`：YouTube 台灣網友滾動留言牆（填寫 5 則超道地台灣鄉民酸辣留言，如「池上便當都固定菜色到底要賺多少」「原來我喝了三年芥花油XD」）。
+   - `"kinetic_black"`：純黑底算式板（**`kinetic_lines` 只能寫純算式與數據對照**，例如 `"580公升芥花油 + 20公升橄欖油 = 600公升"`, `"純橄欖油占比 = 3.3%"`, `"不法獲利 = 3760萬元"`，嚴禁把口播長句貼上黑板！）。
+   - `"ai_scene"`：實拍動態 B-roll 畫面（在 `wikimedia_query` 填寫精準英文場景詞如 `"olive oil"`, `"cooking"`, `"supermarket"`, `"factory"`, `"laboratory"`, `"money"`）。
 4. 只輸出合法 JSON，不加任何額外文字。"""
 
 
@@ -195,12 +203,18 @@ def _build_six_act_passes(
     passes: list[dict[str, Any]] = []
     for act_idx, act in enumerate(SIX_ACT_SCHEMA, 1):
         act_id = act["act_id"]
-        target_chars = max(340, int(round(act["target_cjk_chars"] * scale_factor)))
-        target_scenes = max(4, int(round(act["target_scenes"] * scale_factor)))
-        exemplars = retrieve_act_exemplars(playbook, candidate.pillar, act_id, max_exemplars=2, max_chars_each=420)
+        target_chars = max(360, int(round(act["target_cjk_chars"] * scale_factor)))
+        target_scenes = max(6, int(round((act["target_scenes"] + 1) * scale_factor)))
+        exemplars = retrieve_act_exemplars(playbook, candidate.pillar, act_id, max_exemplars=2, max_chars_each=460)
         ex_block = "\n\n".join(
             f"【原片同幕真實逐字範本 {i+1}：《{ex['title'][:34]}》】\n「{ex['excerpt']}」"
             for i, ex in enumerate(exemplars)
+        )
+
+        first_scene_rule = (
+            '\n- **鐵律：第 1 個場景 (`TEMP_1`) 必須是 `"scene_mode": "ai_scene"`**，且前兩句直接用具體價格或成分反差反問（如「一瓶賣四百多的義大利橄欖油，翻過來竟然是芥花調合油？你生氣嗎？你先別急著生氣啊！」）！'
+            if act_idx == 1
+            else ""
         )
 
         user_prompt = f"""請撰寫 13 分鐘正片的 **【{act['name']}】（第 {act_idx}/6 幕）**。
@@ -208,7 +222,7 @@ def _build_six_act_passes(
 【本片總主題】：{candidate.proposed_title}
 【核心制度矛盾】：{candidate.core_contradiction}
 【本幕敘事任務】：{act['role_guide']}
-【本幕視覺分鏡要求】：{act_visual_mix[act_idx - 1]}
+【本幕視覺分鏡要求】：{act_visual_mix[act_idx - 1]}{first_scene_rule}
 
 【頻道原片蒸餾語氣參考】：
 {gems_txt}
@@ -219,23 +233,23 @@ def _build_six_act_passes(
 {sources_txt}
 
 【輸出規格】：
-產出 **{target_scenes} 個場景**，每段 `narration` 寫滿 **105～135 個繁體中文字**（合計不少於 {target_chars} 字）。
+產出 **{target_scenes} 個短促快節奏場景**，每段 `narration` 寫 **70～95 個繁體中文字**（合計不少於 {target_chars} 字；嚴禁任何空洞水詞，每一句都要有具體數字、法條或邏輯推進！）。
 嚴格輸出以下合法 JSON：
 {{
   "scenes": [
     {{
       "scene_id": "TEMP_1",
-      "scene_mode": "news_portal",
+      "scene_mode": "{"ai_scene" if act_idx == 1 else "news_portal"}",
       "voice_style": "{"hook_question" if act_idx == 1 else "narrative_explain"}",
-      "narration": "105到135字道地口播稿，直接講具體事實與算術反差...",
+      "narration": "70到95字刀刀見骨口播稿，零廢話直接拆解具體事實與算術反差...",
       "citation_id": "S1",
       "document_heading": "新聞或公文標題",
       "red_underline_quote": "擷取來源內文中要畫紅線的關鍵原句(12-22字)",
-      "kinetic_lines": [{{"text": "對比文字: 15元", "highlight": "15元", "highlight_color": "yellow"}}],
-      "comparison": {{"heading": "對比標題", "left_title": "表面宣稱", "left_points": ["重點1", "重點2"], "right_title": "實際真相", "right_points": ["真相1", "真相2"], "delta_badge": "價差關鍵"}},
-      "comments": [{{"user": "@tw_user1", "time": "2小時前", "text": "道地台灣網友吐槽留言", "likes": 320}}],
-      "image_prompt": "Photorealistic editorial shot matching this scene, clean unbranded surface, no text, no letters",
-      "wikimedia_query": "english noun"
+      "kinetic_lines": [{{"text": "580公升芥花油 + 20公升橄欖油 = 600公升", "highlight": "20公升橄欖油", "highlight_color": "yellow"}}, {{"text": "純橄欖油占比 = 3.3%", "highlight": "3.3%", "highlight_color": "red"}}],
+      "comparison": {{"heading": "瓶身正面 vs 成分背面", "left_title": "正面大字宣稱", "left_points": ["義大利進口橄欖油", "深色玻璃瓶高價形象"], "right_title": "背面小字真相", "right_points": ["標示調合油（混入廉價油）", "純橄欖油比例極低"], "delta_badge": "價差逾 3 倍"}},
+      "comments": [{{"user": "@易天岐-tw", "time": "2天前", "text": "道地台灣網友酸辣吐槽留言", "likes": 320}}],
+      "image_prompt": "Photorealistic editorial close-up matching this scene, clean unbranded surface, no text, no letters",
+      "wikimedia_query": "olive oil"
     }}
   ]
 }}"""
@@ -306,7 +320,7 @@ def _build_six_act_passes(
 
 請注意原片標題特徵：
 - 長度 38～62 字，由 **2～3 個連續犀利反問句** 組成，直接點出具體數字／制度矛盾／業界話術，絕不用「淺談」「價格遊戲」「大解密」這種平庸詞！
-- Short 頂部大字 `top_hook_line1`（7～9字）+ `top_hook_line2`（6～9字），上下兩行形成強烈反差（參考原片：「台灣沒有麵包 / 只有狠活」「說吳郭魚是鯛魚 / 的人 回答我!」）。
+- Short 頂部滿版雙行大字 `top_hook_line1`（8～12字，亮黃色）+ `top_hook_line2`（8～12字，鮮紅色震撼反轉句，例如：「瓶身大字寫義大利橄欖油？ / 翻到背面竟是廉價調合油！」或「台灣鯛開始補血準備復活了？ / 但請先講清楚是什麼魚好嗎！」），嚴禁只寫短短三四個字！
 
 請只輸出合法 JSON：
 {{
@@ -480,8 +494,10 @@ def _sanitize_scene_list(
             else:
                 raw_mode = "ai_scene"
 
-        # Prevent repeating the exact same visual template back-to-back (and cap consecutive `ai_scene` at 2)
-        if cleaned and raw_mode == cleaned[-1]["scene_mode"] and raw_mode != "ai_scene":
+        # Scene 1 MUST ALWAYS open with live moving B-roll (`ai_scene`) + signature reaction meme, NEVER a static card!
+        if idx == 1:
+            raw_mode = "ai_scene"
+        elif cleaned and raw_mode == cleaned[-1]["scene_mode"] and raw_mode != "ai_scene":
             raw_mode = "ai_scene" if idx % 2 == 1 else "product_comparison"
         elif (
             raw_mode == "ai_scene"
@@ -491,6 +507,12 @@ def _sanitize_scene_list(
             cycle_modes = ["news_portal", "product_comparison", "netizen_comments", "kinetic_black", "official_gov_doc"]
             raw_mode = cycle_modes[(idx - 1) % len(cycle_modes)]
         sc["scene_mode"] = raw_mode
+
+        # Trigger authentic reaction meme cutaway (`Huh?` cat / shocked reaction) on opening hook & key satire punches!
+        sc["trigger_meme"] = bool(
+            idx == 1
+            or (raw_mode == "ai_scene" and (idx % 6 == 0 or "生氣" in nar or "離譜" in nar or "水深" in nar or "回答我" in nar))
+        )
 
         raw_vs = str(sc.get("voice_style") or "").lower().strip()
         if raw_vs not in valid_voices:
@@ -695,7 +717,7 @@ def generate_episode_blueprint(
         short_parsed.get("scenes", []), "S", dossier, is_short=True
     )
 
-    long_title = str(critic_parsed.get("long_title") or candidate.proposed_title).strip()
+    long_title = re.sub(r"\s*/\s*", "", str(critic_parsed.get("long_title") or candidate.proposed_title)).strip()
     seo_tags = [
         str(t)
         for t in (

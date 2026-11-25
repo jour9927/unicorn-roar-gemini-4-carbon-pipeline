@@ -64,8 +64,8 @@ def synthesize_episode_narration(
                 "id": sc.scene_id,
                 "text": sc.narration,
                 "voice_style": sc.voice_style,
-                "speed": 1.06,
-                "max_chars_per_line": 14,
+                "speed": 1.01,
+                "max_chars_per_line": 15,
             }
         )
     for sc in blueprint.short_video.scenes:
@@ -74,8 +74,8 @@ def synthesize_episode_narration(
                 "id": sc.scene_id,
                 "text": sc.narration,
                 "voice_style": sc.voice_style if sc.voice_style != "narrative_explain" else "short_energetic",
-                "speed": 1.10,
-                "max_chars_per_line": 13,
+                "speed": 1.04,
+                "max_chars_per_line": 14,
             }
         )
 

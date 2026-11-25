@@ -1,10 +1,10 @@
-# 獨角獸那麼叫 Gemini 4 Carbon 無人值守雙軌產線 V2 (`@unicorn-roar`)
+# 獨角獸那麼叫 Gemini 4 Carbon 無人值守雙軌產線 V3 (`@unicorn-roar`)
 
-完整逐站逆向復刻 YouTube 頻道 **獨角獸那麼叫 (`https://www.youtube.com/@unicorn-roar`)** 之無人值守 AI 影音生成產線（V2 全站點對標重構版），同時支援 **16:9 六幕式深度解析長片 (`1920x1080@30fps`，12～15 分鐘)** 與 **9:16 對應導流正片 Short (`1080x1920@30fps`，1～3 分鐘)** 一鍵全自動產出。
+完整以 **每秒 1 幀 (`1fps`) 逐幀對比 + 聲學波形級對標** 逆向復刻 YouTube 頻道 **獨角獸那麼叫 (`https://www.youtube.com/@unicorn-roar`)** 之無人值守 AI 影音生成產線（V3 終極版），同時支援 **16:9 六幕式深度解析長片 (`1920x1080@30fps`，12～15 分鐘)** 與 **9:16 滿版舞台導流 Short (`1080x1920@30fps`，1.5～2.5 分鐘)** 一鍵全自動產出並推送至 Telegram。
 
 ---
 
-## V2 六大產線站點架構（逐幀逐軌對標原片規格）
+## V3 六大產線站點架構（1fps 逐秒與聲學波形完全對標原片）
 
 ```
 [1. 無人值守議題雷達 Topic Radar]
@@ -12,30 +12,29 @@
    ▼
 [2. 多源公開資訊全文爬蟲 Web Crawler + Source Citation]
    │  串接台灣新聞全文檢索（Bing News TW RSS 解密真實網址 + HTML 多段正文擷取）、DuckDuckGo .gov.tw 法規公報、
-   │  Google News 台灣與維基百科繁中全文，強制主題相關性過濾並自動綁定畫面左上角 accessed:YYYYMMDD 與說明欄來源
+   │  Google News 台灣與維基百科繁中全文，強制主題核心詞過濾並綁定左上角 16px 精緻 accessed:YYYYMMDD 與說明欄來源
    ▼
-[3. 11萬字劇本蒸餾庫 + 32B 八道關卡產稿站 Scriptwriter] (RTX PRO 6000 Qwen2.5-32B-Instruct 4-bit)
+[3. 11萬字劇本蒸餾庫 + 32B 零水詞八道關卡產稿站 Scriptwriter] (RTX PRO 6000 Qwen2.5-32B-Instruct)
    │  • 內建 25 部真人正片 + 7 部 Shorts（共 110,956 中文字）蒸餾劇本庫 (`assets/script_distillation/`)
-   │  • 6 幕式長篇 RAG 產稿 + 導流 Short 產稿 + 第 8 道「總編去 AI 套話與雙問號標題審查站」+ 5-gram 去重防呆
+   │  • 封殺 AI 過渡水詞，強制開場實拍 + 反應梗片鉤子、純算式黑板與全鏈路 OpenCC s2twp 台灣繁中鎖定
    ▼
-[4. PyTorch 本人聲音克隆 + 自動剪氣口混音站 Voice & Audio] (Demucs 純淨母帶 + PyTorch F5-TTS)
-   │  • 依段落情緒自動切換頻道主 4 組高信噪比聲線錨點（開場反問 / 理性拆解 / 吐槽金句 / Short 快節奏）
-   │  • 內建「自動剪氣口引擎 (`tight_cut_breaths`)」切除 >95ms 停頓至 35ms，段間 0.04s 緊湊銜接，實測語速 ~316 字/分
-   │  • 對齊原片 -13.0 LUFS 廣播響度、立體聲輕快撥弦節奏底樂 (-34.5 dB RMS) 與紅線推進／彈窗／對撞實體音效
+[4. 分句級 PyTorch 本人聲音克隆 + 純淨廣播母帶站 Voice & Audio] (Demucs 純淨母帶 + PyTorch F5-TTS)
+   │  • 將每幕拆為 18～34 字短句分段推論 F5-TTS，完美保留本人聲線抑揚頓挫與問句後 190ms 自然呼吸氣口
+   │  • 字幕時間軸 0.000s 視覺無縫對齊（零閃爍、零詞中斷行），-13.0 LUFS 響度母帶 + 原版 Huh?! 與轉場音效（零廉價合成器底噪）
    ▼
-[5. Chrome 真實網頁／公文 3-Beat 推進 + 24步 SDXL 視覺站 Visuals]
-   │  每 2.6～3.5 秒高速切換七大頻道招牌視覺節拍：
-   │   • news_portal        : Chrome 158 渲染真實台灣新聞入口網站（全景 1.0x → 1.36x → 1.44x 推進 + 動態紅線塗抹）
-   │   • official_gov_doc   : 中華民國正式公文 A4 函釋排版（受文者／發文字號／主旨／說明 + 動態紅線塗抹）
-   │   • gov_web_portal     : .gov.tw 政府法規與統計資料庫深藍入口頁（推進特寫 + 動態紅線塗抹）
-   │   • product_comparison : 左側包裝話術 vs 右側法規換算真相雙欄對撞卡 + 鮮紅落差徽章
-   │   • netizen_comments   : 台灣社群網友留言牆逐則彈出（1 則 → 2 則 → 4 則 + 彈窗音效）
-   │   • kinetic_black      : 純黑底黃紅高對比算術公式逐行重擊 + 比例尺揭曉
-   │   • ai_scene           : Wikimedia 紀實攝影圖庫 + RTX PRO 6000 24步標準 SDXL Base 1.0 三鏡位快切
+[5. 商業實拍 HD 動態影片 + 反應梗片 + Chrome 滿版實景擷取站 Visuals]
+   │  每 2.2～3.4 秒（每分鐘 ~22 刀）高速切換原片真跡視覺：
+   │   • 實拍動態 B-Roll   : Mixkit 商業無版權 30fps HD .mp4 實拍影片庫（倒油、賣場、產線、料理、數鈔）
+   │   • 招牌反應梗片包    : 開場與吐槽重擊自動切入頻道招牌白貓 Huh? / 打架貓 / 貨架探頭貓等無字幕殘留梗片
+   │   • 滿版真實新聞擷取  : Chrome 158 優先直連真實新聞 URL 擷取實景 DOM（或帶實拍配圖之 100% 滿版白底新聞頁）+ 1.50x 紅線推進
+   │   • 全國法規資料庫    : 100% 滿版無黑邊之綠標「第 X 條」法規條文頁面 + 紅線推進
+   │   • 亮白實體對照板    : 正面宣稱 vs 背面成分真相滿版亮白雙卡 + 鮮紅斜章（徹底廢除深藍底 PPT 框）
+   │   • 30fps 滾動留言牆  : 滿版白底 YouTube 台灣鄉民留言區連續平滑向上滾動 (78 px/s)
+   │   • 左對齊純算式黑板  : 純 #000000 黑底左對齊白／金／綠／紅遞進算式板（移除底部藍色假尺規）
    ▼
-[6. 雙軌廣播級合成站 Composer]
-   ├── output/long_episode_1080p.mp4        (1920x1080 長片：44px 緊湊黑底白字無孤字字幕框 + 完整來源說明欄)
-   └── output/short_promo_1080x1920.mp4     (1080x1920 導流 Short：居中超粗 84px 黃紅雙行標題 + 原生乾淨版面)
+[6. 雙軌廣播級合成與 Telegram 直推站 Composer & Delivery]
+   ├── output/long_episode_1080p.mp4        (1920x1080 長片 + 44px 緊湊字幕框 + 完整來源說明欄)
+   └── output/short_promo_1080x1920.mp4     (1080x1920 導流 Short：滿寬雙行大字 + 1080x1420 超高滿版舞台)
 ```
 
 完整逐站原片實測數據與差距診斷請見：[`assets/forensic_gap_audit.md`](assets/forensic_gap_audit.md) 與 [`assets/script_distillation/distilled_playbook.md`](assets/script_distillation/distilled_playbook.md)。

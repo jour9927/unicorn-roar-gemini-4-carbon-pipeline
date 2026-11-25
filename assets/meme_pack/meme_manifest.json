@@ -1,0 +1,37 @@
+{
+  "clips": [
+    {
+      "id": "fighting_cats",
+      "file": "fighting_cats.mp4",
+      "duration": 1.05
+    },
+    {
+      "id": "huh_white_cat",
+      "file": "huh_white_cat.mp4",
+      "duration": 0.82
+    },
+    {
+      "id": "shelf_huh_cat",
+      "file": "shelf_huh_cat.mp4",
+      "duration": 2.8
+    },
+    {
+      "id": "shocked_cat",
+      "file": "shocked_cat.mp4",
+      "duration": 1.15
+    },
+    {
+      "id": "grade_f_mark",
+      "file": "grade_f_mark.mp4",
+      "duration": 2.1
+    },
+    {
+      "id": "confused_chart_guy",
+      "file": "confused_chart_guy.mp4",
+      "duration": 1.85
+    }
+  ],
+  "sfx": {
+    "huh": "huh_sfx.wav"
+  }
+}

@@ -19,6 +19,9 @@ reference_channel/downloads/
 reference_channel/forensics/
 reference_channel/*_meta.json
 assets/voice_clone/raw_segments/
+assets/broll_video_cache/*.mp4
+assets/meme_pack/*.mp4
+assets/meme_pack/*.wav
 assets/voice_clone/checkpoints/*.pt
 assets/voice_clone/checkpoints/*.safetensors
 assets/voice_clone/checkpoints/*.ckpt
@@ -28,5 +31,6 @@ runs/*/audio/
 runs/*/visuals/
 runs/*/qa_frames/
 runs/*/qa_v2_final/
+runs/*/qa_v3_1fps/
 runs/*/output/*.mp4
 logs/

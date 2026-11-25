@@ -169,9 +169,9 @@ def generate_episode_ai_images(
 def draw_citation_watermark(
     draw: ImageDraw.ImageDraw,
     citation: SourceCitation | None,
-    x: int = 12,
-    y: int = 8,
-    font_size: int = 22,
+    x: int = 8,
+    y: int = 5,
+    font_size: int = 16,
 ) -> None:
     if citation is None:
         return
@@ -181,7 +181,7 @@ def draw_citation_watermark(
         citation.onscreen_watermark,
         font=font,
         fill=(255, 255, 255, 255),
-        stroke_width=3,
+        stroke_width=2,
         stroke_fill=(0, 0, 0, 255),
     )
 
@@ -192,17 +192,28 @@ def render_kinetic_black_beats(
     height: int,
     out_prefix: Path,
 ) -> list[Path]:
-    """Render progressive multi-beat `#000000` kinetic math / comparison cards (Line 1 -> Line 2 -> Ruler)."""
-    lines = scene.kinetic_lines[:3]
-    font_size = max(48, int(width * (0.048 if len(lines) <= 2 else 0.040)))
+    """Render authentic @unicorn-roar incremental equation/ratio `#000000` boards (`JZg7GtBEKFM` & `I1qvoKvTyJU`).
+
+    - Pure `#000000` black canvas, ZERO fake blue ruler bar!
+    - Left-aligned structured formula grid (`x = 9%` width), `54px` crisp bold typography.
+    - Numbers & key deltas highlighted in `#FFD600` (gold), `#00E640` (green), or `#FF2E2E` (red).
+    """
+    lines = scene.kinetic_lines[:4]
+    is_vertical = height > width
+    font_size = max(40, int(width * (0.048 if is_vertical else 0.033)))
     font = load_cjk_font(font_size, bold=True)
-    line_gap = int(font_size * 1.55)
+    line_gap = int(font_size * 1.68)
     total_h = max(1, len(lines)) * line_gap
-    start_y = max(int(height * 0.16), (height - total_h) // 2 - int(height * 0.06))
-    palette = {"yellow": (255, 234, 0), "red": (255, 38, 38)}
+    start_y = max(int(height * 0.18), (height - total_h) // 2 - int(height * 0.06))
+    left_x = int(width * (0.07 if is_vertical else 0.085))
+    palette = {
+        "yellow": (255, 214, 0),
+        "red": (255, 46, 46),
+        "green": (0, 230, 64),
+    }
 
     out_prefix.parent.mkdir(parents=True, exist_ok=True)
-    total_beats = max(2, len(lines) + 1)
+    total_beats = max(2, len(lines))
     beats: list[Path] = []
 
     for beat_idx in range(1, total_beats + 1):
@@ -213,9 +224,8 @@ def render_kinetic_black_beats(
         for idx, kl in enumerate(vis_lines):
             full_txt = kl.text.strip()
             hl = (kl.highlight or "").strip()
-            hl_color = palette.get(kl.highlight_color, (255, 234, 0))
-            tw = draw.textbbox((0, 0), full_txt, font=font)[2]
-            cur_x = max(40, (width - tw) // 2)
+            hl_color = palette.get(kl.highlight_color, (255, 214, 0))
+            cur_x = left_x
             cur_y = start_y + idx * line_gap
 
             if hl and hl in full_txt:
@@ -223,35 +233,42 @@ def render_kinetic_black_beats(
                 if pre:
                     draw.text((cur_x, cur_y), pre, font=font, fill=(255, 255, 255))
                     cur_x += draw.textbbox((0, 0), pre, font=font)[2]
-                draw.text((cur_x, cur_y), hl, font=font, fill=hl_color)
-                cur_x += draw.textbbox((0, 0), hl, font=font)[2]
+                # Draw subtle green/red highlight badge on final line's punch number if short
+                if idx == len(lines) - 1 and len(hl) <= 9 and kl.highlight_color == "red":
+                    hb = draw.textbbox((0, 0), hl, font=font)
+                    hw, hh = hb[2] - hb[0], hb[3] - hb[1]
+                    draw.rounded_rectangle(
+                        [cur_x - 6, cur_y + 2, cur_x + hw + 10, cur_y + hh + 14],
+                        radius=6,
+                        fill=(200, 18, 24),
+                    )
+                    draw.text((cur_x + 2, cur_y), hl, font=font, fill=(255, 255, 255))
+                    cur_x += hw + 16
+                else:
+                    draw.text((cur_x, cur_y), hl, font=font, fill=hl_color)
+                    cur_x += draw.textbbox((0, 0), hl, font=font)[2]
                 if post:
                     draw.text((cur_x, cur_y), post, font=font, fill=(255, 255, 255))
             else:
-                tokens = re.split(r"(\d+(?:\.\d+)?%?萬?元?倍?克?)", full_txt)
+                tokens = re.split(r"(\d[\d,\.]*%?萬?元?倍?公升?克?人?|[xX×÷=+\-∼~])", full_txt)
                 for tok in tokens:
                     if not tok:
                         continue
-                    is_num = bool(re.fullmatch(r"\d+(?:\.\d+)?%?萬?元?倍?克?", tok))
-                    color = (255, 234, 0) if is_num else (255, 255, 255)
+                    if re.fullmatch(r"\d[\d,\.]*%?萬?元?倍?公升?克?人?", tok):
+                        color = (0, 230, 64) if idx == 1 else (255, 214, 0)
+                    else:
+                        color = (255, 255, 255)
                     draw.text((cur_x, cur_y), tok, font=font, fill=color)
                     cur_x += draw.textbbox((0, 0), tok, font=font)[2]
-
-        # Reveal comparison scale ruler on final beat
-        if beat_idx == total_beats:
-            ruler_y = min(height - int(height * 0.22), start_y + len(lines) * line_gap + int(height * 0.04))
-            rx0, rx1 = int(width * 0.08), int(width * 0.92)
-            rh = max(28, int(height * 0.052))
-            draw.rounded_rectangle([rx0, ruler_y, rx1, ruler_y + rh], radius=6, fill=(115, 192, 214))
-            draw.line([(rx0, ruler_y + rh // 2), (rx1, ruler_y + rh // 2)], fill=(228, 246, 252), width=3)
-            for t_i in range(1, 12):
-                tx = rx0 + (rx1 - rx0) * t_i // 12
-                draw.line([(tx, ruler_y), (tx, ruler_y + rh // 3)], fill=(35, 65, 78), width=2)
-                draw.line([(tx, ruler_y + (2 * rh) // 3), (tx, ruler_y + rh)], fill=(35, 65, 78), width=2)
 
         bp = out_prefix.parent / f"{out_prefix.name}_kbeat{beat_idx}.png"
         canvas.save(bp)
         beats.append(bp)
+
+    if len(beats) < 3 and beats:
+        p_extra = out_prefix.parent / f"{out_prefix.name}_kbeat3.png"
+        Image.open(beats[-1]).save(p_extra)
+        beats.append(p_extra)
 
     return beats
 
