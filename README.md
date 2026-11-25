@@ -14,7 +14,7 @@
    │  串接台灣新聞全文檢索（Bing News TW RSS 解密真實網址 + HTML 多段正文擷取）、DuckDuckGo .gov.tw 法規公報、
    │  Google News 台灣與維基百科繁中全文，強制主題核心詞過濾並綁定左上角 16px 精緻 accessed:YYYYMMDD 與說明欄來源
    ▼
-[3. 11萬字劇本蒸餾庫 + 32B 零水詞八道關卡產稿站 Scriptwriter] (RTX PRO 6000 Qwen2.5-32B-Instruct)
+[3. 11萬字劇本蒸餾庫 + Gemini 4 Hydrogen 零水詞八道關卡產稿站 Scriptwriter] (agy gemini-4-hydrogen-high 主力)
    │  • 內建 25 部真人正片 + 7 部 Shorts（共 110,956 中文字）蒸餾劇本庫 (`assets/script_distillation/`)
    │  • 封殺 AI 過渡水詞，強制開場實拍 + 反應梗片鉤子、純算式黑板與全鏈路 OpenCC s2twp 台灣繁中鎖定
    ▼

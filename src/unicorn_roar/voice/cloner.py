@@ -87,6 +87,8 @@ def synthesize_episode_narration(
     ep = RemoteWorkerEndpoint.from_file(get_runtime_endpoint_path())
     if ep is not None:
         try:
+            client = RTX6000WorkerClient(ep, timeout=8.0)
+            client.health()
             client = RTX6000WorkerClient(ep)
             remote_pack = _ensure_remote_voice_pack(client, local_pack)
             remote_job_dir = f"runs/{run_dir.name}/tts"
@@ -117,7 +119,55 @@ def synthesize_episode_narration(
             client.exec_sync(f"rm -rf {remote_job_dir}")
             return by_id
         except Exception as exc:
-            print(f"[WARN] RTX PRO 6000 TTS unavailable ({exc}); falling back to local PyTorch.", file=sys.stderr)
+            print(f"[WARN] RTX PRO 6000 TTS unavailable ({exc}); running 2-shard local PyTorch MPS TTS.", file=sys.stderr)
+
+    # Local PyTorch MPS/CUDA synthesis: shard across 2 parallel workers when >= 6 segments to saturate Apple Silicon GPU!
+    if len(segments_req) >= 6:
+        procs: list[subprocess.Popen[bytes]] = []
+        shard_res_files: list[Path] = []
+        num_shards = 2
+        for s_idx in range(num_shards):
+            shard_segs = segments_req[s_idx::num_shards]
+            res_fname = f"tts_results_shard{s_idx}.json"
+            shard_req_path = run_dir / "temp" / f"tts_req_shard{s_idx}.json"
+            shard_req = {
+                "voice_pack_dir": str(local_pack),
+                "segments": shard_segs,
+                "results_filename": res_fname,
+            }
+            shard_req_path.write_text(json.dumps(shard_req, ensure_ascii=False, indent=2), encoding="utf-8")
+            shard_res_files.append(audio_out_dir / res_fname)
+            procs.append(
+                subprocess.Popen(
+                    [
+                        sys.executable,
+                        str(REPO_ROOT / "scripts/rtx6000_gpu_engine.py"),
+                        "--task",
+                        "synthesize_voice",
+                        "--req",
+                        str(shard_req_path),
+                        "--out",
+                        str(audio_out_dir),
+                    ]
+                )
+            )
+        rcs = [p.wait() for p in procs]
+        if any(rc != 0 for rc in rcs):
+            raise RuntimeError(f"Local sharded PyTorch TTS exited with codes {rcs}")
+        merged_by_id: dict[str, dict[str, Any]] = {}
+        device_used = "mps"
+        for rf in shard_res_files:
+            sd = json.loads(rf.read_text(encoding="utf-8"))
+            device_used = sd.get("device", device_used)
+            for seg in sd["segments"]:
+                merged_by_id[seg["id"]] = seg
+            rf.unlink(missing_ok=True)
+        ordered_segs = [merged_by_id[item["id"]] for item in segments_req]
+        (audio_out_dir / "tts_results.json").write_text(
+            json.dumps({"ok": True, "device": device_used, "segments": ordered_segs}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return {seg["id"]: {**seg, "local_path": str(audio_out_dir / seg["file"])} for seg in ordered_segs}
 
     req_data = {"voice_pack_dir": str(local_pack), "segments": segments_req}
     local_req_file.write_text(json.dumps(req_data, ensure_ascii=False, indent=2), encoding="utf-8")

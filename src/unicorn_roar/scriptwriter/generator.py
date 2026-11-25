@@ -20,6 +20,9 @@ from __future__ import annotations
 import json
 import os
 import re
+import shutil
+import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any, Literal
 
@@ -358,6 +361,137 @@ def _extract_json_dict(raw: str) -> dict[str, Any]:
     return json.loads(cleaned)
 
 
+def _find_agy_bin() -> str | None:
+    found = shutil.which("agy")
+    if found:
+        return found
+    candidate = Path.home() / ".local" / "bin" / "agy"
+    return str(candidate) if candidate.is_file() else None
+
+
+def _call_agy_hydrogen(
+    agy_bin: str,
+    model_id: str,
+    system_prompt: str,
+    user_prompt: str,
+    empty_cwd: Path,
+    timeout: float = 300.0,
+) -> str:
+    full_prompt = (
+        "【純文字直出模式：嚴禁呼叫任何工具、嚴禁讀寫檔案或執行指令，請直接依據下方完整資料只輸出合法 JSON 物件，不加任何前言後語】\n\n"
+        f"{system_prompt}\n\n{user_prompt}"
+    )
+    proc = subprocess.run(
+        [
+            agy_bin,
+            "--model",
+            model_id,
+            "--disable-slash-commands",
+            "--output-format",
+            "text",
+            "-p",
+            full_prompt,
+        ],
+        cwd=str(empty_cwd),
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+    )
+    if proc.returncode != 0:
+        raise RuntimeError(f"agy ({model_id}) exited {proc.returncode}: {proc.stderr[-600:]}")
+    return proc.stdout.strip()
+
+
+def _execute_passes_gemini4_hydrogen(
+    passes: list[dict[str, Any]],
+    run_dir: Path,
+    model_id: str | None = None,
+) -> list[dict[str, str]]:
+    """Primary Scriptwriter Engine: Google DeepMind Gemini 4 Hydrogen (`gemini-4-hydrogen-high`) via `agy` CLI."""
+    agy_bin = _find_agy_bin()
+    if not agy_bin:
+        raise FileNotFoundError("agy CLI not found for Gemini 4 Hydrogen")
+
+    target_model = model_id or os.environ.get("UNICORN_LLM_MODEL", "gemini-4-hydrogen-high")
+    results: list[dict[str, str]] = []
+    prior_narrations: list[str] = []
+    global_ngrams: list[set[str]] = []
+
+    with tempfile.TemporaryDirectory(prefix="unicorn_agy_h4_") as tmp_cwd_str:
+        empty_cwd = Path(tmp_cwd_str)
+        for idx, p in enumerate(passes, 1):
+            pid = p["id"]
+            min_cjk = int(p.get("min_cjk_chars", 0))
+            is_short_pass = pid == "short_promo_pass"
+
+            anti_repeat = ""
+            if prior_narrations and p.get("inject_prior_summary", True):
+                anti_repeat = (
+                    "\n\n【前序幕次已完整寫出之口播內容（本幕必須嚴密銜接脈絡往更深一層推進，絕對禁止重複講過的案例細節、數字句型或結論）】：\n"
+                    + "\n".join(f"- {ln}" for ln in prior_narrations[-12:])
+                )
+
+            user_msg = p["user"] + anti_repeat
+            raw = _call_agy_hydrogen(agy_bin, target_model, p["system"], user_msg, empty_cwd)
+
+            if min_cjk > 0:
+                try:
+                    parsed_obj = _extract_json_dict(raw)
+                except Exception:
+                    raw = _call_agy_hydrogen(
+                        agy_bin,
+                        target_model,
+                        p["system"],
+                        user_msg + "\n\n請嚴格只輸出 `{...}` 合法閉合 JSON 物件，不要加任何說明文字。",
+                        empty_cwd,
+                    )
+                    parsed_obj = _extract_json_dict(raw)
+
+                for _ in range(2):
+                    scenes = parsed_obj.get("scenes", [])
+                    nar_text = "".join(str(sc.get("narration") or "") for sc in scenes)
+                    cjk_len = len(re.findall(r"[\u4e00-\u9fff]", nar_text))
+                    if cjk_len >= min_cjk:
+                        break
+                    deficit = min_cjk - cjk_len
+                    extra_n = max(2, min(4, (deficit // 85) + 1))
+                    so_far_json = json.dumps({"scenes": scenes}, ensure_ascii=False)
+                    cont_user = (
+                        f"{user_msg}\n\n【目前已產出場景】：\n{so_far_json}\n\n"
+                        f"目前本幕有效中文字數為 {cjk_len} 字，距離目標 {min_cjk} 字還差 {deficit} 字。"
+                        f"請緊接最後一段，引用爬蟲資料中尚未展開的其他具體數據、法條細節或通路實況，"
+                        f"**只輸出新增的 {extra_n} 個全新場景**（嚴禁重複上述任何句子），格式 `{{\"scenes\": [...]}}`。"
+                    )
+                    cont_raw = _call_agy_hydrogen(agy_bin, target_model, p["system"], cont_user, empty_cwd)
+                    try:
+                        cont_obj = _extract_json_dict(cont_raw)
+                        if cont_obj.get("scenes"):
+                            parsed_obj["scenes"] = scenes + cont_obj["scenes"]
+                    except Exception:
+                        break
+
+                if not is_short_pass:
+                    for sc in parsed_obj.get("scenes", []):
+                        nar_s = str(sc.get("narration") or "").strip()
+                        if len(nar_s) >= 16:
+                            prior_narrations.append(nar_s[:75])
+                            cjk_s = "".join(re.findall(r"[\u4e00-\u9fff0-9]", nar_s))
+                            global_ngrams.append({cjk_s[k : k + 5] for k in range(max(1, len(cjk_s) - 4))})
+
+                raw = json.dumps(parsed_obj, ensure_ascii=False)
+
+            results.append({"id": p["id"], "content": raw})
+            print(f"  [Gemini 4 Hydrogen {idx}/{len(passes)}] {pid} ✓", flush=True)
+
+    local_out = run_dir / "temp" / "llm_passes_out.json"
+    local_out.parent.mkdir(parents=True, exist_ok=True)
+    local_out.write_text(
+        json.dumps({"ok": True, "model": target_model, "passes": results}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    return results
+
+
 def _execute_passes_rtx6000(passes: list[dict[str, Any]], run_dir: Path) -> list[dict[str, str]]:
     ep = RemoteWorkerEndpoint.from_file(get_runtime_endpoint_path())
     if not ep:
@@ -687,13 +821,17 @@ def generate_episode_blueprint(
             pass_results = None
 
     if not pass_results:
-        if os.environ.get("OPENAI_API_KEY"):
-            pass_results = _execute_passes_local_or_api(passes, run_dir)
-        else:
-            try:
-                pass_results = _execute_passes_rtx6000(passes, run_dir)
-            except Exception:
+        try:
+            pass_results = _execute_passes_gemini4_hydrogen(passes, run_dir)
+        except Exception as exc_h4:
+            print(f"[WARN] Gemini 4 Hydrogen unavailable ({exc_h4}); falling back to secondary LLM.", flush=True)
+            if os.environ.get("OPENAI_API_KEY"):
                 pass_results = _execute_passes_local_or_api(passes, run_dir)
+            else:
+                try:
+                    pass_results = _execute_passes_rtx6000(passes, run_dir)
+                except Exception:
+                    pass_results = _execute_passes_local_or_api(passes, run_dir)
 
     all_long_raw_scenes: list[dict[str, Any]] = []
     short_parsed: dict[str, Any] = {}

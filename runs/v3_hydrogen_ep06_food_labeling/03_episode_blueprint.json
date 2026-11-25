@@ -1,0 +1,1549 @@
+{
+  "topic": "瓶身寫義大利橄欖油，翻過來卻是調合油？食藥署品名標示規範與食用油等級真相",
+  "pillar": "food_labeling",
+  "long_cjk_chars": 4302,
+  "short_cjk_chars": 606,
+  "long_video": {
+    "title": "瓶身寫義大利橄欖油，翻過來竟是調合油？特級初榨跟精煉果渣油價差數倍，這樣也算合規？食藥署品名標示到底在護誰？",
+    "seo_tags": [
+      "橄欖油",
+      "調合油",
+      "特級初榨橄欖油",
+      "精煉果渣油",
+      "食藥署標示規範",
+      "食用油等級"
+    ],
+    "scenes": [
+      {
+        "scene_id": "L01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "你買的義大利100%純橄欖油，倒出來真的全是橄欖油嗎？你先別急著生氣啊！2026年7月檢方起訴「蒙特樂」，他們拿580公升芥花油只混20公升橄欖油，純度不到4%，照樣敢貼純橄欖油來賣！",
+        "trigger_meme": true,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of dark glass olive oil bottle poured into a ceramic bowl on a kitchen counter, dramatic natural side lighting, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L02",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "你沒聽錯！2026年7月食力與公視報導，蒙特樂標榜義大利100%純橄欖油，實際卻混充低價油，不法獲利3760萬元遭起訴。但重點不是抓到黑心商，而是為何這種標示套路能一路賣進臺灣廚房？",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_paragraphs": [
+          "蒙特樂橄欖油有假！混芥花油標100%純 獲利1500萬挨罰400萬",
+          "你沒聽錯！2026年7月食力與公視報導，蒙特樂標榜義大利100%純橄欖油，實際卻混充低價油，不法獲利3760萬元遭起訴。但重點不是抓到黑心商，而是為何這種標示套路能一路賣進臺灣廚房？"
+        ],
+        "red_underline_quote": "580公升芥花油混20公升橄欖油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic supermarket cooking oil aisle shelf with rows of glass bottles under bright fluorescent lights, clean unbranded labels, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L03",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "直接算這筆帳！580公升芥花油加20公升橄欖油共600公升，橄欖油只佔3.3%，卻能賺走3760萬元！明明2010年就規定橄欖油不純須標示調合油，白紙黑字擺在那裡，結果十多年後照樣踩雷？",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "580公升芥花油 + 20公升橄欖油 = 600公升",
+            "highlight": "20公升橄欖油",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "純橄欖油佔比 = 3.3% (標榜100%純橄欖油)",
+            "highlight": "3.3%",
+            "highlight_color": "red"
+          },
+          {
+            "text": "不法獲利 = 3760萬元",
+            "highlight": "3760萬元",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic industrial stainless steel oil blending tanks inside a clean food processing factory, moody lighting, no text, no letters",
+        "wikimedia_query": "factory"
+      },
+      {
+        "scene_id": "L04",
+        "scene_mode": "netizen_comments",
+        "voice_style": "satire_punch",
+        "narration": "別以為只有小廠在混！2014年消保處抽查42件市售調合油，連愛之味、泰山、寶素齋都曾因標示不合格被點名。難怪消費者氣到炸鍋，花了買純橄欖油的錢，回家才發現自己根本在喝芥花油！",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [
+          {
+            "user": "@阿宏哥-tw",
+            "time": "2天前",
+            "text": "580公升芥花油配20公升橄欖油，原來我炒菜喝了這麼久芥花油XD",
+            "likes": 842
+          },
+          {
+            "user": "@全聯主婦筆記",
+            "time": "2天前",
+            "text": "正面寫義大利100%純橄欖油，背面字小到要拿放大鏡，這到底是賣油還是考視力",
+            "likes": 615
+          },
+          {
+            "user": "@臺北社畜小陳",
+            "time": "1天前",
+            "text": "不法獲利3760萬，罰下去有比賺的多嗎？難怪業者根本沒在怕",
+            "likes": 530
+          },
+          {
+            "user": "@煮飯不洗鍋",
+            "time": "1天前",
+            "text": "2010年就說不純要標調合油，2026年還在爆假油，公文是寫給誰看的啊",
+            "likes": 418
+          }
+        ],
+        "image_prompt": "Photorealistic Taiwanese home kitchen stove with a frying pan heating golden cooking oil, warm editorial lighting, no text, no letters",
+        "wikimedia_query": "cooking"
+      },
+      {
+        "scene_id": "L05",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "更荒謬的是制度本身！直到2026年8月，食藥署才端出「6類橄欖油標示新制」草案，結果業者一有雜音，又要二度預告，拖到2027年7月才上路。這段空窗期，究竟誰在靠模糊品名賺價差？",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路",
+        "document_paragraphs": [
+          "橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看",
+          "更荒謬的是制度本身！直到2026年8月，食藥署才端出「6類橄欖油標示新制」草案，結果業者一有雜音，又要二度預告，拖到2027年7月才上路。這段空窗期，究竟誰在靠模糊品名賺價差？"
+        ],
+        "red_underline_quote": "食藥署要二度預告 2027年7月仍上路",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic food safety laboratory glass pipettes testing golden edible oil samples under white lab light, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L06",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "先把兩件事分清楚！依據聯合國Codex標準與食藥署規範，經過精煉的橄欖粕油其實合法也能吃，只是屬於經濟基礎油，跟特級初榨橄欖油製程、風味、定價都不同，偏偏名字都掛「橄欖」兩字！",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "特級初榨 vs 精煉橄欖粕油與混充油",
+          "left_title": "正面宣稱 / 高價等級",
+          "left_points": [
+            "特級初榨橄欖油（Extra Virgin）",
+            "外瓶標榜義大利100%純橄欖油"
+          ],
+          "right_title": "製程真相 / 混充例項",
+          "right_points": [
+            "精煉橄欖粕油：合法經濟型基礎油",
+            "違規混充：580公升芥花油配20公升橄欖油"
+          ],
+          "delta_badge": "純橄欖油僅佔 3.3%"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic comparison of two glass flasks filled with deep green extra virgin olive oil and pale yellow refined oil on a dark studio table, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L07",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "看懂了嗎？合法的橄欖粕油不等於劣質油，但模糊的等級名稱加上低價混充，就成了消費陷阱！既然要講真的假的，得先看懂國際Codex與食藥署怎麼定義這6類油，不不不，這裡才是水最深的地方！",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic close-up of fresh green olives and golden olive oil dripping into a glass bottle on a dark wooden table, editorial documentary style, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L08",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "聯合國標準早已參考歐盟、美國及加拿大規範，將精煉橄欖粕油列為合法油品。只是檢驗只要扯上銅葉綠素就引發恐慌，加上進口價隨市場波動，消費者單憑價格高低與品名，根本無法逆向推定品質！",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "單憑「價格高低」或「油品名稱」來逆向推定",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic supermarket cooking oil shelf with unbranded dark and clear glass oil bottles under bright store lighting, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L09",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "早在大統假油事件後，就有調合油宣稱含Omega3、兒茶素卻交代不清，2015年豬油酸價標準還被指落後日本與中國。難怪2026年2月臺中食安處仍得強化專案稽查，這筆制度帳得從頭算起！",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial shot of a food safety inspector in a white lab coat examining clear glass vials of golden edible oil on a stainless steel table, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L10",
+        "scene_mode": "gov_web_portal",
+        "voice_style": "narrative_explain",
+        "narration": "好吧認真來說，要拆解這場混油戲法就得先逐字對照官方定義條文，聯合國Codex現行CXS 33-1981規範早已明文把橄欖粕油納入供人食用油品類別，食藥署也參考歐美與加拿大規範認可我國標準。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "明文將橄欖粕油納入供人食用的油品類別之一",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of clear glass olive oil laboratory sample vials on a steel table, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L11",
+        "scene_mode": "official_gov_doc",
+        "voice_style": "narrative_explain",
+        "narration": "漏洞就藏在官方這段定義裡，食藥署明確說明橄欖粕油跟特級初榨橄欖油在製程方式風味表現與市場定價都不同，不同品類與等級並不等於違法劣質油，因此消費者不能單憑價格或油名而應以明確標示為準。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "在製程方式、風味表現與市場定價上確實有所不同",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden olive oil pouring into a glass bowl next to a dark bottle, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L12",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "聽起來很合理對吧，既然一切以明確標示為準那臺灣法規到底怎麼訂，早在2010年7月與9月官方就公告明年實施橄欖油不純強制標示調合油，印上那三個字難道就能看出裡頭混了幾成低價油嗎。",
+        "trigger_meme": true,
+        "citation_id": "S4",
+        "document_heading": "明年實施／橄欖油不純 須標示調合油",
+        "document_paragraphs": [],
+        "red_underline_quote": "明年實施／橄欖油不純 須標示調合油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of grocery store cooking oil aisle shelves with glass bottles under warm supermarket lighting, clean unbranded labels, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L13",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "顯然光靠強制標示根本不夠，民國102年大統假油事件後隔年4月消保處公佈42件調合油結果，知名大廠宣稱含Omega3與兒茶素卻未說明實際情況，2015年7月豬油酸價門檻更被批遠落後日本中國。",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "調合油標示不合格 愛之味泰山全被點名",
+        "document_paragraphs": [
+          "去(102)年大統假油事件鬧得人心惶惶，消保處今(28)天公佈市售42件調合油調查結果，其中不乏愛之味、泰山、寶素齋等知名大廠被點名不合格。部分商品宣稱含有Omega3、兒茶素，卻未說明實際 ..."
+        ],
+        "red_underline_quote": "愛之味、泰山、寶素齋等知名大廠被點名不合格",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of food quality inspector gloved hands holding oil testing pipettes in a bright laboratory, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L14",
+        "scene_mode": "official_gov_doc",
+        "voice_style": "narrative_explain",
+        "narration": "這就是為什麼制度漏洞一路拖到2026年8月14日才想補破網，食藥署端出6類橄欖油標示新制草案想把等級攤在陽光下，偏偏業者傳出雜音導致新制生變數必須二度預告，上路時間硬是維持2027年7月。",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路",
+        "document_paragraphs": [
+          "橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看",
+          "這就是為什麼制度漏洞一路拖到2026年8月14日才想補破網，食藥署端出6類橄欖油標示新制草案想把等級攤在陽光下，偏偏業者傳出雜音導致新制生變數必須二度預告，上路時間硬是維持2027年7月。"
+        ],
+        "red_underline_quote": "6類橄欖油標示新制生變數？食藥署要二度預告",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of stacked government regulatory folders and magnifying glass on a dark wooden desk, no readable text, no letters",
+        "wikimedia_query": "documents"
+      },
+      {
+        "scene_id": "L15",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "直接拿計算機算給你看，從2010年訂出調合油規範到2027年7月6類新制上路足足拖了17年，2026年8月二度預告又多出11個月空窗，算算混充比例等於1份橄欖油配29份芥花油還能標100%純度。",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_paragraphs": [],
+        "red_underline_quote": "580公升芥花油混20公升橄欖油！",
+        "kinetic_lines": [
+          {
+            "text": "2010年調合油規範 → 2027年7月6類新制 = 相隔 17 年",
+            "highlight": "17 年",
+            "highlight_color": "red"
+          },
+          {
+            "text": "2026年8月二度預告 → 2027年7月上路 = 空窗 11 個月",
+            "highlight": "11 個月",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "20公升橄欖油 : 580公升芥花油 = 1 : 29 (僅佔 3.3%)",
+            "highlight": "1 : 29",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of two glass measuring beakers comparing 580ml pale yellow oil and 20ml deep green oil side by side, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "cooking oil"
+      },
+      {
+        "scene_id": "L16",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "所以你看懂這套制度有多矛盾嗎，食藥署一面提醒檢驗扯上銅葉綠素易惹恐慌且不得單憑價差判斷品質，臺中食安處2026年2月也強化專案稽查，五個月後卻仍有業者靠混充低價油賺逾3千萬被起訴。",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+        "document_paragraphs": [],
+        "red_underline_quote": "中市食安處強化食用油脂專案稽查",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "公部門宣導稽查 vs 市場偽冒獲利",
+          "left_title": "官方把關與宣導",
+          "left_points": [
+            "2026年2月臺中食安處強化專案稽查",
+            "提醒勿憑價差或銅葉綠素字眼恐慌"
+          ],
+          "right_title": "五個月後起訴現實",
+          "right_points": [
+            "標榜純橄欖油卻混充低價油",
+            "不法獲利逾3千萬遭檢方起訴"
+          ],
+          "delta_badge": "獲利逾 3 千萬"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of bottled cooking oil production line in an industrial bottling factory, stainless steel machinery, no text, no letters",
+        "wikimedia_query": "factory"
+      },
+      {
+        "scene_id": "L17",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "說穿了這就是法規跟不上市場的結構死結，國際標準把精煉橄欖粕油歸為經濟基礎油，臺灣卻讓6類分級新制因業者雜音一路拖到2027年7月才上路，結果貨架上同叫橄欖油裡頭根本是兩種世界。",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+        "document_paragraphs": [],
+        "red_underline_quote": "食藥署將二度預告、維持明年7月上路",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a shopper hand turning over an unmarked dark glass olive oil bottle in a warm kitchen, shallow depth of field, no text, no letters",
+        "wikimedia_query": "cooking"
+      },
+      {
+        "scene_id": "L18",
+        "scene_mode": "gov_web_portal",
+        "voice_style": "narrative_explain",
+        "narration": "再看一次國際規範原文，裡面早已把橄欖油和橄欖粕油分開並列，我國也有相應國家標準，只要合格正常吃都安全無虞，連售價都隨國際大宗物資波動，等於法規只保食安底線不管高價低配的落差。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "我國也有相應的國家標準可供業者遵循",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of dark green and amber glass olive oil bottles lined up on a stainless steel inspection counter, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L19",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "把時間線拉回2010年9月，環境資訊中心就報導食用油不純強制標示調合油，偏偏十六年後的2026年10月，新聞還得不斷釐清銅葉綠素人工新增恐慌與粕油定義，顯示舊制只保住食安底線卻放任品名混淆。",
+        "trigger_meme": false,
+        "citation_id": "S8",
+        "document_heading": "食用油不純 強制標示調合油",
+        "document_paragraphs": [
+          "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+          "把時間線拉回2010年9月，環境資訊中心就報導食用油不純強制標示調合油，偏偏十六年後的2026年10月，新聞還得不斷釐清銅葉綠素人工新增恐慌與粕油定義，顯示舊制只保住食安底線卻放任品名混淆。"
+        ],
+        "red_underline_quote": "食用油不純 強制標示調合油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a chemist examining deep green oil droplets in a glass petri dish inside a food testing laboratory, shallow depth of field, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L20",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "既然2010年就規定橄欖油不純須標示調合油，為什麼十六年後業者還是敢混充？把視線拉回上游大宗原料跟加工廠，秘密全在價差結構，只要把佔比最高的基底換成低價油，賣給餐飲跟零售端就能賺進暴利。",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of bulk golden cooking oil pouring into clear glass bottles inside a dimly lit food processing warehouse, no text, no labels",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L21",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "看2026年7月食力這篇起訴報導就懂了，業者蒙特樂被查出用580公升芥花油，混進區區20公升橄欖油，轉身卻敢貼上義大利100%純橄欖油標籤，靠這套混充比例直接撈走3760萬元遭到檢方起訴。",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_paragraphs": [
+          "蒙特樂橄欖油有假！混芥花油標100%純 獲利1500萬挨罰400萬",
+          "看2026年7月食力這篇起訴報導就懂了，業者蒙特樂被查出用580公升芥花油，混進區區20公升橄欖油，轉身卻敢貼上義大利100%純橄欖油標籤，靠這套混充比例直接撈走3760萬元遭到檢方起訴。"
+        ],
+        "red_underline_quote": "580公升芥花油混20公升橄欖油！",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L22",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "我們直接按計算機幫他算清楚，580公升芥花油加20公升橄欖油總共600公升，純橄欖油實際佔比連4%都不到，只剩3.3%，剩下96.7%全都是低價芥花油，貼上100%純油照樣撈進3760萬元。",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "580公升芥花油 + 20公升橄欖油 = 600公升",
+            "highlight": "20公升橄欖油",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "純橄欖油實際佔比 = 3.3%（芥花油佔 96.7%）",
+            "highlight": "3.3%",
+            "highlight_color": "red"
+          },
+          {
+            "text": "假冒 100% 純橄欖油 → 不法獲利 3760 萬元",
+            "highlight": "3760 萬元",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L23",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "這就是供應鏈最常見的包裝魔術，零售架上瓶身主打義大利進口跟100%純橄欖油，真正照原料重量佔比排序，排在第一位的其實是29倍量的芥花油，橄欖油根本只是點綴，全靠外文包裝撐起高溢價。",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "零售瓶身包裝 vs 原料槽實際比例",
+          "left_title": "瓶身外在宣稱",
+          "left_points": [
+            "義大利100%純橄欖油",
+            "進口高純度精品形象"
+          ],
+          "right_title": "原料桶真實成分",
+          "right_points": [
+            "580公升芥花油（佔 96.7%）",
+            "20公升橄欖油（僅佔 3.3%）"
+          ],
+          "delta_badge": "基底相差 29 倍"
+        },
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L24",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "而且別以為這只發生在超市零售貨架，2026年2月臺中食安處啟動油脂專案稽查，目的正是防堵偽冒油品流向餐桌，結果7月公視又爆出混充低價油獲利逾3千萬，可見從工廠到餐飲端早是同一條供應鏈。",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+        "document_paragraphs": [
+          "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+          "而且別以為這只發生在超市零售貨架，2026年2月臺中食安處啟動油脂專案稽查，目的正是防堵偽冒油品流向餐桌，結果7月公視又爆出混充低價油獲利逾3千萬，可見從工廠到餐飲端早是同一條供應鏈。"
+        ],
+        "red_underline_quote": "防堵偽冒油品流向餐桌 中市食安處",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L25",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "再看合規供應鏈裡的另一層商業默契，Yahoo新聞引述食藥署與業界說法，精煉後的橄欖粕油本來屬於經濟實惠的基礎油品，進口成本與終端售價全跟著國際大宗物資波動，說白了就是走量的大宗原料。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Clean stainless steel edible oil refining vats and industrial metal pipes inside a large food manufacturing plant, realistic documentary style, no text",
+        "wikimedia_query": "factory"
+      },
+      {
+        "scene_id": "L26",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "更諷刺的是，Yahoo新聞還提醒民眾不能單憑價格高低或油品名稱逆向推定品質，這句話反過來就承認了，市場定價跟真實等級根本可能脫鉤，消費者付的高價未必買到特級初榨，往往只買到品牌溢價。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "上游製程分級 vs 終端售價迷思",
+          "left_title": "特級初榨橄欖油",
+          "left_points": [
+            "製程、風味與定價皆屬高階",
+            "Extra Virgin 國際規範等級"
+          ],
+          "right_title": "精煉橄欖粕油／調合油",
+          "right_points": [
+            "精煉處理的經濟實惠基礎油品",
+            "僅憑價格或品名難推知真實等級"
+          ],
+          "delta_badge": "價格與等級脫鉤"
+        },
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L27",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "這也解釋了2026年8月UDN這則新聞，食藥署一端出橄欖油分類標示草案，為什麼業者馬上傳出雜音？說穿了，一旦正面品名必須把精煉跟果渣油寫死，原本靠模糊空間賺取的高毛利就得全面縮水。",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+        "document_paragraphs": [
+          "橄欖油比照聯合國分5級擬後年上路- 2016年12月05日 ｜ 公視新聞PNN",
+          "這也解釋了2026年8月UDN這則新聞，食藥署一端出橄欖油分類標示草案，為什麼業者馬上傳出雜音？說穿了，一旦正面品名必須把精煉跟果渣油寫死，原本靠模糊空間賺取的高毛利就得全面縮水。"
+        ],
+        "red_underline_quote": "橄欖油分類標示草案業者有雜音",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L28",
+        "scene_mode": "netizen_comments",
+        "voice_style": "narrative_explain",
+        "narration": "說到底，這就是業界不說的默契：把低價基底油跟模糊品名當成約定俗成，合法的賺資訊落差，違法的乾脆混充96.7%直接撈3760萬。但問題來了，光靠修改分類標示真的就能徹底擋住這套暴利戲法嗎？",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [
+          {
+            "user": "@阿明買菜記",
+            "time": "1天前",
+            "text": "原來我買回家炒菜的進口純油96.7%都是芥花油XD",
+            "likes": 418
+          },
+          {
+            "user": "@夜市小廚神",
+            "time": "2天前",
+            "text": "580公升配20公升也敢寫100%純橄欖油，臉皮比油槽還厚",
+            "likes": 356
+          },
+          {
+            "user": "@臺北省錢王",
+            "time": "3天前",
+            "text": "難怪一說要分6類標示業者就有雜音，擋人財路啊",
+            "likes": 289
+          },
+          {
+            "user": "@主婦不開心",
+            "time": "3天前",
+            "text": "大統假油到現在十幾年了，結果還在查偽冒油品流向餐桌",
+            "likes": 241
+          }
+        ],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L29",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "答案恐怕沒這麼樂觀。翻開卡優新聞紀錄，愛之味、泰山、寶素齋等知名大廠早就被消保處點名調合油標示不合格，正面大打Omega3與兒茶素招牌，背面卻沒說明實際狀況，高溢價全靠資訊落差撐出來。",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "調合油標示不合格 愛之味泰山全被點名",
+        "document_paragraphs": [
+          "去(102)年大統假油事件鬧得人心惶惶，消保處今(28)天公佈市售42件調合油調查結果，其中不乏愛之味、泰山、寶素齋等知名大廠被點名不合格。部分商品宣稱含有Omega3、兒茶素，卻未說明實際 ..."
+        ],
+        "red_underline_quote": "愛之味、泰山、寶素齋等知名大廠被點名不合格",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "L30",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "更別提連上游油品底線都曾被批寬鬆，上下游就曾點出食藥署公告的食用豬油衛生標準，酸價要求遠落後日本與中國；當原料門檻低、6類新制又生變數，業者自然繼續用低成本油賺取暴利。",
+        "trigger_meme": true,
+        "citation_id": "S6",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden cooking oil samples in clear glass laboratory beakers under bright inspection lights, no text, no labels",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L31",
+        "scene_mode": "gov_web_portal",
+        "voice_style": "narrative_explain",
+        "narration": "食藥署一遇到油品爭議就搬出國際規範當擋箭牌。看Yahoo奇摩新聞實錄，臺灣參考聯合國Codex、歐盟、美國及加拿大規範，認定精煉橄欖粕油合法。好樣的，合法性照搬歐美，管理標準卻只做半套？",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "參考 Codex、歐盟、美國及加拿大等國際規範",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial wide shot of government regulatory archive desk with glass olive oil sample bottles under bright fluorescent lighting, clean unbranded labels, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L32",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "看看Codex現行CXS 33-1981標準全名，就把橄欖油跟橄欖粕油分開寫死，連特級初榨與精煉粕油在製程、風味跟定價的差異都列清楚。結果國際規範早把品類切乾淨，臺灣卻讓模糊品名繼續賣。",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [],
+        "red_underline_quote": "將橄欖粕油納入供人食用的油品類別之一",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "國際Codex分類 vs 貨架視覺落差",
+          "left_title": "Codex CXS 33-198",
+          "left_points": [
+            "特級初榨橄欖油（獨立等級）",
+            "橄欖粕油（明確單獨列類）"
+          ],
+          "right_title": "臺灣市場常見混淆",
+          "right_points": [
+            "品類與等級定位對消費者不透明",
+            "不同製程與定價易被外在形象模糊"
+          ],
+          "delta_badge": "品類分級落差"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic side-by-side studio close-up of two unbranded dark glass oil bottles with distinct golden and pale green oil tones on slate stone, clean surface, no text, no letters",
+        "wikimedia_query": "extra virgin olive oil"
+      },
+      {
+        "scene_id": "L33",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "別說政府沒給時間改！2010年7月自由時報就寫明年實施橄欖油不純須標示調合油；結果到了2026年8月自由健康網還在報，6類橄欖油標示新制要二度預告，拖到2027年7月才正式上路，真夠會拖！",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路",
+        "document_paragraphs": [
+          "橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看",
+          "別說政府沒給時間改！2010年7月自由時報就寫明年實施橄欖油不純須標示調合油；結果到了2026年8月自由健康網還在報，6類橄欖油標示新制要二度預告，拖到2027年7月才正式上路，真夠會拖！"
+        ],
+        "red_underline_quote": "食藥署要二度預告 2027年7月仍上路",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic close-up of desk calendar pages flipping rapidly next to an unbranded bottle of cooking oil, warm editorial lighting, no text, no letters",
+        "wikimedia_query": "cooking oil"
+      },
+      {
+        "scene_id": "L34",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "算給你看這筆時間帳！Codex現行CXS 33-1981早已分級，臺灣從2010年喊標調合油到2027年7月上路，整整拖了17年！UDN直接點破原因：分類標示草案一出，業者馬上就傳雜音。",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+        "document_paragraphs": [],
+        "red_underline_quote": "橄欖油分類標示草案業者有雜音",
+        "kinetic_lines": [
+          {
+            "text": "國際標準：Codex CXS 33-1981",
+            "highlight": "CXS 33-1981",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "臺灣時間帳：2027年 - 2010年 = 17年",
+            "highlight": "17年",
+            "highlight_color": "red"
+          },
+          {
+            "text": "卡關主因：草案業者有雜音 → 二度預告",
+            "highlight": "業者有雜音",
+            "highlight_color": "yellow"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic minimalist dark macro shot of golden olive oil droplets falling into a clean glass beaker, dramatic studio lighting, no text, no letters",
+        "wikimedia_query": "olive oil bottle"
+      },
+      {
+        "scene_id": "L35",
+        "scene_mode": "official_gov_doc",
+        "voice_style": "narrative_explain",
+        "narration": "別跟我說臺灣門檻比別國嚴，回答我，look at my eyes！2015年7月食藥署公告食用豬油衛生標準，上下游直接點名，酸價要求遠落後日本與中國。連衛生底線都比鄰國寬鬆，你信標示會從嚴？",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "食藥署公告「食用豬油衛生標準」 酸價要求遠落後日本與中國",
+        "document_paragraphs": [
+          "橄欖油比照聯合國分5級擬後年上路- 2016年12月05日 ｜ 公視新聞PNN",
+          "別跟我說臺灣門檻比別國嚴，回答我，look at my eyes！2015年7月食藥署公告食用豬油衛生標準，上下游直接點名，酸價要求遠落後日本與中國。連衛生底線都比鄰國寬鬆，你信標示會從嚴？"
+        ],
+        "red_underline_quote": "酸價要求遠落後日本與中國",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic close-up of food safety laboratory technician testing golden oil sample in a glass pipette inside a clean modern lab, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L36",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "當國際標準用明確品類鎖死正面標示，臺灣消費者卻只能自備放大鏡看背面。看看102年大統假油事件後，消保處公佈市售42件調合油調查照樣抓出大廠不合格，法規不補齊破網，最後全靠民眾自己猜！",
+        "trigger_meme": true,
+        "citation_id": "S2",
+        "document_heading": "調合油標示不合格 愛之味泰山全被點名",
+        "document_paragraphs": [],
+        "red_underline_quote": "消保處今(28)天公佈市售42件調合油調查",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic close-up of a shopper in a bright supermarket aisle holding a magnifying glass behind a glass oil bottle trying to inspect tiny back label, unbranded bottle, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L37",
+        "scene_mode": "netizen_comments",
+        "voice_style": "narrative_explain",
+        "narration": "更荒謬的是，中央6類新制還卡在二度預告，地方卻得先擦屁股。2026年2月臺中食安處強化食用油脂專案稽查、守護市民用油品質；Codex早定好的分類，拖到2027年才上，難怪網友直接開酸！",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+        "document_paragraphs": [],
+        "red_underline_quote": "中市食安處強化食用油脂專案稽查",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [
+          {
+            "user": "@阿豪不喝油",
+            "time": "1天前",
+            "text": "2010年喊到2027年才上路，一罐油都可以傳兩代了XD",
+            "likes": 842
+          },
+          {
+            "user": "@臺北社畜日常",
+            "time": "22小時前",
+            "text": "參考歐美合法卻不跟進把分級寫死，這操作很臺灣",
+            "likes": 615
+          },
+          {
+            "user": "@吃貨小陳-tw",
+            "time": "19小時前",
+            "text": "每次看成分表都要拿手機開手電筒放大，買個油像在做考古",
+            "likes": 503
+          },
+          {
+            "user": "@正義魔人路過",
+            "time": "14小時前",
+            "text": "業者有雜音就二度預告，那我們消費者有雜音怎麼沒人理",
+            "likes": 731
+          }
+        ],
+        "image_prompt": "Photorealistic editorial scene of municipal food safety inspectors examining sealed cooking oil containers on a stainless steel inspection table, no text, no letters",
+        "wikimedia_query": "food inspection"
+      },
+      {
+        "scene_id": "L38",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "說到底，Codex、歐盟與美加早就用明確分級守住貨架第一關，臺灣卻把新規範一延再延。就算2027年7月6類新制真的如期上路，從2010年拖到現在的標示破網，業者雜音一來真的堵得住嗎？",
+        "trigger_meme": false,
+        "citation_id": "S6",
+        "document_heading": "明年實施／橄欖油不純 須標示調合油",
+        "document_paragraphs": [],
+        "red_underline_quote": "明年實施／橄欖油不純 須標示調合油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic cinematic shot of sunbeams shining across a Mediterranean olive grove and freshly pressed golden olive oil in a clear glass vessel, shallow depth of field, no text, no letters",
+        "wikimedia_query": "olive grove"
+      },
+      {
+        "scene_id": "L39",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "更諷刺的是，十月這篇新聞實錄才強調我國早有相應國家標準可供遵循，要民眾改以當地食品法規與明確標示為準。不不不這就是死結！連銅葉綠素檢驗判讀都要專文澄清，六類分級卻要明年七月才上路？",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "應以產品是否符合當地食品法規與明確標示為準",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a clear glass laboratory vial of golden olive oil beside official regulatory documents on a stainless desk, clean surface, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L40",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "這就是標準落後的真正代價！國際規範早把橄欖油跟粕油分開列類，臺灣卻一邊講正常飲食安全無虞、售價隨國際大宗物資波動，一邊等業者混充低價油獲利逾三千萬才遭起訴。法規總慢半拍，下回誰把關？",
+        "trigger_meme": false,
+        "citation_id": "S6",
+        "document_heading": "標榜純橄欖油卻混充低價油 業者不法獲利逾3千萬遭起訴",
+        "document_paragraphs": [],
+        "red_underline_quote": "業者不法獲利逾3千萬遭起訴",
+        "kinetic_lines": [
+          {
+            "text": "國際分級：CXS 33-1981（橄欖油 vs 橄欖粕油）",
+            "highlight": "橄欖粕油",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "混充案結果：不法獲利 > 3000萬元（遭起訴）",
+            "highlight": "> 3000萬元",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic dark moody studio close-up of two unbranded glass oil bottles casting long shadows on black slate, dramatic rim lighting, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L41",
+        "scene_mode": "netizen_comments",
+        "voice_style": "narrative_explain",
+        "narration": "護航總愛講：大家都知道這叫行銷名稱，管太嚴業者怎麼生存？回答我，look at my eyes！若名字真的沒差，UDN寫的橄欖油分類標示草案怎會引來業者雜音？還不是怕斷了混水摸魚這門財路！",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+        "document_paragraphs": [],
+        "red_underline_quote": "橄欖油分類標示草案業者有雜音",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [
+          {
+            "user": "@阿豪不吃虧",
+            "time": "1天前",
+            "text": "「大家都知道那是行銷名稱」笑死，那我印玩具鈔上面寫新臺幣也算行銷名稱嗎XD",
+            "likes": 412
+          },
+          {
+            "user": "@全聯主婦筆記",
+            "time": "1天前",
+            "text": "管太嚴業者怎麼生存？先問問喝了三年芥花油的消費者怎麼生存吧",
+            "likes": 289
+          },
+          {
+            "user": "@高雄林先生",
+            "time": "2天前",
+            "text": "580公升混20公升也能喊純橄欖油，這比例當我是數學沒學好？",
+            "likes": 196
+          },
+          {
+            "user": "@夜市美食家",
+            "time": "2天前",
+            "text": "原來豬肉標成牛肉只要說是商品名就過關了喔，真是長見識了",
+            "likes": 154
+          }
+        ],
+        "image_prompt": "Photorealistic editorial close-up of glass olive oil bottles lined up on a dimly lit grocery store shelf, shallow depth of field, clean unbranded surfaces, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L42",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "把邏輯搬到菜市場看清楚：肉販能為了賣豬肉，直接標成頂級牛肉，再嗆你不懂行銷名稱嗎？不能嘛！豬肉不能標成牛肉，憑什麼混充低價油的調合油，擺上貨架就能靠外文與圖案裝成義大利100%純橄欖油？",
+        "trigger_meme": true,
+        "citation_id": "S5",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_paragraphs": [],
+        "red_underline_quote": "假冒義大利100%純橄欖油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of raw pork cuts and beef cuts side by side on a clean butcher counter in a traditional market, dramatic overhead lighting, no labels, no text, no letters",
+        "wikimedia_query": "cooking"
+      },
+      {
+        "scene_id": "L43",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "算給你看為什麼別信「管太嚴活不下去」！2026年7月食力揭露蒙特樂案：580公升芥花油混20公升橄欖油，純橄欖油佔比連4%都不到，竟假冒義大利100%純橄欖油，不法獲利3760萬元才起訴！",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "580公升芥花油混20公升橄欖油！「蒙特樂」假冒義大利100%純橄欖油 不法獲利3760萬元遭起訴",
+        "document_paragraphs": [],
+        "red_underline_quote": "580公升芥花油混20公升橄欖油",
+        "kinetic_lines": [
+          {
+            "text": "580公升芥花油 + 20公升橄欖油 = 600公升",
+            "highlight": "20公升橄欖油",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "純橄欖油佔比 = 3.3%（連4%都不到）",
+            "highlight": "3.3%",
+            "highlight_color": "red"
+          },
+          {
+            "text": "不法獲利 = 3760萬元",
+            "highlight": "3760萬元",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden cooking oil pouring from a large industrial drum into a clear glass bottle, stark dark studio background, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L44",
+        "scene_mode": "official_gov_doc",
+        "voice_style": "narrative_explain",
+        "narration": "還有人嗆安全幹嘛分那麼細？但對照CXS 33-1981規範，橄欖粕油跟特級初榨在製程方式、風味表現與市場定價上確實有所不同；既然要民眾別憑價格高低或油品名稱猜品質，正面品名就該老實寫死！",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "製程方式、風味表現與市場定價上確實有所不同",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of official regulatory documents and golden olive oil samples in glass beakers on a laboratory desk, crisp lighting, no readable text, no logos",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L45",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "這套資訊不對稱正是劣幣驅逐良幣的溫床！良心業者在正面寫明較經濟實惠的橄欖粕油或調合油，賣特級初榨的也老實扛高原料成本；隔壁卻靠外文圖案偽裝低價混充油搶單，誠實廠商被逼出局，誰還願意守規矩？",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [],
+        "red_underline_quote": "不能僅單憑「價格高低」或「油品名稱」",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "良心老實業者 vs 混充投機業者",
+          "left_title": "誠實標示廠商",
+          "left_points": [
+            "正面標明橄欖粕油或調合油",
+            "特級初榨老實扛高原料成本",
+            "依 CXS 33-1981 分類定價"
+          ],
+          "right_title": "偽裝混充廠商",
+          "right_points": [
+            "580公升芥花油混20公升橄欖油",
+            "外文圖案假冒義大利100%純油",
+            "低成本高售價撈走3760萬元"
+          ],
+          "delta_badge": "劣幣驅逐良幣"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic editorial split comparison of a clean minimalist olive oil bottle next to an ornate dark glass bottle on a studio table, dramatic contrast lighting, no text, no letters",
+        "wikimedia_query": "factory"
+      },
+      {
+        "scene_id": "L46",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "有人天真以為市場機制會淘汰混充油？醒醒吧！2026年8月14日自由健康網跟UDN同時寫道，分類標示草案才出爐就出現「業者有雜音」，直接讓6類標示新制生變數，難道誠實標示還得看誰聲音大嗎？",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "6類橄欖油標示新制生變數？食藥署要二度預告 2027年7月仍上路",
+        "document_paragraphs": [
+          "橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看",
+          "有人天真以為市場機制會淘汰混充油？醒醒吧！2026年8月14日自由健康網跟UDN同時寫道，分類標示草案才出爐就出現「業者有雜音」，直接讓6類標示新制生變數，難道誠實標示還得看誰聲音大嗎？"
+        ],
+        "red_underline_quote": "6類橄欖油標示新制生變數？食藥署要二度預告",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a busy supermarket cooking oil aisle with shoppers reaching for bottles on shelves, natural indoor lighting, clean unbranded labels, no text",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L47",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "說到底，「管太嚴業者怎麼生存」這套話術，護的從來不是老實標示的良心廠商，而是靠資訊落差撈飽暴利的投機者！當守規矩被貨架懲罰、混充者靠雜音卡關，我們每次進賣場買油究竟該盯死哪幾關才算自保？",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+        "document_paragraphs": [],
+        "red_underline_quote": "中市食安處強化食用油脂專案稽查",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a consumer turning a glass cooking oil bottle around to inspect the back under bright supermarket aisle lights, shallow depth of field, no readable text, no letters",
+        "wikimedia_query": "money"
+      },
+      {
+        "scene_id": "L48",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "在進賣場自保前，先打臉最後一句護航：有人說油只要檢驗過關、安全無虞不就好了？別偷換概念！不同品類與等級本來就不是違法劣質油，問題是連2010年9月環境資訊中心都報過強制標示調合油，正面卻至今能躲在文字遊戲裡！",
+        "trigger_meme": false,
+        "citation_id": "S8",
+        "document_heading": "食用油不純 強制標示調合油",
+        "document_paragraphs": [
+          "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+          "在進賣場自保前，先打臉最後一句護航：有人說油只要檢驗過關、安全無虞不就好了？別偷換概念！不同品類與等級本來就不是違法劣質油，問題是連2010年9月環境資訊中心都報過強制標示調合油，正面卻至今能躲在文字遊戲裡！"
+        ],
+        "red_underline_quote": "食用油不純 強制標示調合油",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of stacked edible oil bottles on a supermarket shelf with soft overhead lighting, clean unbranded surfaces, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L49",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "想靠買貴自保一樣失靈！業界早點破售價隨國際大宗物資波動，根本不能單憑價格高低推定品質；難怪2026年7月公視新聞仍抓到業者標榜純橄欖油卻混充低價油，不法獲利逾3千萬遭起訴！不鎖死正面標示，老實廠商只能陪葬！",
+        "trigger_meme": false,
+        "citation_id": "S6",
+        "document_heading": "標榜純橄欖油卻混充低價油 業者不法獲利逾3千萬遭起訴",
+        "document_paragraphs": [],
+        "red_underline_quote": "業者不法獲利逾3千萬遭起訴",
+        "kinetic_lines": [
+          {
+            "text": "2010年9月：強制標示調合油",
+            "highlight": "2010年9月",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "2026年7月：混充低價油獲利 > 3千萬元",
+            "highlight": "獲利 > 3千萬元",
+            "highlight_color": "red"
+          },
+          {
+            "text": "售價隨大宗物資波動 ≠ 品質保證",
+            "highlight": "≠ 品質保證",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden olive oil dripping beside brass market scales on a dark slate surface, dramatic studio lighting, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L50",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "進賣場第一招就是直接翻到背面看品名！別被正面外文圖案牽著走，先確認是不是特級初榨橄欖油；只要出現經精煉的橄欖粕油，或依2010年規範標示調合油，這類產品的製程風味與市場定價都完全不同！",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "瓶身正面形象 vs 背面法規品名",
+          "left_title": "正面外文與高價形象",
+          "left_points": [
+            "主打義大利外文與圖案",
+            "僅憑價格高低或名稱推估品質"
+          ],
+          "right_title": "背面成分與等級真相",
+          "right_points": [
+            "區分特級初榨橄欖油與精煉橄欖粕油",
+            "不純即須依2010年規範標示調合油"
+          ],
+          "delta_badge": "580L芥花油 : 20L橄"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of dark glass olive oil bottles on a supermarket shelf, clean unbranded labels, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L51",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "第二招，別被營養大字騙了！2014年消保處42件調合油調查，愛之味、泰山、寶素齋等知名大廠全被點名不合格，部分商品宣稱含有Omega3、兒茶素卻未說明清楚，凡是標示含糊不清就直接放回貨架！",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "調合油標示不合格 愛之味泰山全被點名",
+        "document_paragraphs": [
+          "去(102)年大統假油事件鬧得人心惶惶，消保處今(28)天公佈市售42件調合油調查結果，其中不乏愛之味、泰山、寶素齋等知名大廠被點名不合格。部分商品宣稱含有Omega3、兒茶素，卻未說明實際 ..."
+        ],
+        "red_underline_quote": "部分商品宣稱含有Omega3、兒茶素",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a consumer inspecting the back ingredient label of a cooking oil bottle in a grocery aisle, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L52",
+        "scene_mode": "product_comparison",
+        "voice_style": "narrative_explain",
+        "narration": "第三招，善用官方稽查公告與通報管道！2026年2月臺中市食安處才強化食用油脂專案稽查，防堵偽冒油品流向餐桌。買前先比對食藥署與地方食安處查核紀錄，發現品名與成分兜不攏，留下憑證直接檢舉！",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質",
+        "document_paragraphs": [],
+        "red_underline_quote": "中市食安處強化食用油脂專案稽查",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守",
+          "left_title": "包裝宣稱 / 表面標準",
+          "left_points": [
+            "善用官方稽查公告與通報管道",
+            "2026年2月臺中市食安處才強化食用油脂專案稽查"
+          ],
+          "right_title": "實際規定 / 換算真相",
+          "right_points": [
+            "防堵偽冒油品流向餐桌",
+            "買前先比對食藥署與地方食安處查核紀錄"
+          ],
+          "delta_badge": "關鍵落差"
+        },
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a food safety inspector checking clear golden oil samples in glass vials in a testing laboratory, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L53",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "自保三招講完，現在把帳算回制度本身！2010年規定不純須標調合油，2014年42件抽查大廠照樣違規，2015年食用豬油酸價要求遠落後日本與中國，如今6類新制還得再等2027年7月才上路！",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "2010年不純須標調合油 → 2014年42件抽查違規",
+            "highlight": "42件抽查違規",
+            "highlight_color": "red"
+          },
+          {
+            "text": "2015年食用豬油酸價要求 ＜ 日本、中國",
+            "highlight": "＜ 日本、中國",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "2010年強制標調合油 → 2027年7月6類新制",
+            "highlight": "2027年7月6類新制",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden olive oil pouring slowly from a glass bottle into a small dish on dark stone, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "L54",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "從102年大統假油到2026年起訴案，消費者走進賣場買瓶橄欖油，為什麼還得像辦案一樣翻背標、查公告？只因每次標準想跟上國際Codex分級，業者一喊有雜音，就能換來二度預告繼續拖延！",
+        "trigger_meme": true,
+        "citation_id": "S6",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial shot of rows of glass cooking oil bottles under bright retail lighting in a supermarket aisle, clean unbranded bottles, no text, no letters",
+        "wikimedia_query": "supermarket"
+      },
+      {
+        "scene_id": "L55",
+        "scene_mode": "ai_scene",
+        "voice_style": "narrative_explain",
+        "narration": "一瓶油只有在民眾分不清初榨、粕油和調合油時，才能靠外文與圖案賣出高價。那麼貨架真正欠缺的，究竟是消費者自學法規的本事，還是主管機關不向業者雜音退讓、把品名講清楚的決心？",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of a home kitchen counter with golden cooking oil in a glass cruet beside fresh olives, warm natural lighting, clean unbranded surface, no text, no letters",
+        "wikimedia_query": "cooking"
+      },
+      {
+        "scene_id": "L56",
+        "scene_mode": "news_portal",
+        "voice_style": "narrative_explain",
+        "narration": "攤開時間線更刺眼：2010年7月3日自由時報已預告不純須標調合油，2026年10月16日食藥署卻還在澄清銅葉綠素檢驗，重申參考歐盟、美國與加拿大規範的精煉粕油安全無虞，卻照樣防不住混充！",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵",
+        "document_paragraphs": [
+          "市面上的橄欖油品項繁多，其中「橄欖粕油（Olive Pomace Oil）」常因名稱與萃取製程，被部分消費者誤解為不合格的劣質油。此外，當食用油品相關檢驗涉及「銅葉綠素」成分時，也極易引起民眾對人工違法新增的恐慌。事實上，若從聯合國國際食品標準及臺灣衛生福利部食品藥物管理署（食藥署）的官方規範來看，這些常見的刻板印象都有賴進一步的科學與法規釐清。",
+          "首先，針對橄欖粕油的分類與安全性，聯合國食品標準委員會（Codex）現行的 CXS 33-1981《Standard for Olive Oils and Olive Pomace Oils》規範中，已明文將橄欖粕油納入供人食用的油品類別之一。",
+          "臺灣食藥署過去亦曾明確說明，參考 Codex、歐盟、美國及加拿大等國際規範，經過妥善「精煉」程式處理的橄欖粕油，為準許使用的合法食用油，我國也有相應的國家標準可供業者遵循。換言之，橄欖粕油與特級初榨橄欖油（Extra Virgin Olive Oil）在製程方式、風味表現與市場定價上確實有所不同，但「不同品類與等級」並不等於「違法劣質油」，只要符合國家衛生標準，在正常飲食下皆屬安全無虞。",
+          "業界人士指出，雖然橄欖粕油在市場定位上屬於較經濟實惠的基礎油品，但其實際進口價格與終端售價仍會隨著國際大宗物資市場機制波動。因此，消費者在選購時，不能僅單憑「價格高低」或「油品名稱」來逆向推定其品質與安全性，而應以產品是否符合當地食品法規與明確標示為準。"
+        ],
+        "red_underline_quote": "極易引起民眾對人工違法新增的恐慌",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of golden olive pomace oil and extra virgin olive oil samples side by side on a neutral laboratory bench, clean unbranded glass bottles, no text, no letters",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "L57",
+        "scene_mode": "kinetic_black",
+        "voice_style": "narrative_explain",
+        "narration": "蒙特樂案靠著假冒義大利純橄欖油、不法獲利高達3760萬元才遭起訴；食藥署2026年8月14日卻因業者雜音將二度預告，新制等到2027年7月上路。當違法暴利早已先落袋，這套標示規範到底保護了誰？",
+        "trigger_meme": false,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [
+          {
+            "text": "580公升芥花油 + 20公升橄欖油 = 600公升",
+            "highlight": "20公升橄欖油",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "蒙特樂案不法獲利 = 3760萬元",
+            "highlight": "3760萬元",
+            "highlight_color": "red"
+          },
+          {
+            "text": "2026年8月14日二度預告 → 2027年7月上路",
+            "highlight": "2027年7月上路",
+            "highlight_color": "red"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Photorealistic editorial close-up of stacks of Taiwanese currency beside an unbranded dark glass cooking oil bottle on a dark slate surface, moody studio lighting, no text, no letters",
+        "wikimedia_query": "money"
+      }
+    ]
+  },
+  "short_video": {
+    "title": "瓶身寫義大利橄欖油翻過來竟是調合油？特級初榨跟果渣油差在哪？ #橄欖油 #食藥署 #獨角獸那麼叫",
+    "top_hook_line1": "瓶身寫義大利橄欖油",
+    "top_hook_line2": "翻過來竟是調合油！",
+    "hook_line2_color": "red",
+    "hook_highlight_words": [
+      "純橄欖油",
+      "3.3%"
+    ],
+    "scenes": [
+      {
+        "scene_id": "S01",
+        "scene_mode": "ai_scene",
+        "voice_style": "hook_question",
+        "narration": "回答我！瓶身寫義大利100%純橄欖油，你就直接結帳嗎？先別急著買單！2026年7月食力揭露，蒙特樂拿580公升芥花油混20公升橄欖油，假冒純油不法獲利3760萬元遭起訴！你買的究竟是哪種油？",
+        "trigger_meme": true,
+        "citation_id": "S1",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Documentary close-up photography inside a bright modern retail store, clean unbranded packaging, shallow depth of field, natural lighting, no text, no letters",
+        "wikimedia_query": "olive oil"
+      },
+      {
+        "scene_id": "S02",
+        "scene_mode": "product_comparison",
+        "voice_style": "short_energetic",
+        "narration": "直接算帳！580公升芥花油混20公升橄欖油，共600公升，純橄欖油僅約3.3%！別以為只是個案，2010年早規定不純須標調合油，2014年消保處查42件，愛之味、泰山、寶素齋都被點名不合格！",
+        "trigger_meme": false,
+        "citation_id": "S2",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": {
+          "heading": "市場標示與實況對照",
+          "left_title": "包裝宣稱 / 表面標準",
+          "left_points": [
+            "580公升芥花油混20公升橄欖油",
+            "共600公升"
+          ],
+          "right_title": "實際規定 / 換算真相",
+          "right_points": [
+            "純橄欖油僅約3.3%",
+            "別以為只是個案"
+          ],
+          "delta_badge": "關鍵落差"
+        },
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "S03",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "重點來了，超市買油到底怎麼看？瓶身正面常寫特級初榨、義大利進口，翻到背面品名和成分才見真章！其實連常被誤會的橄欖粕油，只要經妥善精煉處理，依Codex標準也是合法食用油，只是等級和定價不同。",
+        "trigger_meme": false,
+        "citation_id": "S3",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Documentary close-up photography inside a bright modern retail store, clean unbranded packaging, shallow depth of field, natural lighting, no text, no letters",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "S04",
+        "scene_mode": "kinetic_black",
+        "voice_style": "short_energetic",
+        "narration": "這裡就是水深的地方！2026年8月自由健康網和UDN都報導，食藥署端出6類橄欖油分類標示新制，要把等級劃分清楚，結果業者馬上有雜音，逼得食藥署得二度預告，但仍表態維持2027年7月上路！",
+        "trigger_meme": false,
+        "citation_id": "S4",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "食藥署要二度預告 2027年7月仍上路",
+        "kinetic_lines": [
+          {
+            "text": "這裡就是水深的地方",
+            "highlight": "",
+            "highlight_color": "yellow"
+          },
+          {
+            "text": "2026年8月自由健康網和UDN都報",
+            "highlight": "",
+            "highlight_color": "yellow"
+          }
+        ],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "S05",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "業者一喊有雜音，網友留言區直接炸鍋！大家最怕的不是貴，而是花錢買純油卻喝進調合油，每次出事就說符合法規，真正要細分6類等級就急著反彈。連2010年就該標清楚的調合油，吵了16年還在二度預告！",
+        "trigger_meme": false,
+        "citation_id": "S5",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Documentary close-up photography inside a bright modern retail store, clean unbranded packaging, shallow depth of field, natural lighting, no text, no letters",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "S06",
+        "scene_mode": "news_portal",
+        "voice_style": "short_energetic",
+        "narration": "但更深的問題還在後頭！不只橄欖油標示卡關，臺灣連食用豬油酸價標準都曾被揭露遠落後日本與中國，橄欖粕油和銅葉綠素檢驗更是天天吵翻！到底臺灣食安標準與國際差在哪？點下方正片一次拆解給你看！",
+        "trigger_meme": false,
+        "citation_id": "S6",
+        "document_heading": "用調和油冒充橄欖油獲利三千餘萬 檢起訴四人",
+        "document_paragraphs": [
+          "用調和油冒充橄欖油獲利三千餘萬 檢起訴四人",
+          "但更深的問題還在後頭！不只橄欖油標示卡關，臺灣連食用豬油酸價標準都曾被揭露遠落後日本與中國，橄欖粕油和銅葉綠素檢驗更是天天吵翻！到底臺灣食安標準與國際差在哪？點下方正片一次拆解給你看！"
+        ],
+        "red_underline_quote": "用調和油冒充橄欖油獲利三千餘萬 檢起訴四",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "",
+        "wikimedia_query": "laboratory"
+      },
+      {
+        "scene_id": "S07",
+        "scene_mode": "ai_scene",
+        "voice_style": "short_energetic",
+        "narration": "把時間線拉近更驚悚！2026年2月臺中市食安處才剛強化食用油脂專案稽查，7月就爆出混油不法獲利逾3千萬遭起訴！食藥署也指出，終端售價隨國際大宗物資波動，不能單憑價格或品名推定品質！",
+        "trigger_meme": false,
+        "citation_id": "S7",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "中市食安處強化食用油脂專案稽查",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [],
+        "image_prompt": "Documentary close-up photography inside a bright modern retail store, clean unbranded packaging, shallow depth of field, natural lighting, no text, no letters",
+        "wikimedia_query": ""
+      },
+      {
+        "scene_id": "S08",
+        "scene_mode": "netizen_comments",
+        "voice_style": "short_energetic",
+        "narration": "從2014年大廠標示不合格，到2027年7月新制才要上路，為何臺灣對比歐盟、美國、加拿大與日本、中國標準落差這麼大？食藥署揭露的銅葉綠素判讀關鍵又藏了什麼門道？馬上點下方關聯正片看完整拆解！",
+        "trigger_meme": false,
+        "citation_id": "S8",
+        "document_heading": "",
+        "document_paragraphs": [],
+        "red_underline_quote": "",
+        "kinetic_lines": [],
+        "comparison": null,
+        "comments": [
+          {
+            "user": "@netizen_tw_1",
+            "time": "1 小時前",
+            "text": "從2014年大廠標示不合格",
+            "likes": 420
+          },
+          {
+            "user": "@netizen_tw_2",
+            "time": "2 小時前",
+            "text": "到2027年7月新制才要上路",
+            "likes": 347
+          },
+          {
+            "user": "@netizen_tw_3",
+            "time": "3 小時前",
+            "text": "為何臺灣對比歐盟、美國、加拿大與日本、中國標準落差這麼大",
+            "likes": 274
+          },
+          {
+            "user": "@netizen_tw_4",
+            "time": "4 小時前",
+            "text": "食藥署揭露的銅葉綠素判讀關鍵又藏了什麼門道",
+            "likes": 201
+          }
+        ],
+        "image_prompt": "",
+        "wikimedia_query": "supermarket"
+      }
+    ]
+  },
+  "long_description": "瓶身寫義大利橄欖油，翻過來竟是調合油？特級初榨跟精煉果渣油價差數倍，這樣也算合規？食藥署品名標示到底在護誰？\n\n【公開資訊與法規參考來源】：\n• [S1] Yahoo奇摩新聞（2026-10-16）：破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵\n  https://tw.news.yahoo.com/%E7%A0%B4%E9%99%A4%E9%A3%9F%E7%94%A8%E6%B2%B9%E8%BF%B7%E6%80%9D-%E6%A9%84%E6%AC%96%E7%B2%95%E6%B2%B9%E7%AC%A6%E5%9C%8B%E9%9A%9B%E8%A6%8F%E7%AF%84%E5%B1%AC%E5%90%88%E6%B3%95%E9%A3%9F%E7%94%A8%E6%B2%B9-%E9%A3%9F%E8%97%A5%E7%BD%B2%E6%8F%AD-%E9%8A%85%E8%91%89%E7%B6%A0%E7%B4%A0-%E6%AA%A2%E9%A9%97%E5%88%A4%E8%AE%80%E9%97%9C%E9%8D%B5-083133541.html\n• [S2] 卡優新聞網（2014-04-27）：調合油標示不合格 愛之味泰山全被點名\n  https://www.cardu.com.tw/news/detail.php?22428\n• [S3] 公視新聞（2017-10-07）：橄欖油比照聯合國分5級擬後年上路- 2016年12月05日 ｜ 公視新聞PNN\n  https://news.pts.org.tw\n• [S4] 臺視新聞網（2026-05-11）：橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看\n  https://news.ttv.com.tw\n• [S5] TVBS 健康2.0（2026-02-03）：蒙特樂橄欖油有假！混芥花油標100%純 獲利1500萬挨罰400萬\n  https://health.tvbs.com.tw\n• [S6] 大紀元（2026-07-14）：用調和油冒充橄欖油獲利三千餘萬 檢起訴四人\n  https://www.epochtimes.com\n• [S7] UDN（2026-08-14）：橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路\n  https://udn.com\n• [S8] 臺中市政府全球資訊網（2026-02-10）：防堵偽冒油品流向餐桌 中市食安處強化食用油脂專案稽查 守護市民用油品質\n  https://www.taichung.gov.tw\n\n#橄欖油 #調合油 #特級初榨橄欖油 #精煉果渣油 #食藥署標示規範 #食用油等級\n\nThis channel presents independent analysis based on publicly available information, including government statistics, academic research, international regulations, and credible industry data.\nOur content focuses on prices, wages, food labeling, industry structures, and transparency issues that affect everyday life. The goal is to provide clear, well-sourced insights for public understanding and educational purposes.\nAll content on this channel is informational in nature. Nothing here should be interpreted as legal, financial, medical, or professional advice.\n\n本頻道以公開資料、國際法規、政府統計、學術研究與可靠的產業資訊為基礎，進行跨領域的事實整理與分析。內容聚焦於物價、薪資、食品標示、產業結構與消費資訊透明化，旨在協助大眾理解影響日常生活的關鍵數據與制度。\n本頻道所有內容皆為基於公開資訊的評論與研究，不提供法律、投資或醫療建議。所有分析僅供公共利益與教育用途。",
+  "short_description": "▶ 完整數據與法規拆解正片：《瓶身寫義大利橄欖油，翻過來竟是調合油？特級初榨跟精煉果渣油價差數倍，這樣也算合規？食藥署品名標示到底在護誰？》\n\n【公開資訊與法規參考來源】：\n• [S1] Yahoo奇摩新聞（2026-10-16）：破除食用油迷思 橄欖粕油符國際規範屬合法食用油 食藥署揭「銅葉綠素」檢驗判讀關鍵\n  https://tw.news.yahoo.com/%E7%A0%B4%E9%99%A4%E9%A3%9F%E7%94%A8%E6%B2%B9%E8%BF%B7%E6%80%9D-%E6%A9%84%E6%AC%96%E7%B2%95%E6%B2%B9%E7%AC%A6%E5%9C%8B%E9%9A%9B%E8%A6%8F%E7%AF%84%E5%B1%AC%E5%90%88%E6%B3%95%E9%A3%9F%E7%94%A8%E6%B2%B9-%E9%A3%9F%E8%97%A5%E7%BD%B2%E6%8F%AD-%E9%8A%85%E8%91%89%E7%B6%A0%E7%B4%A0-%E6%AA%A2%E9%A9%97%E5%88%A4%E8%AE%80%E9%97%9C%E9%8D%B5-083133541.html\n• [S2] 卡優新聞網（2014-04-27）：調合油標示不合格 愛之味泰山全被點名\n  https://www.cardu.com.tw/news/detail.php?22428\n• [S3] 公視新聞（2017-10-07）：橄欖油比照聯合國分5級擬後年上路- 2016年12月05日 ｜ 公視新聞PNN\n  https://news.pts.org.tw\n• [S4] 臺視新聞網（2026-05-11）：橄欖油、芝麻油安全嗎？北市抽驗油品30件結果一次看\n  https://news.ttv.com.tw\n• [S5] TVBS 健康2.0（2026-02-03）：蒙特樂橄欖油有假！混芥花油標100%純 獲利1500萬挨罰400萬\n  https://health.tvbs.com.tw\n\n本影片內容僅為公共議題分析，所有資訊皆來自公開資料、政府法規與統計報導，僅供公共利益與教育用途。"
+}

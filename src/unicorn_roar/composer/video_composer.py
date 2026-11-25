@@ -29,7 +29,7 @@ import numpy as np
 import soundfile as sf
 from PIL import Image, ImageDraw
 
-from unicorn_roar.config import load_channel_profile
+from unicorn_roar.config import get_voice_pack_dir, load_channel_profile
 from unicorn_roar.discovery.web_crawler import ResearchDossier, SourceCitation
 from unicorn_roar.scriptwriter.generator import EpisodeBlueprint, SceneSpec
 from unicorn_roar.visuals.chrome_cards import ChromeEvidenceRenderer
@@ -180,6 +180,51 @@ def _foley_sfx(kind: str, huh_wav_path: Path | None = None, sr: int = 44100) -> 
     return np.stack([sig * 1.05, sig * 0.92], axis=1).astype(np.float32)
 
 
+def _build_pizzicato_bgm_bed(total_samples: int, work_dir: Path, sr: int = 44100, gain_db: float = -28.6) -> np.ndarray:
+    """Load real playful pizzicato chamber-strings BGM (`-28.6 dB` subtle investigative bed)."""
+    bgm_mp3 = get_voice_pack_dir() / "investigative_pizzicato_bgm.mp3"
+    if not bgm_mp3.exists() or total_samples <= 0:
+        return np.zeros((max(1, total_samples), 2), dtype=np.float32)
+
+    work_dir.mkdir(parents=True, exist_ok=True)
+    decoded_wav = work_dir / "_bgm_decoded_44k.wav"
+    if not decoded_wav.exists():
+        subprocess.run(
+            ["ffmpeg", "-y", "-i", str(bgm_mp3), "-ar", str(sr), "-ac", "2", str(decoded_wav)],
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    bgm_raw, _ = sf.read(str(decoded_wav), dtype="float32")
+    if bgm_raw.ndim == 1:
+        bgm_raw = np.stack([bgm_raw, bgm_raw], axis=1)
+    # Normalize BGM RMS to 0.14 first, then apply -28.6 dB linear attenuation (`~0.0371`)
+    rms = float(np.sqrt(np.mean(bgm_raw**2)) + 1e-9)
+    bgm_unit = bgm_raw * (0.18 / rms)
+
+    xfade = min(int(0.8 * sr), len(bgm_unit) // 6)
+    bed = bgm_unit
+    while len(bed) < total_samples + sr:
+        if xfade > 64:
+            fo = np.linspace(1.0, 0.0, xfade, dtype=np.float32)[:, None]
+            fi = np.linspace(0.0, 1.0, xfade, dtype=np.float32)[:, None]
+            mid = bed[-xfade:] * fo + bgm_unit[:xfade] * fi
+            bed = np.concatenate([bed[:-xfade], mid, bgm_unit[xfade:]], axis=0)
+        else:
+            bed = np.concatenate([bed, bgm_unit], axis=0)
+
+    bed = bed[:total_samples].copy()
+    fade_in = min(int(0.45 * sr), total_samples // 4)
+    fade_out = min(int(1.20 * sr), total_samples // 4)
+    if fade_in > 0:
+        bed[:fade_in] *= np.linspace(0.0, 1.0, fade_in, dtype=np.float32)[:, None]
+    if fade_out > 0:
+        bed[-fade_out:] *= np.linspace(1.0, 0.0, fade_out, dtype=np.float32)[:, None]
+
+    linear_gain = float(10.0 ** (gain_db / 20.0))
+    return (bed * linear_gain).astype(np.float32)
+
+
 def _mix_master_audio(
     scenes: list[SceneSpec],
     tts_map: dict[str, dict[str, Any]],
@@ -187,10 +232,7 @@ def _mix_master_audio(
     huh_sfx_path: Path | None = None,
     inter_pause_sec: float = 0.06,
 ) -> tuple[Path, list[tuple[float, float]]]:
-    """Assemble clean broadcast owner narration (`-13.0 LUFS`) + authentic `Huh?!` & transition SFX.
-
-    Zero synthetic MIDI/sine background loop — matching `@unicorn-roar`'s clean studio voice floor!
-    """
+    """Assemble clean broadcast owner narration (`-13.0 LUFS`) + subtle `-28.6 dB` pizzicato BGM + `Huh?!` SFX."""
     sr = 44100
     chunks: list[np.ndarray] = []
     timings: list[tuple[float, float]] = []
@@ -243,7 +285,8 @@ def _mix_master_audio(
         if end_pos > sample_pos:
             sfx_layer[sample_pos:end_pos] += sfx_arr[: end_pos - sample_pos]
 
-    mixed = np.clip(voice_track + sfx_layer, -0.97, 0.97)
+    bgm_bed = _build_pizzicato_bgm_bed(total_samples, out_mixed_wav.parent, sr=sr, gain_db=-28.6)
+    mixed = np.clip(voice_track + sfx_layer + bgm_bed, -0.97, 0.97)
     out_mixed_wav.parent.mkdir(parents=True, exist_ok=True)
     sf.write(str(out_mixed_wav), mixed, sr, subtype="PCM_16")
     return out_mixed_wav, timings

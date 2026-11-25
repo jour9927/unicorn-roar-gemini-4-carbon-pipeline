@@ -110,3 +110,30 @@ def test_distilled_playbook_and_breath_cutter() -> None:
     combined = np.concatenate([tone, long_sil, tone])
     trimmed = mod.tight_cut_breaths(combined, sr)
     assert len(trimmed) < len(combined) - int(0.45 * sr)
+
+
+def test_taiwan_tts_pronunciation_normalizer() -> None:
+    from unicorn_roar.voice.tw_pronunciation import normalize_text_for_taiwan_tts
+
+    raw = (
+        "你先別急著生氣啊！明明2010年就規定，直到2027年才上路，2026年7月檢方起訴「蒙特樂」，拿580公升芥花油混20公升橄欖油，"
+        "純度僅3.3%卻標100%純油，不法獲利3,760萬元！從民國102年到現在整整拖了17年，"
+        "依據聯合國Codex與Yahoo新聞報導，顯著違反調合油標示！"
+    )
+    norm = normalize_text_for_taiwan_tts(raw)
+    assert "急着生气" in norm
+    assert "显著" in norm
+    assert "调和油" in norm
+    assert "二零一零年" in norm
+    assert "二零二七年" in norm
+    assert "两千零" not in norm
+    assert "二零二六年七月" in norm
+    assert "五百八十公升" in norm
+    assert "百分之三点三" in norm
+    assert "百分之百" in norm
+    assert "三千七百六十万元" in norm
+    assert "一百零二年" in norm
+    assert "十七年" in norm
+    assert "一七年" not in norm
+    assert "联合国食品法典" in norm
+    assert "雅虎新闻" in norm

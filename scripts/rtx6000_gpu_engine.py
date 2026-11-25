@@ -219,9 +219,124 @@ def align_phrases_to_audio(
     ]
 
 
+def _normalize_for_tw_tts(text: str) -> str:
+    """Self-contained Taiwan Mandarin TTS normalizer (digits/years/% -> Chinese words, `著->着`, `調合->調和`)."""
+    import cn2an
+    from opencc import OpenCC
+
+    cc_tw2s = OpenCC("tw2s")
+    zhu_words = (
+        "顯著", "著名", "著作", "著稱", "著手", "著重", "著陸", "著落",
+        "執著", "附著", "衣著", "著想", "著迷", "著急", "著火", "著涼",
+    )
+    lexicon = [
+        ("調合油", "調和油"), ("調合", "調和"), ("過分", "過份"), ("垃圾", "樂色"),
+        ("角色", "腳色"), ("曝光", "鋪光"), ("CP值", "西批值"), ("QR Code", "Q R 扣"),
+        ("Omega-3", "歐米茄三"), ("Omega3", "歐米茄三"), ("omega-3", "歐米茄三"),
+        ("CXS 33-1981標準", "三十三號標準"), ("CXS 33-1981規範", "三十三號規範"),
+        ("CXS 33-1981", "三十三號規範"), ("CXS", "國際標準"),
+        ("聯合國Codex", "聯合國食品法典"), ("國際Codex", "國際食品法典"),
+        ("Codex標準", "國際法典標準"), ("Codex分級", "國際法典分級"),
+        ("Codex規範", "國際法典規範"), ("Codex", "國際食品法典"),
+        ("Yahoo奇摩", "雅虎奇摩"), ("Yahoo", "雅虎"),
+        ("UDN", "聯合新聞網"), ("TVBS", "T V B S "), ("CNA", "中央社"),
+        ("OECD", "經合組織"), ("IOC", "國際橄欖油理事會"), ("FDA", "食藥署"),
+        ("100%", "百分之百"),
+    ]
+    out = re.sub(r"[（(][A-Za-z0-9\s,\-\./&]+[)）]", "", text.strip())
+    for src, dst in lexicon:
+        out = out.replace(src, dst)
+
+    phs: dict[str, str] = {}
+    for i, zw in enumerate(zhu_words):
+        if zw in out:
+            k = f"__ZHU{i}__"
+            phs[k] = zw
+            out = out.replace(zw, k)
+    out = out.replace("著", "着")
+    for k, zw in phs.items():
+        out = out.replace(k, zw)
+
+    out = out.replace("NT$", "新台幣").replace("US$", "美金").replace("$", "元")
+    out = out.replace("±", "正負").replace("≠", "不等於").replace("≥", "大於等於").replace("≤", "小於等於")
+    out = re.sub(
+        r"(\d+(?:\.\d+)?)\s*[~～\-－至到]\s*(\d+(?:\.\d+)?)\s*[%％]",
+        lambda m: f"百分之{cn2an.an2cn(m.group(1))}到{cn2an.an2cn(m.group(2))}",
+        out,
+    )
+    out = re.sub(
+        r"(\d+(?:\.\d+)?)\s*[%％]",
+        lambda m: "百分之百" if m.group(1) == "100" else "百分之" + cn2an.an2cn(m.group(1)),
+        out,
+    )
+    out = re.sub(r"(?<!\d)([1-9])\s*/\s*([2-9]|10|100)(?!\d)", lambda m: f"{cn2an.an2cn(m.group(2))}分之{cn2an.an2cn(m.group(1))}", out)
+    out = re.sub(r"(\d+(?:\.\d+)?)\s*[~～\-－]\s*(\d+(?:\.\d+)?)", r"\1到\2", out)
+    digits_map = str.maketrans("0123456789", "零一二三四五六七八九")
+    out = re.sub(r"(?<!\d)(19\d{2}|20\d{2})年", lambda m: m.group(1).translate(digits_map) + "年", out)
+    out = re.sub(r"(?<=\d),(?=\d{3}(?!\d))", "", out)
+    out = re.sub(r"\d+(?:\.\d+)?", lambda m: cn2an.an2cn(m.group(0)), out)
+    out = re.sub(
+        r"(?<![一二三四五六七八九十百千萬億第零點])二([萬千百個件罐瓶種倍成次家款桶層幕條項年天週歲])",
+        r"兩\1",
+        out,
+    )
+    out = out.replace("兩年級", "二年級")
+    out = re.sub(r"[「」『』《》【】]", "", out)
+    out = re.sub(r"[—…]+", "，", out)
+    out = re.sub(r"[，,、；;：:]{2,}", "，", out)
+    out = cc_tw2s.convert(out)
+    out = re.sub(r"\s+", " ", out).strip()
+    if out and out[-1] not in "。！？!?":
+        out += "。"
+    return out
+
+
+def split_into_full_sentences(raw_zhtw: str) -> list[str]:
+    """Split scene text ONLY on full sentence endings (`。！？!?`) when >= 22 chars for continuous natural prosody!"""
+    raw_zhtw = _to_zhtw(raw_zhtw).strip()
+    parts = re.split(r"(?<=[。！？!?])", raw_zhtw)
+    merged: list[str] = []
+    buf = ""
+    for p in parts:
+        p = p.strip()
+        if not p:
+            continue
+        cand = buf + p
+        if len(cand) >= 22:
+            merged.append(cand)
+            buf = ""
+        else:
+            buf = cand
+    if buf:
+        if merged and len(buf) < 12:
+            merged[-1] += buf
+        else:
+            merged.append(buf)
+    return merged or [raw_zhtw]
+
+
+def _trim_edge_silence_only(wav: np.ndarray, sr: int) -> np.ndarray:
+    """Trim ONLY leading/trailing dead air (< -42 dBFS), NEVER chopping natural consonants inside sentences!"""
+    if wav.ndim > 1:
+        wav = wav.mean(axis=1)
+    w = wav.astype(np.float32)
+    win = int(0.015 * sr)
+    n_w = len(w) // win
+    if n_w < 6:
+        return w
+    rms = np.sqrt(np.mean(w[: n_w * win].reshape(n_w, win) ** 2, axis=1) + 1e-12)
+    thresh = max(0.0028, float(np.percentile(rms, 75)) * 0.038)
+    act = np.where(rms > thresh)[0]
+    if len(act) == 0:
+        return w
+    s0 = max(0, (int(act[0]) - 2) * win)
+    s1 = min(len(w), (int(act[-1]) + 3) * win)
+    return w[s0:s1]
+
+
 def master_narration_audio(wav: np.ndarray, sr: int, target_lufs: float = -12.9) -> np.ndarray:
-    """Trim only unnatural TTS stalls (>210ms -> 110ms) while preserving natural ~12dB vocal dynamics!"""
-    wav = tight_cut_breaths(wav, sr, max_pause_sec=0.21, kept_pause_sec=0.105)
+    """Master natural unchopped cloned voice to `-13.0 LUFS` broadcast loudness."""
+    wav = _trim_edge_silence_only(wav, sr)
     try:
         import pyloudnorm as pyln
 
@@ -480,9 +595,11 @@ def task_llm_generate(req_path: Path, out_path: Path) -> None:
 
 
 def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
+    import os
     import torch
     from f5_tts.api import F5TTS
 
+    os.environ["PYTHONHASHSEED"] = "2026"
     req = json.loads(req_path.read_text(encoding="utf-8"))
     pack_dir = Path(req["voice_pack_dir"])
     manifest = json.loads((pack_dir / "voice_manifest.json").read_text(encoding="utf-8"))
@@ -491,49 +608,62 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
 
     device = "cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu")
     tts = F5TTS(model="F5TTS_v1_Base", device=device)
+    os.environ["PYTHONHASHSEED"] = "2026"
 
     out_dir.mkdir(parents=True, exist_ok=True)
     results = []
     total = len(req["segments"])
     for idx, item in enumerate(req["segments"], 1):
         seg_id = item["id"]
+        final_wav_path = out_dir / f"{seg_id}.wav"
+        meta_json_path = out_dir / f"{seg_id}.meta.json"
+        if final_wav_path.exists() and meta_json_path.exists():
+            try:
+                results.append(json.loads(meta_json_path.read_text(encoding="utf-8")))
+                continue
+            except Exception:
+                pass
+
         raw_text = _to_zhtw(item["text"].strip())
         role = item.get("voice_style", "narrative_explain")
         speed = float(item.get("speed", 1.01))
         max_chars = int(item.get("max_chars_per_line", 15))
         anchor = anchors_by_role.get(role, default_anchor)
 
-        clauses = split_into_tts_clauses(raw_text, target_max=34)
-        clause_wavs: list[np.ndarray] = []
+        sentences_zhtw = split_into_full_sentences(raw_text)
+        sent_wavs: list[np.ndarray] = []
         subs: list[dict] = []
         cursor_sec = 0.0
         sr = 24000
+        nfe = 32 if device == "cuda" else 18
 
-        for c_i, (clause_txt, punct) in enumerate(clauses):
-            raw_wav_path = out_dir / f"{seg_id}_c{c_i}_raw.wav"
+        for c_i, sent_zhtw in enumerate(sentences_zhtw):
+            norm_tts_txt = _normalize_for_tw_tts(sent_zhtw)
+            raw_wav_path = out_dir / f"{seg_id}_s{c_i}_raw.wav"
             wav_c, sr_c, _ = tts.infer(
                 ref_file=str(pack_dir / anchor["file"]),
                 ref_text=anchor["text"],
-                gen_text=clause_txt,
+                gen_text=norm_tts_txt,
                 file_wave=str(raw_wav_path),
-                speed=speed,
+                nfe_step=nfe,
+                cfg_strength=2.0,
+                sway_sampling_coef=-1.0,
+                speed=1.0,
+                cross_fade_duration=0.12,
+                seed=2026 + idx * 10 + c_i,
                 remove_silence=False,
             )
+            os.environ["PYTHONHASHSEED"] = "2026"
             raw_wav_path.unlink(missing_ok=True)
             sr = int(sr_c)
-            trimmed_c = tight_cut_breaths(np.asarray(wav_c, dtype=np.float32), sr, max_pause_sec=0.19, kept_pause_sec=0.09)
+            trimmed_c = _trim_edge_silence_only(np.asarray(wav_c, dtype=np.float32), sr)
 
-            # Natural rhetorical breath gap after punctuation (matching REF_REAL 12.6% pause_pct!)
-            if c_i < len(clauses) - 1:
-                gap_sec = 0.19 if punct in "！？!?" else (0.13 if punct in "。；;" else 0.075)
-            else:
-                gap_sec = 0.04
-            gap_samples = int(gap_sec * sr)
-            full_c = np.concatenate([trimmed_c, np.zeros(gap_samples, dtype=np.float32)])
+            gap_sec = 0.14 if c_i < len(sentences_zhtw) - 1 else 0.04
+            full_c = np.concatenate([trimmed_c, np.zeros(int(gap_sec * sr), dtype=np.float32)])
             c_dur = len(full_c) / float(sr)
 
-            # Align sub-phrases strictly within this exact clause's ground-truth audio window!
-            c_phrases = split_subtitle_phrases(clause_txt, max_chars=max_chars)
+            # Display original clean zh-TW text (with crisp digits like 100%, 580公升) on screen!
+            c_phrases = split_subtitle_phrases(sent_zhtw, max_chars=max_chars)
             c_subs = align_phrases_to_audio(full_c, sr, c_phrases)
             for s_item in c_subs:
                 subs.append(
@@ -543,10 +673,10 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
                         "text": s_item["text"],
                     }
                 )
-            clause_wavs.append(full_c)
+            sent_wavs.append(full_c)
             cursor_sec += c_dur
 
-        combined_wav = np.concatenate(clause_wavs) if clause_wavs else np.zeros(sr, dtype=np.float32)
+        combined_wav = np.concatenate(sent_wavs) if sent_wavs else np.zeros(sr, dtype=np.float32)
         mastered = master_narration_audio(combined_wav, sr, target_lufs=-12.9)
 
         # Ensure 0.000s visual gap between consecutive subtitle cues so pills never flicker!
@@ -556,7 +686,6 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
         if subs:
             subs[-1]["end"] = total_dur
 
-        final_wav_path = out_dir / f"{seg_id}.wav"
         tmp_24k = out_dir / f"{seg_id}_24k.wav"
         sf.write(str(tmp_24k), mastered, sr, subtype="PCM_16")
         subprocess.run(
@@ -567,19 +696,25 @@ def task_synthesize_voice(req_path: Path, out_dir: Path) -> None:
         )
         tmp_24k.unlink(missing_ok=True)
 
-        results.append(
-            {
-                "id": seg_id,
-                "file": final_wav_path.name,
-                "duration": total_dur,
-                "voice_style": anchor["role"],
-                "subtitles": subs,
-            }
-        )
-        if idx % 10 == 0 or idx == total:
-            print(f"[TTS {idx}/{total}] {seg_id} dur={total_dur}s clauses={len(clauses)} cues={len(subs)}", flush=True)
+        seg_meta = {
+            "id": seg_id,
+            "file": final_wav_path.name,
+            "duration": total_dur,
+            "voice_style": anchor["role"],
+            "subtitles": subs,
+        }
+        meta_json_path.write_text(json.dumps(seg_meta, ensure_ascii=False, indent=2), encoding="utf-8")
+        results.append(seg_meta)
+        if idx % 5 == 0 or idx == total:
+            print(
+                f"[TTS {idx}/{total}] {seg_id} dur={total_dur}s sents={len(sentences_zhtw)} cues={len(subs)}",
+                flush=True,
+            )
 
-    (out_dir / "tts_results.json").write_text(
+    res_out_file = Path(req.get("results_filename", "tts_results.json"))
+    if not res_out_file.is_absolute():
+        res_out_file = out_dir / res_out_file
+    res_out_file.write_text(
         json.dumps({"ok": True, "device": device, "segments": results}, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )

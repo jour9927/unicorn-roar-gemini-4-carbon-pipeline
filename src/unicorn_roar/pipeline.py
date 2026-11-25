@@ -89,8 +89,8 @@ def run_unattended_episode(
     )
     console.print(f"  ✓ 爬取並綁定 [bold green]{len(dossier.citations)}[/] 筆公開來源與跨國法規引用")
 
-    # Phase 3: 6-Act Distilled RAG Script Generation
-    console.print("[cyan][3/6] 啟動六幕式蒸餾文案檢索產稿（對標頻道 4,000+ 字 / 13 分鐘正片規格）...")
+    # Phase 3: 6-Act Distilled RAG Script Generation (Gemini 4 Hydrogen Primary)
+    console.print("[cyan][3/6] 啟動 Gemini 4 Hydrogen 六幕式蒸餾文案產稿（對標頻道 4,000+ 字 / 13 分鐘真跡規格）...")
     blueprint = generate_episode_blueprint(
         candidate=winner,
         dossier=dossier,
