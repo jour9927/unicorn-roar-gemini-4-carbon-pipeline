@@ -309,16 +309,24 @@ def _prerender_all_scene_assets(
     beats_dir.mkdir(parents=True, exist_ok=True)
 
     any_ai_imgs = list(ai_images.values())
+    used_card_thumbs: set[Path] = set()
 
     with ChromeEvidenceRenderer() as chrome_renderer:
         for idx, sc in enumerate(scenes):
             cite = citations_by_id.get(sc.citation_id or "", default_cite)
             prefix = beats_dir / sc.scene_id
-            hero_img = ai_images.get(sc.scene_id) or (
-                any_ai_imgs[idx % len(any_ai_imgs)] if any_ai_imgs else None
-            )
+            # Never recycle the same thumbnail photo across multiple news/comparison cards!
+            cand_img = ai_images.get(sc.scene_id)
+            if cand_img is None and any_ai_imgs:
+                for p_try in any_ai_imgs:
+                    if p_try not in used_card_thumbs:
+                        cand_img = p_try
+                        break
+            hero_img = cand_img if (cand_img is not None and cand_img not in used_card_thumbs) else None
 
             if sc.scene_mode in ("news_portal", "official_gov_doc", "gov_web_portal"):
+                if hero_img is not None:
+                    used_card_thumbs.add(hero_img)
                 heading = sc.document_heading or (cite.title if cite else sc.narration[:28])
                 paras = sc.document_paragraphs or (cite.paragraphs if cite else [sc.narration])
                 beats_by_scene[sc.scene_id] = chrome_renderer.render_two_beat_evidence(
@@ -334,6 +342,8 @@ def _prerender_all_scene_assets(
                     hero_image_path=hero_img,
                 )
             elif sc.scene_mode == "product_comparison" and sc.comparison is not None:
+                if hero_img is not None:
+                    used_card_thumbs.add(hero_img)
                 cmp = sc.comparison
                 beats_by_scene[sc.scene_id] = chrome_renderer.render_comparison_beats(
                     heading=cmp.heading,
@@ -490,6 +500,95 @@ def _encode_scrolling_sheet_with_overlay(
     )
 
 
+def _encode_ken_burns_photo_with_overlay(
+    photo_png: Path,
+    overlay_rgba_png: Path,
+    out_mp4: Path,
+    dur: float,
+    canvas_w: int,
+    canvas_h: int,
+    zoom_start: float = 1.01,
+    zoom_end: float = 1.10,
+    fps: int = 30,
+) -> None:
+    """Smooth 30fps Ken Burns slow push-in on a unique 24-step SDXL scene photo under RGBA subtitle overlay."""
+    scale_w = int(canvas_w * 1.16)
+    scale_h = int(canvas_h * 1.16)
+    # Linear crop drift from wide to centered push-in at 30fps
+    dx = max(2, (scale_w - canvas_w) // 2)
+    dy = max(2, (scale_h - canvas_h) // 2)
+    z_rate = (zoom_end - zoom_start) / max(0.3, dur)
+    fc = (
+        f"[0:v]scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
+        f"crop=w={canvas_w}:h={canvas_h}:x='{dx//2}+min({dx//2},t*{dx / max(1.0, dur * 2):.1f})':"
+        f"y='{dy//2}+min({dy//2},t*{dy / max(1.0, dur * 2):.1f})',fps={fps},setsar=1[bg];"
+        f"[bg][1:v]overlay=0:0:format=auto[v]"
+    )
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-y",
+            "-loop",
+            "1",
+            "-t",
+            f"{dur:.3f}",
+            "-i",
+            str(photo_png),
+            "-loop",
+            "1",
+            "-t",
+            f"{dur:.3f}",
+            "-i",
+            str(overlay_rgba_png),
+            "-filter_complex",
+            fc,
+            "-map",
+            "[v]",
+            "-an",
+            "-t",
+            f"{dur:.3f}",
+            "-r",
+            str(fps),
+            *_video_encoder_args(),
+            str(out_mp4),
+        ],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def _allocate_episode_broll_plan(
+    scenes: list[SceneSpec],
+    broll_pool: list[Path],
+) -> dict[str, list[tuple[Path, float]]]:
+    """Deterministic without-replacement B-roll deck across the full episode + 1 intentional closing motif callback."""
+    if not broll_pool:
+        return {}
+    deck = list(broll_pool)
+    plan: dict[str, list[tuple[Path, float]]] = {}
+    cursor = 0
+    pass_num = 0
+    opening_clip = deck[0]
+
+    for idx, sc in enumerate(scenes):
+        slots: list[tuple[Path, float]] = []
+        # Closing Act-6 Motif Callback (matching @unicorn-roar `0s -> 400s`首尾呼應!)
+        if idx == max(0, len(scenes) - 3):
+            slots.append((opening_clip, 2.2))
+        n_needed = 4 if sc.scene_mode == "ai_scene" else 1
+        while len(slots) < n_needed:
+            if cursor >= len(deck):
+                cursor = 0
+                pass_num += 1
+            clip = deck[cursor]
+            cursor += 1
+            ss_off = round((pass_num * 3.6 + (cursor % 4) * 0.7) % 6.5, 2)
+            slots.append((clip, ss_off))
+        plan[sc.scene_id] = slots
+    return plan
+
+
 def _render_long_scene_clip(
     idx: int,
     scene: SceneSpec,
@@ -500,6 +599,8 @@ def _render_long_scene_clip(
     tts_info: dict[str, Any],
     scene_total_dur: float,
     work_dir: Path,
+    scene_broll_slots: list[tuple[Path, float]] | None = None,
+    unique_ai_photo: Path | None = None,
 ) -> Path:
     W, H, FPS = 1920, 1080, 30
     scene_dir = work_dir / f"long_{scene.scene_id}"
@@ -515,6 +616,7 @@ def _render_long_scene_clip(
     loaded_beats = {p: Image.open(p).convert("RGBA") for p in set(beats) if p and p.exists()}
     concat_lines = []
     prev_broll: Path | None = None
+    prev_ss: float = 0.0
     scroll_y = 0.0
 
     for s_i, sub in enumerate(subs):
@@ -536,33 +638,44 @@ def _render_long_scene_clip(
             concat_lines.append(f"file '{sub_mp4.name}'")
             continue
 
-        # CASE 2: Live-action HD B-roll + Reaction Meme Cutaway (`ai_scene` OR opening dynamic beat of long card scenes!)
+        # CASE 2: Live-action HD B-roll + Unique SDXL Ken Burns + Reaction Meme Cutaway
         use_meme = bool(scene.trigger_meme and meme_clips and s_i == 1)
+        # Only add opening B-roll cutaway on every 3rd card scene so B-roll stays 100% fresh & unrepeated!
         use_opening_broll = bool(
             broll_pool
             and s_i == 0
-            and len(subs) >= 4
-            and scene.scene_mode in ("news_portal", "official_gov_doc", "gov_web_portal", "product_comparison")
+            and len(subs) >= 5
+            and (idx % 3 == 1)
+            and scene.scene_mode in ("news_portal", "official_gov_doc", "gov_web_portal")
         )
         if use_meme:
             ov_img.save(ov_path)
-            # Scene 0 (`L01`) uses iconic Huh? white cat (`meme_clips[1]` or `[0]`), others rotate cleanly
-            m_clip = meme_clips[1 % len(meme_clips)] if idx == 0 else meme_clips[(idx + s_i) % len(meme_clips)]
+            m_clip = meme_clips[1 % len(meme_clips)] if idx == 0 else meme_clips[(idx // 5) % len(meme_clips)]
             _encode_moving_video_with_overlay(m_clip, ov_path, sub_mp4, dur, W, H, ss_offset=0.0, fps=FPS)
+            concat_lines.append(f"file '{sub_mp4.name}'")
+            continue
+
+        # Interleave scene's unique 24-step SDXL press photo (`L01.png`..`L55.png`) with smooth Ken Burns push-in!
+        if scene.scene_mode == "ai_scene" and unique_ai_photo is not None and unique_ai_photo.exists() and s_i in (2, 3):
+            ov_img.save(ov_path)
+            _encode_ken_burns_photo_with_overlay(unique_ai_photo, ov_path, sub_mp4, dur, W, H, fps=FPS)
             concat_lines.append(f"file '{sub_mp4.name}'")
             continue
 
         if (scene.scene_mode == "ai_scene" and broll_pool) or use_opening_broll:
             ov_img.save(ov_path)
-            # Switch to a fresh live-action HD B-roll clip every 2 cues (~3.2s)!
             shot_group = s_i // 2
-            if s_i % 2 == 0 or prev_broll is None:
+            if scene_broll_slots:
+                slot_clip, base_ss = scene_broll_slots[min(shot_group, len(scene_broll_slots) - 1)]
+                prev_broll = slot_clip
+                prev_ss = base_ss + (1.6 if (s_i % 2 == 1) else 0.0)
+            elif s_i % 2 == 0 or prev_broll is None:
                 prev_broll = pick_broll_clip(
                     broll_pool, f"{scene.scene_id}_g{shot_group}_{scene.wikimedia_query}", avoid_prev=prev_broll
                 )
-            ss_off = 1.8 if (s_i % 2 == 1) else float((int(hashlib.md5(f"{scene.scene_id}_{shot_group}".encode()).hexdigest()[:4], 16) % 30) / 10.0)
+                prev_ss = 0.5
             assert prev_broll is not None
-            _encode_moving_video_with_overlay(prev_broll, ov_path, sub_mp4, dur, W, H, ss_offset=ss_off, fps=FPS)
+            _encode_moving_video_with_overlay(prev_broll, ov_path, sub_mp4, dur, W, H, ss_offset=prev_ss, fps=FPS)
             concat_lines.append(f"file '{sub_mp4.name}'")
             continue
 
@@ -794,11 +907,12 @@ def compose_long_and_short_videos(
         for sc in blueprint.long_video.scenes
         if sc.wikimedia_query and len(sc.wikimedia_query) >= 3
     ]
-    broll_pool = fetch_episode_video_broll_pool(blueprint.pillar, extra_keywords=extra_kws, target_count=20)
+    broll_pool = fetch_episode_video_broll_pool(blueprint.pillar, extra_keywords=extra_kws, target_count=75)
     meme_clips, huh_sfx = load_meme_clips()
 
     # === 1. COMPOSE 16:9 LONG VIDEO ===
     long_scenes = blueprint.long_video.scenes
+    long_broll_plan = _allocate_episode_broll_plan(long_scenes, broll_pool)
     long_mix_wav, long_timings = _mix_master_audio(
         long_scenes, tts_map, work_dir / "long_master_audio.wav", huh_sfx_path=huh_sfx, inter_pause_sec=0.06
     )
@@ -825,6 +939,8 @@ def compose_long_and_short_videos(
             tts_map[sc.scene_id],
             slot_dur,
             work_dir,
+            scene_broll_slots=long_broll_plan.get(sc.scene_id),
+            unique_ai_photo=ai_images.get(sc.scene_id),
         )
         return i, clip
 

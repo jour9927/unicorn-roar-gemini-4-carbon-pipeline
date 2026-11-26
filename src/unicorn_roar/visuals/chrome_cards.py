@@ -21,6 +21,7 @@ import html
 import re
 from pathlib import Path
 
+from typing import Any
 from PIL import Image, ImageDraw
 from playwright.sync_api import Browser, Page, sync_playwright
 
@@ -281,18 +282,22 @@ def _build_visual_comparison_html(
     h: int,
     hero_data_uri: str = "",
     reveal_right: bool = True,
+    accent_pair: tuple[str, str] = ("#1565C0", "#D90416"),
 ) -> str:
-    """Full-bleed `#F8F9FA` white visual product/label comparison board (ZERO dark-navy PPT boxes!)."""
+    """Full-bleed `#F4F5F7` white visual product/label comparison board — BOTH columns visible from frame 1!"""
     l_items = "".join(f"<li>{html.escape(x)}</li>" for x in left_points[:3])
     r_items = "".join(f"<li>{html.escape(x)}</li>" for x in right_points[:3])
-    right_vis = "1.0" if reveal_right else "0.0"
+    stamp_vis = "1.0" if reveal_right else "0.0"
+    right_border = f"3px solid {accent_pair[1]}" if reveal_right else "1px solid #e0e0e0"
+    right_scale = "scale(1.015)" if reveal_right else "scale(1.0)"
     is_vertical = h > w
-    pad = "28px 28px" if is_vertical else "42px 88px"
+    pad = "28px 28px" if is_vertical else "38px 78px"
     img_html = (
         f'<div class="thumb"><img src="{hero_data_uri}" /></div>'
         if hero_data_uri
         else ""
     )
+    c_left, c_right = accent_pair
 
     return f"""<!DOCTYPE html><html><head><meta charset="utf-8"><style>
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
@@ -303,45 +308,45 @@ def _build_visual_comparison_html(
     }}
     .hdr {{
       display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 22px; padding-bottom: 14px; border-bottom: 3px solid #222;
+      margin-bottom: 20px; padding-bottom: 14px; border-bottom: 3px solid #222;
     }}
-    h1 {{ font-size: {"34px" if is_vertical else "42px"}; font-weight: 900; color: #111; }}
+    h1 {{ font-size: {"34px" if is_vertical else "40px"}; font-weight: 900; color: #111; }}
     .stamp {{
-      opacity: {right_vis}; background: #D90416; color: #fff;
-      padding: 8px 22px; border-radius: 6px; font-size: {"26px" if is_vertical else "32px"};
-      font-weight: 900; transform: rotate(-2deg); box-shadow: 0 4px 14px rgba(217,4,22,0.35);
+      opacity: {stamp_vis}; background: {c_right}; color: #fff;
+      padding: 8px 22px; border-radius: 6px; font-size: {"26px" if is_vertical else "30px"};
+      font-weight: 900; transform: rotate(-2deg); box-shadow: 0 4px 14px rgba(0,0,0,0.28);
     }}
-    .cols {{ display: flex; gap: {"20px" if is_vertical else "36px"}; align-items: stretch; flex: 1; max-height: 76%; }}
+    .cols {{ display: flex; gap: {"20px" if is_vertical else "34px"}; align-items: stretch; flex: 1; max-height: 78%; }}
     .card {{
-      flex: 1; background: #ffffff; border-radius: 10px; padding: {"22px" if is_vertical else "30px 34px"};
+      flex: 1; background: #ffffff; border-radius: 10px; padding: {"20px" if is_vertical else "26px 32px"};
       box-shadow: 0 6px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column;
     }}
-    .card-l {{ border-top: 8px solid #1565C0; }}
-    .card-r {{ border-top: 8px solid #D90416; opacity: {right_vis}; background: #FFFDFD; }}
+    .card-l {{ border-top: 8px solid {c_left}; }}
+    .card-r {{ border: {right_border}; border-top: 8px solid {c_right}; background: #FFFDFD; transform: {right_scale}; }}
     .tag {{
       display: inline-block; align-self: flex-start; padding: 5px 14px; border-radius: 4px;
       font-size: 18px; font-weight: 800; margin-bottom: 12px; color: #fff;
     }}
-    .card-l .tag {{ background: #1565C0; }}
-    .card-r .tag {{ background: #D90416; }}
-    .ctitle {{ font-size: {"28px" if is_vertical else "34px"}; font-weight: 900; color: #111; margin-bottom: 16px; }}
+    .card-l .tag {{ background: {c_left}; }}
+    .card-r .tag {{ background: {c_right}; }}
+    .ctitle {{ font-size: {"28px" if is_vertical else "32px"}; font-weight: 900; color: #111; margin-bottom: 14px; }}
     .thumb {{ margin-bottom: 14px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e2e2; }}
-    .thumb img {{ width: 100%; height: {"150px" if is_vertical else "175px"}; object-fit: cover; display: block; }}
+    .thumb img {{ width: 100%; height: {"145px" if is_vertical else "168px"}; object-fit: cover; display: block; }}
     ul {{ list-style: none; }}
     li {{
-      font-size: {"24px" if is_vertical else "27px"}; line-height: 1.58; color: #222; font-weight: 600;
-      margin-bottom: 14px; padding-left: 30px; position: relative;
+      font-size: {"24px" if is_vertical else "26px"}; line-height: 1.56; color: #222; font-weight: 600;
+      margin-bottom: 12px; padding-left: 30px; position: relative;
     }}
-    .card-l li::before {{ content: "▸"; color: #1565C0; font-weight: 900; position: absolute; left: 0; }}
-    .card-r li::before {{ content: "✗"; color: #D90416; font-weight: 900; position: absolute; left: 0; }}
+    .card-l li::before {{ content: "▸"; color: {c_left}; font-weight: 900; position: absolute; left: 0; }}
+    .card-r li::before {{ content: "✗"; color: {c_right}; font-weight: 900; position: absolute; left: 0; }}
     </style></head><body>
       <div class="hdr">
-        <h1>{html.escape(heading[:28])}</h1>
+        <h1>{html.escape(heading[:30])}</h1>
         <div class="stamp">{html.escape(delta_badge)}</div>
       </div>
       <div class="cols">
         <div class="card card-l">
-          <span class="tag">正面宣稱／消費者直覺</span>
+          <span class="tag">正面宣稱／市場表象</span>
           <div class="ctitle">{html.escape(left_title)}</div>
           {img_html}
           <ul>{l_items}</ul>
@@ -355,27 +360,62 @@ def _build_visual_comparison_html(
     </body></html>"""
 
 
+_EXTRA_TW_NETIZEN_COMMENTS: list[tuple[str, str]] = [
+    ("@易天岐-tw", "每次去賣場看正面寫100%純橄欖油，翻到背面成分第一項竟然是芥花油真的會氣笑"),
+    ("@邱小玉i4s", "2010年就說要標調合油，拖到2027年才要分6類？這17年中間大家到底喝了多少基底油"),
+    ("@沈浪-k9f", "業者一喊有雜音就二度預告，消費者被當盤子十幾年怎麼沒人聽我們的雜音？"),
+    ("@TsungLinChou", "買食用油還要自備放大鏡加背國際Codex條文，在台灣當消費者根本像在考食安特考"),
+    ("@黃瑞靖-r8r", "重點是價錢賣得跟特級初榨一樣貴，結果裡面96%都是平價芥花油，暴利3760萬難怪敢賭"),
+    ("@ToKoo-b6r", "正面大字義大利進口，背面超小字調合油，這不叫行銷名稱這叫視力測驗吧"),
+    ("@jeven168blue8", "良心廠商老實寫果渣油反而賣不動，亂標的賺幾千萬，標準的劣幣驅逐良幣"),
+    ("@叫我靚仔", "以後買油真的第一件事先翻過來盯死品名跟原料排序，正面圖案越漂亮越要小心"),
+    ("@羊樂多-tw", "連大廠當年都被消保處點名過標示不合格，可見法規不把正面品名鎖死根本沒用"),
+    ("@阿凱料理日記", "橄欖粕油精煉過合法能吃沒問題，但拿基礎油賣初榨的價格才是大家生氣的點！"),
+    ("@台北林太太", "謝謝拆解！剛剛去廚房把家裡那罐翻過來看，還真的寫調合油，以前完全沒注意"),
+    ("@工程師算帳中", "580公升配20公升等於純度3.3%，這比例連一杯微糖珍奶的糖都比它純XD"),
+    ("@台中張先生", "地方食安處拼命稽查，中央分類新制卻還要等明年七月，這空窗期誰來賠消費者"),
+    ("@小資煮婦日記", "難怪價差這麼神秘，原來不能單看價格高低猜品質，還是看背標最實在"),
+    ("@KenChen_tw", "歐盟美加早就把橄欖油跟橄欖粕油切開標了，台灣真的慢好幾拍"),
+    ("@路人甲看熱鬧", "每次出事就搬國際規範說安全無虞，結果標示管理只學半套"),
+]
+
+
 def _build_tall_youtube_comments_html(
     comments: list[dict[str, str]],
     w: int,
     tall_h: int,
+    seed_offset: int = 0,
 ) -> str:
-    """Full-bleed `#FFFFFF` YouTube Taiwan comment thread (`10` items) for 30fps smooth upward scrolling!
-
-    Matches `REF_LONG_-fWWNfBPbMM_0_30s_1fps.jpg` rows 5-6 (`@易天岐 2天前`, thumbs-up, `⌄ 3 則回覆`)!
-    """
+    """Full-bleed `#FFFFFF` YouTube Taiwan comment thread (`10` 100% UNIQUE items — zero duplicates on screen!)."""
     palette = ["#5C6BC0", "#EF5350", "#26A69A", "#AB47BC", "#FFA726", "#42A5F5", "#66BB6A", "#8D6E63"]
     default_handles = [
         "@易天岐-tw", "@邱小玉i4s", "@沈浪-k9f", "@TsungLinChou",
         "@parkerlived", "@黃瑞靖-r8r", "@ToKoo-b6r", "@jeven168blue8",
-        "@叫我靚仔", "@羊樂多-tw",
+        "@叫我靚仔", "@羊樂多-tw", "@阿凱料理日記", "@工程師算帳中",
     ]
-    expanded = list(comments)
-    while len(expanded) < 9 and comments:
-        src_c = dict(comments[len(expanded) % len(comments)])
-        src_c["user"] = default_handles[len(expanded) % len(default_handles)]
-        src_c["likes"] = max(12, int(src_c.get("likes", 85)) // 2 + len(expanded) * 9)
-        expanded.append(src_c)
+    expanded: list[dict[str, Any]] = []
+    seen_texts: set[str] = set()
+    for c in comments:
+        t = str(c.get("text") or "").strip()
+        if t and t not in seen_texts:
+            seen_texts.add(t)
+            expanded.append(dict(c))
+
+    pool_idx = seed_offset * 5
+    while len(expanded) < 10:
+        u_fb, t_fb = _EXTRA_TW_NETIZEN_COMMENTS[pool_idx % len(_EXTRA_TW_NETIZEN_COMMENTS)]
+        pool_idx += 1
+        if t_fb in seen_texts:
+            continue
+        seen_texts.add(t_fb)
+        expanded.append(
+            {
+                "user": u_fb,
+                "time": f"{(len(expanded) % 5) + 1} 天前",
+                "text": t_fb,
+                "likes": max(18, 310 - len(expanded) * 27 + (seed_offset * 13) % 40),
+            }
+        )
 
     rows = []
     for i, c in enumerate(expanded[:10]):
@@ -476,6 +516,9 @@ class ChromeEvidenceRenderer:
         self._pw = None
         self._browser: Browser | None = None
         self._live_url_cache: dict[str, tuple[Image.Image, list[dict[str, float]]] | None] = {}
+        self._live_url_use_counts: dict[str, int] = {}
+        self._cmp_call_idx: int = 0
+        self._cmt_call_idx: int = 0
 
     def __enter__(self) -> "ChromeEvidenceRenderer":
         self._pw = sync_playwright().start()
@@ -495,15 +538,24 @@ class ChromeEvidenceRenderer:
         self,
         url: str,
         quote: str,
+        heading: str,
         width: int,
         height: int,
     ) -> tuple[Image.Image, list[dict[str, float]]] | None:
-        """Visit the REAL crawled news/gov URL in Chrome 158, strip popups, and locate quote coordinates!"""
+        """Visit REAL crawled URL, strictly reject footers/chrome, and allow max 2 intentional Evidence Callbacks!"""
         if not url or "news.google.com" in url or "bing.com" in url:
             return None
+        # Allow first display + 1 intentional Evidence Callback (`<= 2` uses per URL, matching @unicorn-roar!);
+        # 3rd+ citations of the same URL render dedicated focused excerpt cards so the screen never stalls!
+        if self._live_url_use_counts.get(url, 0) >= 2:
+            return None
+
         cache_key = f"{url}|{quote[:12]}|{width}x{height}"
         if cache_key in self._live_url_cache:
-            return self._live_url_cache[cache_key]
+            cached = self._live_url_cache[cache_key]
+            if cached is not None:
+                self._live_url_use_counts[url] = self._live_url_use_counts.get(url, 0) + 1
+            return cached
 
         assert self._browser is not None
         page: Page = self._browser.new_page(
@@ -527,9 +579,10 @@ class ChromeEvidenceRenderer:
                 return None
 
             page.wait_for_timeout(450)
-            # Strip cookie banners, fixed modals, newsletter popups, and dark overlays
             rects = page.evaluate(
-                """(qStr) => {
+                """(args) => {
+                    const qStr = args.quote || '';
+                    const hStr = args.heading || '';
                     const killSelectors = [
                         '[id*="cookie"]', '[class*="cookie"]', '[id*="consent"]', '[class*="consent"]',
                         '[class*="modal"]', '[class*="popup"]', '[class*="overlay"]', '[class*="gdpr"]',
@@ -551,26 +604,36 @@ class ChromeEvidenceRenderer:
                         return null;
                     }
 
-                    const targetNeedle = (qStr || '').trim().slice(0, 10);
+                    // Strictly pick article paragraphs NOT inside footer/nav/header/aside!
+                    const rawParas = Array.from(document.querySelectorAll('article p, main p, .caas-body p, .article-body p, .story p, #article_body p'));
+                    const paras = rawParas.filter(p => !p.closest('footer, header, nav, aside, [class*="footer"], [id*="footer"], [class*="copyright"]'));
+                    if (paras.length < 2) return null;
+
+                    const targetNeedle = qStr.replace(/[「」『』，。！？\\s]/g, '').slice(0, 8);
+                    const headKey = hStr.replace(/[「」『』，。！？\\s]/g, '').slice(0, 6);
                     let targetNode = null;
-                    const paras = Array.from(document.querySelectorAll('article p, main p, .caas-body p, .article-body p, p'));
                     for (const p of paras) {
-                        const t = (p.innerText || '').trim();
-                        if (t.length >= 25 && (!targetNeedle || t.includes(targetNeedle))) {
+                        const cleanT = (p.innerText || '').replace(/[「」『』，。！？\\s]/g, '');
+                        if (cleanT.length >= 25 && targetNeedle.length >= 4 && cleanT.includes(targetNeedle)) {
                             targetNode = p;
                             break;
                         }
                     }
-                    if (!targetNode && paras.length > 1) {
-                        targetNode = paras.find(p => (p.innerText || '').trim().length >= 35) || null;
+                    if (!targetNode && headKey.length >= 4) {
+                        targetNode = paras.find(p => {
+                            const cleanT = (p.innerText || '').replace(/[「」『』，。！？\\s]/g, '');
+                            return cleanT.length >= 40 && cleanT.includes(headKey);
+                        }) || null;
                     }
+                    // NEVER blindly grab a random/footer paragraph if neither quote nor heading matched!
                     if (!targetNode) return null;
 
                     targetNode.scrollIntoView({block: 'center', behavior: 'instant'});
                     const htmlTxt = targetNode.innerHTML;
                     const plainTxt = (targetNode.innerText || '').trim();
-                    const hlSlice = targetNeedle && plainTxt.includes(targetNeedle)
-                        ? plainTxt.substr(plainTxt.indexOf(targetNeedle), Math.min(26, plainTxt.length))
+                    const rawNeedle = qStr.trim().slice(0, 10);
+                    const hlSlice = rawNeedle && plainTxt.includes(rawNeedle)
+                        ? plainTxt.substr(plainTxt.indexOf(rawNeedle), Math.min(26, plainTxt.length))
                         : plainTxt.slice(0, 26);
                     if (hlSlice && htmlTxt.includes(hlSlice)) {
                         targetNode.innerHTML = htmlTxt.replace(hlSlice, `<span id="hl-target">${hlSlice}</span>`);
@@ -582,7 +645,7 @@ class ChromeEvidenceRenderer:
                         x: r.x, y: r.y, width: r.width, height: r.height
                     }));
                 }""",
-                quote or "",
+                {"quote": quote or "", "heading": heading or ""},
             )
             if not rects:
                 self._live_url_cache[cache_key] = None
@@ -592,7 +655,6 @@ class ChromeEvidenceRenderer:
             import io
 
             im = Image.open(io.BytesIO(raw_bytes)).convert("RGB")
-            # Reject blank / near-solid screenshots
             extrema = im.getextrema()
             if all((hi - lo) < 15 for lo, hi in extrema):
                 self._live_url_cache[cache_key] = None
@@ -600,6 +662,7 @@ class ChromeEvidenceRenderer:
 
             res = (im, rects)
             self._live_url_cache[cache_key] = res
+            self._live_url_use_counts[url] = self._live_url_use_counts.get(url, 0) + 1
             return res
         except Exception:
             self._live_url_cache[cache_key] = None
@@ -624,7 +687,7 @@ class ChromeEvidenceRenderer:
         out_prefix.parent.mkdir(parents=True, exist_ok=True)
         live_hit = None
         if template_kind == "news_portal" and citation and citation.url and width >= 1200:
-            live_hit = self._try_capture_live_url(citation.url, quote, width, height)
+            live_hit = self._try_capture_live_url(citation.url, quote, heading, width, height)
 
         if live_hit is not None:
             base_im, rects = live_hit
@@ -701,6 +764,15 @@ class ChromeEvidenceRenderer:
         hero_uri = _img_to_data_uri(hero_image_path)
         wm_sz = 16 if width >= 1200 else 18
         beats: list[Path] = []
+        accent_themes = [
+            ("#1565C0", "#D90416"),
+            ("#2E7D32", "#C62828"),
+            ("#4527A0", "#D84315"),
+            ("#00695C", "#AD1457"),
+            ("#283593", "#BF360C"),
+        ]
+        accent_pair = accent_themes[self._cmp_call_idx % len(accent_themes)]
+        self._cmp_call_idx += 1
         try:
             for b_idx, rev in enumerate([False, True], 1):
                 html_doc = _build_visual_comparison_html(
@@ -714,6 +786,7 @@ class ChromeEvidenceRenderer:
                     height,
                     hero_data_uri=hero_uri,
                     reveal_right=rev,
+                    accent_pair=accent_pair,
                 )
                 page.set_content(html_doc, wait_until="domcontentloaded")
                 bp = out_prefix.parent / f"{out_prefix.name}_cmp{b_idx}.png"
@@ -738,9 +811,11 @@ class ChromeEvidenceRenderer:
         """Render a tall `width x (stage_height + 900)` `#FFFFFF` YouTube comment sheet for 30fps scrolling."""
         assert self._browser is not None
         tall_h = stage_height + 900
+        seed_off = self._cmt_call_idx
+        self._cmt_call_idx += 1
         page = self._browser.new_page(viewport={"width": width, "height": tall_h}, device_scale_factor=1.0)
         try:
-            html_doc = _build_tall_youtube_comments_html(comments, width, tall_h)
+            html_doc = _build_tall_youtube_comments_html(comments, width, tall_h, seed_offset=seed_off)
             page.set_content(html_doc, wait_until="domcontentloaded")
             out_path.parent.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(out_path))

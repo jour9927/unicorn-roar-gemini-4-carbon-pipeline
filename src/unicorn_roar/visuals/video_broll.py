@@ -35,6 +35,20 @@ PILLAR_VIDEO_SLUGS: dict[str, list[str]] = {
         "bottles",
         "shopping-cart",
         "chef",
+        "vegetables",
+        "market",
+        "food",
+        "restaurant",
+        "bakery",
+        "frying",
+        "dinner",
+        "warehouse",
+        "cashier",
+        "shopping",
+        "packaging",
+        "farmer",
+        "nutrition",
+        "coffee",
     ],
     "consumer_pricing": [
         "supermarket",
@@ -47,6 +61,14 @@ PILLAR_VIDEO_SLUGS: dict[str, list[str]] = {
         "receipt",
         "credit-card",
         "cafe",
+        "market",
+        "grocery-store",
+        "food",
+        "kitchen",
+        "street",
+        "store",
+        "customer",
+        "delivery",
     ],
     "wage_labor_stats": [
         "office",
@@ -59,6 +81,12 @@ PILLAR_VIDEO_SLUGS: dict[str, list[str]] = {
         "business-meeting",
         "commute",
         "semiconductor",
+        "finance",
+        "building",
+        "typing",
+        "subway",
+        "crowd",
+        "chart",
     ],
     "industry_policy": [
         "cargo-ship",
@@ -71,6 +99,12 @@ PILLAR_VIDEO_SLUGS: dict[str, list[str]] = {
         "port",
         "technology",
         "stock-market",
+        "energy",
+        "warehouse",
+        "engineer",
+        "industry",
+        "containers",
+        "highway",
     ],
 }
 
@@ -169,14 +203,14 @@ def fetch_episode_video_broll_pool(
         follow_redirects=True,
         headers={"User-Agent": USER_AGENT},
     ) as client:
-        # Interleave 2-3 videos per slug first for maximum topical variety!
+        # Interleave up to 4 videos per slug across up to 28 slugs for 65+ distinct clips!
         per_slug_ids: list[list[str]] = []
-        for s in slugs[:12]:
-            ids = _discover_mixkit_video_ids(s, client, max_ids=5)
+        for s in slugs[:28]:
+            ids = _discover_mixkit_video_ids(s, client, max_ids=6)
             if ids:
                 per_slug_ids.append(ids)
 
-        for round_idx in range(5):
+        for round_idx in range(6):
             for id_list in per_slug_ids:
                 if len(collected) >= target_count:
                     return collected
@@ -189,8 +223,8 @@ def fetch_episode_video_broll_pool(
                     if dl is not None:
                         collected.append(dl)
 
-    # Fallback to any cached MP4s if network is restricted
-    if len(collected) < 6:
+    # Supplement from any other cached MP4s if needed
+    if len(collected) < target_count:
         for existing in sorted(cache_dir.glob("mixkit_*.mp4")):
             if existing not in collected and existing.stat().st_size > 150_000:
                 collected.append(existing)

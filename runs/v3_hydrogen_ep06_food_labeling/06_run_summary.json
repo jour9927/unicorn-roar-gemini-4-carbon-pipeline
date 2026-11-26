@@ -46,7 +46,7 @@
       "sample_rate": "44100",
       "duration_sec": 750.2,
       "duration_min": 12.5,
-      "size_mb": 371.91
+      "size_mb": 324.71
     },
     "short_probe": {
       "width": 1080,
@@ -57,7 +57,7 @@
       "sample_rate": "44100",
       "duration_sec": 117.08,
       "duration_min": 1.95,
-      "size_mb": 77.78
+      "size_mb": 80.28
     }
   }
 }
