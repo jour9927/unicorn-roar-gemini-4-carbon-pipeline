@@ -15,12 +15,13 @@
     ],
     "seed_headlines": [
       "橄欖油分類標示草案業者有雜音 食藥署將二度預告、維持明年7月上路",
+      "橄欖油名稱大亂鬥食藥署出手！將開專家會議研議修訂CNS接軌國際- 營養好食",
       "【查證】全球橄欖油造假亂象影片？進口特級初榨很難買？食藥署詳解",
       "純橄欖油爆摻入芥花油挨罰 譚敦慈授挑油秘訣：小罐買、別有品牌迷思"
     ],
-    "score": 81.12
+    "score": 92.12
   },
-  "citations_count": 8,
+  "citations_count": 15,
   "long_cjk_chars": 4302,
   "short_cjk_chars": 606,
   "long_scene_count": 57,
@@ -45,7 +46,7 @@
       "sample_rate": "44100",
       "duration_sec": 750.2,
       "duration_min": 12.5,
-      "size_mb": 351.25
+      "size_mb": 371.91
     },
     "short_probe": {
       "width": 1080,
@@ -56,7 +57,7 @@
       "sample_rate": "44100",
       "duration_sec": 117.08,
       "duration_min": 1.95,
-      "size_mb": 75.06
+      "size_mb": 77.78
     }
   }
 }

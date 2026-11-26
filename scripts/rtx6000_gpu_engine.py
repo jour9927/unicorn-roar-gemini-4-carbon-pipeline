@@ -34,45 +34,151 @@ def _to_zhtw(text: str) -> str:
         return text
 
 
-def split_subtitle_phrases(text: str, max_chars: int = 15) -> list[str]:
-    """Split Traditional Chinese narration at natural phrase boundaries (zero mid-word breaks like `更多/錢`)."""
-    text = _to_zhtw(text)
-    raw_parts = re.split(r"[，。！？!?；;：:、\s]+", text)
-    phrases: list[str] = []
-    soft_max = max_chars + 2  # Keep <= 17-char clauses intact on one crisp line!
-    for part in raw_parts:
-        p = part.strip(" 「」『』")
-        if not p:
+_SUB_PROTECTED_COMPOUNDS = (
+    "特級初榨橄欖油", "特級初榨", "橄欖粕油", "純橄欖油", "橄欖油", "芥花油", "調合油", "果渣油", "基礎油",
+    "銅葉綠素", "食藥署", "消保處", "食安處", "自由健康網", "自由時報", "聯合新聞網", "環境資訊中心",
+    "公視新聞", "Yahoo奇摩新聞", "Yahoo新聞", "卡優新聞", "上下游", "愛之味", "寶素齋", "蒙特樂", "大統假油",
+    "二度預告", "標示新制", "分類標示", "標示草案", "強制標示", "不法獲利", "較經濟實惠", "經濟實惠",
+    "大宗物資", "逆向推定", "資訊不對稱", "劣幣驅逐良幣", "專案稽查", "衛生標準", "國家標準",
+    "國際規範", "國際標準", "業者雜音", "一路拖到", "拖到", "抓到", "分不清", "看不出",
+    "加拿大", "義大利", "消費者", "計算機", "擋箭牌", "空窗期", "留言區",
+)
+_SUB_ATOMIC_RE = re.compile(
+    r"look\s+at\s+my\s+eyes"
+    r"|CXS\s*33-1981"
+    r"|QR\s*Code"
+    r"|Omega-?3"
+    r"|(?:民國)?\d+(?:[.,~～\-/]\d+)*(?:\s*[%％]|年\d+月\d+日|年\d+月|月\d+日|年代|年|月|日|號|公升|毫升|公斤|公克|萬元|億元|千萬|百萬|萬|元|件|類|倍|份|成|歲|度|條|個|種|罐|瓶|家|款)?"
+    r"|[A-Za-z][A-Za-z0-9\-._]*"
+    r"|" + "|".join(re.escape(w) for w in sorted(_SUB_PROTECTED_COMPOUNDS, key=len, reverse=True)),
+    re.IGNORECASE,
+)
+_SUB_QTY_RE = re.compile(r"^\d+(?:[.,]\d+)?(?:公升|毫升|公斤|公克|件|類|倍|份|成|個|種|罐|瓶|家|款)$")
+_SUB_BREAK_BEFORE = {
+    "但是", "結果", "因為", "所以", "其實", "還是", "卻是", "而是", "而且", "如果",
+    "導致", "加上", "等於", "反觀", "偏偏", "難怪", "甚至", "尤其", "只要", "一旦",
+    "卻", "而", "但", "還", "仍", "更", "就", "才", "都", "也", "只", "又", "竟",
+    "把", "被", "讓", "將", "對", "從", "到", "在", "跟", "與", "或", "和", "及", "向", "依", "靠", "用",
+    "加", "混", "配", "一路拖到",
+}
+_SUB_BREAK_AFTER = ("年", "月", "日", "後", "前", "時", "裡", "上", "下", "內", "外", "、")
+_SUB_NO_END = {"的", "之", "與", "跟", "和", "或", "及", "在", "從", "到", "把", "被", "讓", "對", "連", "較", "更", "最", "很", "太", "不", "沒"}
+_SUB_NO_START = {"的", "了", "著", "過", "嗎", "呢", "吧", "啊", "喔", "嘛", "時", "後", "裡", "內", "上", "下"}
+
+
+def _visual_cjk_width(s: str) -> float:
+    w = 0.0
+    for ch in s:
+        if ch.isspace():
+            w += 0.25
+        elif ord(ch) < 128:
+            w += 0.52
+        else:
+            w += 1.0
+    return w
+
+
+def _tokenize_sub_clause(clause: str) -> list[str]:
+    from opencc import OpenCC
+    import rjieba
+
+    cc_t2s = OpenCC("t2s")
+
+    def _jb(sub: str) -> list[str]:
+        out_t: list[str] = []
+        for p in re.split(r"(、)", sub):
+            if not p:
+                continue
+            if p == "、":
+                if out_t:
+                    out_t[-1] += "、"
+                continue
+            simp = "".join(cc_t2s.convert(ch)[0] for ch in p)
+            idx = 0
+            for w in rjieba.cut(simp):
+                ln = len(w)
+                out_t.append(p[idx : idx + ln])
+                idx += ln
+        return out_t
+
+    toks: list[str] = []
+    pos = 0
+    for m in _SUB_ATOMIC_RE.finditer(clause):
+        if m.start() > pos:
+            toks.extend(_jb(clause[pos : m.start()]))
+        toks.append(m.group(0))
+        pos = m.end()
+    if pos < len(clause):
+        toks.extend(_jb(clause[pos:]))
+    return [t for t in toks if t]
+
+
+def _split_sub_recursive(clause: str, soft_max_vw: float, out: list[str]) -> None:
+    vw = _visual_cjk_width(clause)
+    if vw <= soft_max_vw:
+        c = clause.rstrip("、").strip()
+        if c:
+            out.append(c)
+        return
+    tokens = _tokenize_sub_clause(clause)
+    if len(tokens) <= 1:
+        c = clause.rstrip("、").strip()
+        if c:
+            out.append(c)
+        return
+
+    best_k: int | None = None
+    best_score = -1e9
+    target_left = vw * 0.50 if vw <= soft_max_vw * 1.85 else min(soft_max_vw - 1.0, vw * 0.38)
+    cum_vw = 0.0
+    for k in range(1, len(tokens)):
+        cum_vw += _visual_cjk_width(tokens[k - 1])
+        rem_vw = vw - cum_vw
+        if cum_vw < 4.5 or rem_vw < 4.5 or cum_vw > soft_max_vw + 0.8:
             continue
-        while len(p) > soft_max:
-            cut: int | None = None
-            for kw in ("但是", "結果", "因為", "所以", "其實", "還是", "卻是", "而是", "而且", "如果", "問題是", "也就是"):
-                idx = p.find(kw, 5, max_chars + 2)
-                if idx != -1 and (len(p) - idx) >= 5:
-                    cut = idx
-                    break
-            if cut is None:
-                mid = (len(p) + 1) // 2
-                # Prefer cutting AFTER `了`, `過`, `完`, `後`, `時`, `裡`, `上`, `下` or BEFORE prepositions `在`, `把`, `被`, `讓`, `向`, `從`
-                for after_ch in ("了", "過", "後", "時", "裡", "上", "下"):
-                    idx = p.find(after_ch, max(5, mid - 4), min(max_chars, mid + 4))
-                    if idx != -1 and (len(p) - (idx + 1)) >= 5:
-                        cut = idx + 1
-                        break
-            if cut is None:
-                mid = (len(p) + 1) // 2
-                for before_ch in ("在", "把", "被", "讓", "跟", "從", "對", "比", "卻", "就", "都", "還"):
-                    idx = p.find(before_ch, max(5, mid - 4), min(max_chars, mid + 4))
-                    if idx != -1 and (len(p) - idx) >= 5:
-                        cut = idx
-                        break
-            if cut is None:
-                cut = min(max_chars, max(6, (len(p) + 1) // 2))
-            phrases.append(p[:cut].strip())
-            p = p[cut:].strip()
-        if p:
-            phrases.append(p)
-    return phrases or [text.strip()[:soft_max]]
+        lt, rt = tokens[k - 1], tokens[k]
+        score = -abs(cum_vw - target_left) * 1.6
+        if rt in _SUB_BREAK_BEFORE:
+            score += 4.5
+        if lt.endswith(_SUB_BREAK_AFTER):
+            score += 4.0
+        if _SUB_QTY_RE.match(lt.rstrip("、")):
+            score -= 4.5
+        if lt.rstrip("、") in _SUB_NO_END:
+            score -= 9.0
+        if rt.rstrip("、") in _SUB_NO_START:
+            score -= 9.0
+        if score > best_score:
+            best_score = score
+            best_k = k
+    if best_k is None:
+        cum = 0.0
+        best_k = 1
+        for k in range(1, len(tokens)):
+            cum += _visual_cjk_width(tokens[k - 1])
+            if cum <= soft_max_vw:
+                best_k = k
+    ls = "".join(tokens[:best_k]).rstrip("、").strip()
+    rs = "".join(tokens[best_k:]).strip()
+    if ls:
+        out.append(ls)
+    if rs:
+        _split_sub_recursive(rs, soft_max_vw, out)
+
+
+def split_subtitle_phrases(text: str, max_chars: int = 15) -> list[str]:
+    """Split Traditional Chinese narration at exact lexical/numeric boundaries (zero mid-word or mid-number cuts)."""
+    text = _to_zhtw(text)
+    cleaned = re.sub(r"[「」『』《》【】]", "", text).strip()
+    raw_clauses = re.split(r"[，,。！？!?；;：:\n]+", cleaned)
+    soft_max_vw = float(max_chars) + 2.5
+    phrases: list[str] = []
+    for rc in raw_clauses:
+        rc = rc.strip(" —…")
+        if not rc:
+            continue
+        _split_sub_recursive(rc, soft_max_vw, phrases)
+    return phrases or [cleaned[:max_chars]]
 
 
 def split_into_tts_clauses(text: str, target_max: int = 34) -> list[tuple[str, str]]:
@@ -196,20 +302,27 @@ def align_phrases_to_audio(
     trimmed = wav[: n_frames * hop].reshape(n_frames, hop)
     rms = np.sqrt(np.mean(trimmed**2, axis=1) + 1e-12)
 
-    weights = np.array([max(1.0, float(len(re.sub(r"\s+", "", p)))) for p in phrases])
+    def _spoken_wt(p: str) -> float:
+        norm = _normalize_for_tw_tts(p)
+        sp = re.sub(r"[\s，,。！？!?；;：:、]", "", norm)
+        eng = re.findall(r"[A-Za-z]+", sp)
+        cjk = re.sub(r"[A-Za-z]+", "", sp)
+        return max(1.5, float(len(cjk)) + 1.4 * len(eng))
+
+    weights = np.array([_spoken_wt(p) for p in phrases], dtype=np.float64)
     cum_ratios = np.cumsum(weights) / np.sum(weights)
 
     boundaries = [0.0]
     for r in cum_ratios[:-1]:
         ideal_frame = int(r * n_frames)
-        win_lo = max(1, ideal_frame - 10)
-        win_hi = min(n_frames - 1, ideal_frame + 10)
+        win_lo = max(1, ideal_frame - 11)
+        win_hi = min(n_frames - 1, ideal_frame + 11)
         if win_hi > win_lo:
             valley_offset = int(np.argmin(rms[win_lo:win_hi]))
             snap_sec = (win_lo + valley_offset) * 0.015
         else:
-            snap_sec = r * total_dur
-        snap_sec = max(boundaries[-1] + 0.28, min(total_dur - 0.25, snap_sec))
+            snap_sec = float(r) * total_dur
+        snap_sec = max(boundaries[-1] + 0.32, min(total_dur - 0.28, snap_sec))
         boundaries.append(snap_sec)
     boundaries.append(total_dur)
 

@@ -137,3 +137,30 @@ def test_taiwan_tts_pronunciation_normalizer() -> None:
     assert "一七年" not in norm
     assert "联合国食品法典" in norm
     assert "雅虎新闻" in norm
+
+
+def test_linguistic_subtitle_segmenter_no_broken_words() -> None:
+    from unicorn_roar.voice.subtitle_segmenter import split_subtitle_phrases
+
+    cases = [
+        "2026年7月檢方起訴「蒙特樂」，他們拿580公升芥花油只混20公升橄欖油！",
+        "這就是為什麼制度漏洞一路拖到2026年8月14日才想補破網，食藥署端出「6類橄欖油標示新制」草案！",
+        "依據聯合國Codex標準與食藥署規範，連愛之味、泰山、寶素齋都曾因標示不合格被點名。",
+        "靠這套混充比例直接撈走3760萬元遭到檢方起訴，違法的乾脆混充96.7%直接撈3760萬！",
+    ]
+    joined_all = []
+    for raw in cases:
+        cues = split_subtitle_phrases(raw, max_chars=15)
+        joined_all.extend(cues)
+        for c in cues:
+            assert "「" not in c and "」" not in c
+            assert len(c) >= 3
+
+    # Verify zero broken words/numbers/English tokens
+    forbidden_fragments = ("芥花", "026年", "760萬", "Code", "x標準", "6類橄", "泰山")
+    for cue in joined_all:
+        assert cue not in forbidden_fragments
+        assert not cue.endswith("芥花")
+        assert not cue.startswith("026")
+        assert not cue.startswith("760")
+        assert not cue.endswith("Code")
